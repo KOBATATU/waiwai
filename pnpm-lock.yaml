@@ -44,6 +44,9 @@ importers:
       next-auth:
         specifier: ^4.24.7
         version: 4.24.7(next@14.2.7(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      prisma-extension-pagination:
+        specifier: ^0.7.4
+        version: 0.7.4(@prisma/client@5.19.0(prisma@5.19.0))
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1807,6 +1810,11 @@ packages:
 
   pretty-format@3.8.0:
     resolution: {integrity: sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==}
+
+  prisma-extension-pagination@0.7.4:
+    resolution: {integrity: sha512-MmfyinDbcTucvttlO8UOrLqKW7DxlXe3ToiUZcLbvhGHHPewHKKWvucVnLHsYSzEIbEE1YfK/hsYdmpoRzkAAg==}
+    peerDependencies:
+      '@prisma/client': ^4.9.0 || ^5.0.0
 
   prisma@5.19.0:
     resolution: {integrity: sha512-Pu7lUKpVyTx8cVwM26dYh8NdvMOkMnJXzE8L6cikFuR4JwyMU5NKofQkWyxJKlTT4fNjmcnibTvklV8oVMrn+g==}
@@ -4014,6 +4022,10 @@ snapshots:
   prettier@3.3.3: {}
 
   pretty-format@3.8.0: {}
+
+  prisma-extension-pagination@0.7.4(@prisma/client@5.19.0(prisma@5.19.0)):
+    dependencies:
+      '@prisma/client': 5.19.0(prisma@5.19.0)
 
   prisma@5.19.0:
     dependencies:
