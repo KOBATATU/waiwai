@@ -1,4 +1,5 @@
 import { getPrisma } from "@/features/server/core/prisma"
+import { UserRole } from "@/features/server/domain/user/user"
 import { Prisma } from "@prisma/client"
 
 const MINIMUM_COMPETITION_FIELDS = {
@@ -64,7 +65,7 @@ const selectCompetitionPaginationRecords = async (
 const selectCompetitionUnique = async (
   id: string,
   where: Prisma.CompetitionWhereInput,
-  role: "user" | "admin" = "user"
+  role: UserRole = "user"
 ) => {
   /** admin user can get close competition */
   if (role === "user") {
@@ -102,5 +103,25 @@ export const getCompetitionRepository = {
    */
   getCompeitionById: async (id: string) => {
     return await selectCompetitionUnique(id, {})
+  },
+
+  /**
+   * warning: must check this method access user.
+   * get competition list
+   * @param page
+   * @returns
+   */
+  getCompetitionsByAdmin: async (page: number) => {
+    return await selectCompetitionPaginationRecords(page, {}, "admin")
+  },
+
+  /**
+   * warning: must check this method access user.
+   * get unique competition
+   * @param id
+   * @returns
+   */
+  getCompeitionByIdAndAdmin: async (id: string) => {
+    return await selectCompetitionUnique(id, {}, "admin")
   },
 }
