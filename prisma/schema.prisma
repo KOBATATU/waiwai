@@ -46,6 +46,9 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+
+  competitionParticipates CompetitionParticipate[]
+  teamMembers TeamMember[]
 }
 
 model VerificationRequest {
@@ -57,4 +60,76 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+
+model Competition {
+  id                    String                 @id @default(uuid())
+  title                 String                 @db.VarChar(100)
+  subtitle              String                 @db.VarChar(500)
+  description           String                 @db.Text
+  dataDescription       String                 @db.Text @map("data_description")
+  thumbnail             String                 @db.VarChar(255)
+  startDate             DateTime @db.Timestamptz()               @map("start_date")
+  endDate               DateTime @db.Timestamptz()               @map("end_date")
+  open                  Boolean
+  evaluationFunc        String                 @db.VarChar(20) @map("evaluation_func")
+  problem               String                 @db.VarChar(20)
+  limitSubmissionNum    Int                    @map("limit_submission_num")
+  createdAt             DateTime               @default(now()) @db.Timestamptz() @map("created_at")
+  updatedAt             DateTime               @default(now()) @db.Timestamptz() @map("updated_at")
+
+  competitionDatas      CompetitionData[]     
+  competitionParticipates CompetitionParticipate[]
+  teams CompetitionTeam[]
+}
+
+model CompetitionData {
+  id             String       @id @default(uuid())
+  competitionId  String       @map("competition_id")
+  dataPath       String       @db.VarChar(255) @map("data_path")
+  createdAt      DateTime     @default(now()) @db.Timestamptz() @map("created_at")
+  updatedAt      DateTime     @default(now()) @db.Timestamptz() @map("updated_at")
+
+  competition    Competition  @relation(fields: [competitionId], references: [id])
+}
+
+model CompetitionParticipate {
+  id             String       @id @default(uuid())
+  competitionId  String       @map("competition_id")
+  userId         String       @map("user_id")
+
+  createdAt      DateTime     @default(now()) @db.Timestamptz() @map("created_at")
+  updatedAt      DateTime     @default(now()) @db.Timestamptz() @map("updated_at")
+  
+  competition    Competition  @relation(fields: [competitionId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
+
+  @@unique([userId, competitionId])
+}
+
+model CompetitionTeam {
+  id             String       @id @default(uuid())
+  competitionId  String       @map("competition_id")
+  name                String  @db.VarChar(255)
+  resultPublicOrder   Int?  @map("result_public_order")
+  resultPrivateOrder  Int?  @map("result_private_order")
+  createdAt           DateTime @default(now()) @db.Timestamptz() @map("created_at")
+  updatedAt           DateTime @default(now()) @db.Timestamptz() @map("updated_at")
+
+  competition Competition @relation(fields: [competitionId], references: [id])
+
+  teamMembers TeamMember[]
+}
+
+model TeamMember {
+  id             String       @id @default(uuid())
+  teamId  String     @map("team_id")
+  userId         String       @map("user_id")
+  createdAt DateTime @default(now()) @db.Timestamptz() @map("created_at")
+  updatedAt DateTime @default(now()) @db.Timestamptz() @map("updated_at")
+
+  team CompetitionTeam @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
 }
