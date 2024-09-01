@@ -37,6 +37,10 @@ export const ExceptionEnum = {
     code: "B4000",
     message: "have not permission",
   },
+  userAuthBad: {
+    code: "B4001",
+    message: "have not permission or bad auth",
+  },
   competitionNotFound: {
     code: "N4000",
     message: "not found competition",

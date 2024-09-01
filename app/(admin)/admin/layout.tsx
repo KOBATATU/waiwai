@@ -8,9 +8,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
-      <div className="relative flex min-h-screen flex-col">
+      <div className="">
         <SiteHeader />
-        <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
+        <section className="sm:container px-2 grid items-center gap-6 pb-8 pt-6 md:py-10">
           <SectionMenu
             title="Admin"
             subtitle=" This is the admin console."
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             ]}
             defaultValue="competition"
           />
-          <div className="flex-1">{children}</div>
+          <div className="w-max">{children}</div>
         </section>
       </div>
     </>
