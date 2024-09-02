@@ -41,8 +41,8 @@ export const getCompetitionService = {
    * @param page
    * @returns
    */
-  getCompetitionsByAdmin: async (page: number, role?: UserRole) => {
-    checkUserRole(role, "admin")
+  getCompetitionsByAdmin: async (page: number) => {
+    await checkUserRole(["admin"])
 
     return await getCompetitionRepository.getCompetitionsByAdmin(page)
   },
@@ -52,8 +52,8 @@ export const getCompetitionService = {
    * @param id
    * @returns
    */
-  getCompetitionByIdAndAdmin: async (id: string, role: UserRole) => {
-    checkUserRole(role, "admin")
+  getCompetitionByIdAndAdmin: async (id: string) => {
+    await checkUserRole(["admin"])
 
     const competition =
       await getCompetitionRepository.getCompeitionByIdAndAdmin(id)
