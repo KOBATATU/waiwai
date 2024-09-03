@@ -1,17 +1,21 @@
 import { notFound } from "next/navigation"
-
-import { UserRole } from "../domain/user/user"
-import { ExceptionEnum, NotFoundException } from "./exception"
-import { getServerSession } from "./session"
+import {
+  BadException,
+  ExceptionEnum,
+  NotFoundException,
+} from "@/features/server/core/exception"
+import { getServerSession } from "@/features/server/core/session"
+import { UserRole } from "@/features/server/domain/user/user"
+import { parseWithZod } from "@conform-to/zod"
+import { Session } from "next-auth"
+import { z } from "zod"
 
 type HandlerFunction<T, P extends any[]> = (...params: P) => Promise<T>
-
-interface HandlerOptions<T, P extends any[]> {
+type HandlerOptions<T, P extends any[]> = {
   auth: boolean
   permissions: UserRole[]
   handler: HandlerFunction<T, P>
 }
-
 export const getHandler = <T, P extends any[]>({
   auth,
   permissions,
@@ -40,5 +44,58 @@ export const getHandler = <T, P extends any[]>({
       }
       throw e
     }
+  }
+}
+
+type ActionHandlerType<T> = {
+  formData: FormData
+  schema: z.ZodType<T>
+  callback: (user: Session["user"], parsedData: T) => Promise<any>
+  permissions?: UserRole[]
+}
+export const actionHandler = async <T>({
+  formData,
+  schema,
+  callback,
+  permissions = ["user", "admin"],
+}: ActionHandlerType<T>) => {
+  const session = await getServerSession()
+  const user = session?.user
+  const submission = parseWithZod(formData, {
+    schema,
+  })
+
+  try {
+    if (!user || !permissions.includes(user.role)) {
+      throw new NotFoundException({
+        message: ExceptionEnum.userAuthBad.message,
+        code: ExceptionEnum.userAuthBad.code,
+        fieldsError: {},
+      })
+    }
+
+    if (submission.status === "error") {
+      return {
+        submission: submission.reply(),
+        value: null,
+      }
+    }
+
+    return {
+      submission: submission.reply(),
+      value: await callback(user, submission.payload as T),
+    }
+  } catch (e) {
+    if (e instanceof NotFoundException) {
+      notFound()
+    } else if (e instanceof BadException) {
+      return {
+        submission: submission.reply({
+          fieldErrors: e.fieldsError,
+        }),
+        value: null,
+      }
+    }
+    throw e
   }
 }
