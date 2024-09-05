@@ -39,24 +39,30 @@ export const createCompetitionDefaultValue: Omit<
   1. **Submission Limit**: There is a limit to the number of submissions per day, usually around five.
   2. **Evaluation Criteria**: Evaluation is based on specific metrics (e.g., RMSE, AUC). If a required metric does not exist in this open-source software (OSS), please commit directly to the OSS and create a pull request (PR).
   3. **Team Participation**: You can participate individually or as part of a team.
+
+  ## Markdown
+  you can write text in Markdown format.
+
+  inline: \`const example = 'This is inline code';\`
   
+
+  block:
+  \`\`\`python
+  hoge = 1
+  huga = 1
+  print(hoge + huga)
+  \`\`\`
+
+
   ## Schedule
   
   The competition schedule is as follows:
   
   - **Registration Opens**: October 1, 2024
-  - **Dataset Release**: October 10, 2024
   - **Model Submission Deadline**: December 10, 2024
-  - **Results Announcement**: December 20, 2024
+  - **Results Announcement**: December 10, 2024
   
-  ## How to Participate
-  
-  1. **Register**: Sign up for the competition on the official website.
-  2. **Download Dataset**: Download the provided dataset.
-  3. **Build Model**: Analyze the dataset and build the optimal model.
-  4. **Submit Model**: Submit your built model in the specified format.
-  5. **Check Results**: After submission, check the results and refine your model if necessary.
-  
+
   ## Conclusion
   
   A data science competition is an excellent opportunity for skill enhancement, networking, and gaining practical experience. Participants can learn a lot by building their models using the provided datasets and competing with others. We encourage you to take advantage of this opportunity to test your data science skills.

@@ -23,7 +23,7 @@ export const getCompetitionService = {
    */
   getCompetitionById: async (id: string) => {
     const competition = await getCompetitionRepository.getCompeitionById(id)
-
+    console.log(id)
     if (!competition) {
       throw new NotFoundException({
         fieldsError: {
