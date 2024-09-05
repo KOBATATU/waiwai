@@ -70,52 +70,51 @@ export const createCompetitionDefaultValue: Omit<
   We look forward to your participation!
     `,
   dataDescription: `
+  # Description of Data Required for the Data Competition
+
+  To participate in the data competition, it is essential to understand and effectively utilize the provided dataset.
   
-    # Description of Data Required for the Data Competition
+  This section will provide detailed explanations of the data files and their columns.
+  
+  ## Files
+  
+  The data competition primarily provides the following two files:
+  
+  1. **train.csv**: This file contains the data used for training the model. It includes both features and the target variable.
+  2. **test.csv**: This file contains the data used for evaluating the model. It only includes features, and the target variable is not provided. Participants will make predictions on this data and submit their results.
+  
+  ## Columns
+  
+  Each file contains the following columns:
+  
+  ### train.csv,test.csv
+  
+  - **id**: A unique identifier for each data point.
+  - **feature_1, feature_2, ..., feature_n**: Features used for training the model. These columns represent various characteristics or attributes of the data points. The specific content of the features varies by competition but generally includes numerical and categorical data.
+  - **target**: The target variable to be predicted by the model. This column is used as the ground truth when training the model.
+  
 
-    To participate in the data competition, it is essential to understand and effectively utilize the provided dataset.
-    
-    This section will provide detailed explanations of the data files and their columns.
-    
-    ## Files
-    
-    The data competition primarily provides the following two files:
-    
-    1. **train.csv**: This file contains the data used for training the model. It includes both features and the target variable.
-    2. **test.csv**: This file contains the data used for evaluating the model. It only includes features, and the target variable is not provided. Participants will make predictions on this data and submit their results.
-    
-    ## Columns
-    
-    Each file contains the following columns:
-    
-    ### train.csv,test.csv
-    
-    - **id**: A unique identifier for each data point.
-    - **feature_1, feature_2, ..., feature_n**: Features used for training the model. These columns represent various characteristics or attributes of the data points. The specific content of the features varies by competition but generally includes numerical and categorical data.
-    - **target**: The target variable to be predicted by the model. This column is used as the ground truth when training the model.
-    
-
-    ## Data Examples
-    
-    Below are examples of the data in each file.
-    
-    ### Example of train.csv
-    
-    | id  | feature_1 | feature_2 | feature_3 | ... | target |
-    |-----|-----------|-----------|-----------|-----|--------|
-    | 1   | 5.1       | 3.5       | 1.4       | ... | 0      |
-    | 2   | 4.9       | 3.0       | 1.4       | ... | 0      |
-    | 3   | 4.7       | 3.2       | 1.3       | ... | 0      |
-    | ... | ...       | ...       | ...       | ... | ...    |
-    
-    ### Example of test.csv
-    
-    | id  | feature_1 | feature_2 | feature_3 | ... |
-    |-----|-----------|-----------|-----------|-----|
-    | 101 | 6.3       | 3.3       | 6.0       | ... |
-    | 102 | 5.8       | 2.7       | 5.1       | ... |
-    | 103 | 7.1       | 3.0       | 5.9       | ... |
-    | ... | ...       | ...       | ...       | ... |
+  ## Data Examples
+  
+  Below are examples of the data in each file.
+  
+  ### Example of train.csv
+  
+  | id  | feature_1 | feature_2 | feature_3 | ... | target |
+  |-----|-----------|-----------|-----------|-----|--------|
+  | 1   | 5.1       | 3.5       | 1.4       | ... | 0      |
+  | 2   | 4.9       | 3.0       | 1.4       | ... | 0      |
+  | 3   | 4.7       | 3.2       | 1.3       | ... | 0      |
+  | ... | ...       | ...       | ...       | ... | ...    |
+  
+  ### Example of test.csv
+  
+  | id  | feature_1 | feature_2 | feature_3 | ... |
+  |-----|-----------|-----------|-----------|-----|
+  | 101 | 6.3       | 3.3       | 6.0       | ... |
+  | 102 | 5.8       | 2.7       | 5.1       | ... |
+  | 103 | 7.1       | 3.0       | 5.9       | ... |
+  | ... | ...       | ...       | ...       | ... |
     `,
   startDate: new Date("2025-12-01"),
   endDate: new Date("2025-12-31"),

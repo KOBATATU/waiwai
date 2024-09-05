@@ -27,13 +27,18 @@ export default async function RootLayout({
               {
                 value: "overview",
                 href: `/admin/competitions/${params.id}/overview`,
-                // href: "/admin/com`petitions",
+
                 label: "overview",
               },
               {
                 value: "data",
                 href: `/admin/competitions/${params.id}/data`,
                 label: "data",
+              },
+              {
+                value: "settings",
+                href: `/admin/competitions/${params.id}/settings`,
+                label: "settings",
               },
             ]}
             defaultValue="overview"

@@ -14,7 +14,7 @@
 /* PC向けのスタイル (768px以上) */
 @media (min-width: 768px) {
   .markdown h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
   }
 
@@ -32,7 +32,7 @@
 /* スマートフォン向けのスタイル (768px未満) */
 @media (max-width: 767px) {
   .markdown h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
   }
 
@@ -63,22 +63,22 @@
   margin: 0;
   position: relative;
   line-height: 2rem;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .markdown ol {
   margin-bottom: 1em;
   padding-left: 30px;
-  font-size: 15px;
+  font-size: 14px;
   list-style-position: outside;
-  list-style-type: disc !important;
+  list-style-type: decimal;
 }
 .markdown ul {
   margin-bottom: 1em;
   padding-left: 30px;
-  font-size: 15px;
+  font-size: 14px;
   list-style-position: outside;
-  list-style-type: decimal;
+  list-style-type: disc;
 }
 
 .markdown li {
@@ -97,4 +97,34 @@
   padding: 8px;
   font-size: 13px;
   overflow-x: auto;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  text-align: left;
+}
+.markdown thead {
+  border: 1px solid #ddd;
+}
+
+.markdown td {
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+}
+
+.markdown th {
+  padding: 12px 20px;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  border: 1px solid #ddd;
+}
+
+.markdown tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.markdown tr:hover {
+  background-color: #f1f1f1;
 }
