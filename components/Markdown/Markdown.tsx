@@ -5,11 +5,6 @@ import remarkGfm from "remark-gfm"
 
 import styles from "./styles.module.css"
 
-const getTitle = (props: any) => {
-  return props.node?.children[0] && "value" in props.node?.children[0]
-    ? props.node?.children[0].value
-    : ""
-}
 export const Markdown = ({ body }: { body: string }) => {
   return (
     <ReactMarkdown
@@ -18,14 +13,30 @@ export const Markdown = ({ body }: { body: string }) => {
       className={`${styles.markdown} `}
       remarkPlugins={[remarkGfm]}
       components={{
-        h1: (props) => {
-          const title = getTitle(props)
-          return <h1 id={title}>{title}</h1>
+        h1: ({ node, ...props }) => {
+          console.log(node, props)
+          return (
+            <h1
+              id={props.children?.toString().toLowerCase().replace(/\s+/g, "-")}
+            >
+              {props.children}
+            </h1>
+          )
         },
-        h2: (props) => {
-          const title = getTitle(props)
-          return <h2 id={title}>{title}</h2>
-        },
+        h2: ({ node, ...props }) => (
+          <h2
+            id={props.children?.toString().toLowerCase().replace(/\s+/g, "-")}
+          >
+            {props.children}
+          </h2>
+        ),
+        h3: ({ node, ...props }) => (
+          <h3
+            id={props.children?.toString().toLowerCase().replace(/\s+/g, "-")}
+          >
+            {props.children}
+          </h3>
+        ),
         code({ node, className, children, ref, ...props }) {
           const match = /language-(\w+)/.exec(className || "")
           return match ? (
