@@ -80,10 +80,15 @@ export const actionHandler = async <T>({
         value: null,
       }
     }
-
+    if (submission.status === "success") {
+      return {
+        submission: submission.reply(),
+        value: await callback(user, submission.value),
+      }
+    }
     return {
       submission: submission.reply(),
-      value: await callback(user, submission.payload as T),
+      value: null,
     }
   } catch (e) {
     if (e instanceof NotFoundException) {

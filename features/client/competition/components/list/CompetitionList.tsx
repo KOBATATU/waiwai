@@ -18,7 +18,7 @@ type CompetitionListProps = {
 
 export const CompetitionList = ({ competitions }: CompetitionListProps) => {
   return (
-    <section className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-3  gap-6 p-4  overflow-hidden ">
+    <section className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 p-4  overflow-hidden ">
       {competitions[0].map((competition) => {
         return (
           <Card

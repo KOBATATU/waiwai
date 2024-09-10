@@ -11,4 +11,14 @@ export const getCompetitionClientService = {
       },
     })()
   },
+
+  getCompetitionByAdmin: async (id: string) => {
+    return await getHandler({
+      auth: true,
+      permissions: ["admin"],
+      handler: async () => {
+        return await getCompetitionService.getCompetitionByIdAndAdmin(id)
+      },
+    })()
+  },
 }

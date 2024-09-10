@@ -28,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             ]}
             defaultValue="competition"
           />
-          <div className="w-max">{children}</div>
+          <div className="">{children}</div>
         </section>
       </div>
     </>

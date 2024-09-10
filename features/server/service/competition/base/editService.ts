@@ -7,7 +7,9 @@ export const editCompetitionService = {
    * @param competition
    * @returns
    */
-  editCompetition: async (competition: Competition) => {
+  editCompetition: async (
+    competition: Omit<Competition, "createdAt" | "updatedAt">
+  ) => {
     return await editCompetitionRepository.editCompetition(competition)
   },
 }
