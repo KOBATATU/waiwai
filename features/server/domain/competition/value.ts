@@ -8,10 +8,7 @@ import {
  * I wanna write source code using zod default parameters, zod-prisma-types doesn't generate zod default parameters.
  * I dont't know how to generate...
  */
-export const createCompetitionDefaultValue: Omit<
-  CompetitionCustomOptionalDefaults,
-  "title" | "subtitle"
-> = {
+export const createCompetitionDefaultValue = {
   description: `
   # This is description template
   

@@ -7,10 +7,24 @@ export const editCompetitionRepository = {
    * @param competition
    * @returns
    */
-  editCompetition: async (competition: Competition) => {
+  editCompetition: async (
+    competition: Omit<Competition, "createdAt" | "updatedAt">
+  ) => {
     const prisma = getPrisma()
     return await prisma.competition.update({
-      data: competition,
+      data: {
+        title: competition.title,
+        subtitle: competition.subtitle,
+        description: competition.description,
+        dataDescription: competition.dataDescription,
+        thumbnail: competition.thumbnail,
+        startDate: competition.startDate,
+        endDate: competition.endDate,
+        open: competition.open,
+        evaluationFunc: competition.evaluationFunc,
+        problem: competition.problem,
+        limitSubmissionNum: competition.limitSubmissionNum,
+      },
       where: {
         id: competition.id,
       },

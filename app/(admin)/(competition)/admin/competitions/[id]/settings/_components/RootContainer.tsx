@@ -1,3 +1,4 @@
+import { EditSettings } from "@/features/client/competition/components/edit/EditSettings"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 
 type RootContainerProps = {
@@ -9,7 +10,9 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
     await getCompetitionClientService.getCompetitionByAdmin(id)
   return (
     <div>
-      <div className="flex">settings</div>
+      <div className="flex">
+        <EditSettings competition={competition} />
+      </div>
     </div>
   )
 }

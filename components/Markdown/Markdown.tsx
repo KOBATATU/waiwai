@@ -3,14 +3,18 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"
 import remarkGfm from "remark-gfm"
 
+import { cn } from "@/lib/utils"
+
 import styles from "./styles.module.css"
 
-export const Markdown = ({ body }: { body: string }) => {
+type MarkdownProps = { body: string; className?: string }
+
+export const Markdown = ({ body, className }: MarkdownProps) => {
   return (
     <ReactMarkdown
       skipHtml={true}
       children={body!}
-      className={`${styles.markdown} `}
+      className={cn(`${styles.markdown} `, className)}
       remarkPlugins={[remarkGfm]}
       components={{
         h1: ({ node, ...props }) => {

@@ -2,14 +2,27 @@ import { CompetitionOptionalDefaultsSchema } from "@/prisma/generated/zod"
 import { z } from "zod"
 
 export const CompetitionCustomOptionalDefaultsSchema =
-  CompetitionOptionalDefaultsSchema.refine(
-    (data) => data.startDate < data.endDate,
-    {
+  CompetitionOptionalDefaultsSchema.merge(
+    z.object({
+      id: z.string(),
+      open: z.string().optional(),
+    })
+  )
+    .pick({
+      id: true,
+      title: true,
+      subtitle: true,
+      thumbnail: true,
+      startDate: true,
+      endDate: true,
+      open: true,
+      evaluationFunc: true,
+      limitSubmissionNum: true,
+    })
+    .refine((data) => data.startDate < data.endDate, {
       message: "startDate must not be later than endDate.",
       path: ["startDate"],
-    }
-  )
-
+    })
 export type CompetitionCustomOptionalDefaults = z.infer<
   typeof CompetitionCustomOptionalDefaultsSchema
 >
@@ -31,7 +44,23 @@ export const EvaluationFuncEnum = {
     logistic: "logistic",
   },
 } as const
-
+export const evaluationFuncOptions = Object.entries(EvaluationFuncEnum).flatMap(
+  ([problem, metrics]) =>
+    Object.entries(metrics).map(([metricName, metricValue]) => ({
+      label: `${metricValue}(${problem})`,
+      value: metricValue,
+      problem,
+    }))
+)
+export const valueToProblemMap = Object.entries(EvaluationFuncEnum).reduce(
+  (acc, [problem, metric]) => {
+    Object.entries(metric).forEach(([key, value]) => {
+      acc[value] = problem
+    })
+    return acc
+  },
+  {} as Record<string, string>
+)
 export const ProblemEnum = {
   regression: "regression",
   classification: "classification",
