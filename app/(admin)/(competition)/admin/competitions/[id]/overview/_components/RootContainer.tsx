@@ -18,7 +18,7 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
           description={competition.description}
         />
         <TOC
-          className="min-w-56 h-max hidden sm:sticky sm:block sm:top-4 "
+          className="w-72 h-max hidden sm:sticky sm:block sm:top-4 "
           body={competition.description}
         />
       </div>

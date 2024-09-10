@@ -47,6 +47,12 @@ export type CompetitionOverviewSchema = z.infer<
   typeof CompetitionOverviewSchema
 >
 
+export const CompetitionDataSchema = CompetitionSchema.pick({
+  id: true,
+  dataDescription: true,
+})
+export type CompetitionData = z.infer<typeof CompetitionDataSchema>
+
 export const EvaluationFuncEnum = {
   regression: {
     rmse: "rmse",
