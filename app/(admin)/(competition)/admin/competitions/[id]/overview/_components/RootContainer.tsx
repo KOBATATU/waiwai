@@ -1,6 +1,6 @@
+import { EditOverview } from "@/features/client/competition/components/edit/EditOverview"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 
-import { Markdown } from "@/components/Markdown/Markdown"
 import TOC from "@/components/Markdown/TableContents"
 
 type RootContainerProps = {
@@ -13,7 +13,10 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
   return (
     <div>
       <div className="flex gap-6">
-        <Markdown body={competition.description} />
+        <EditOverview
+          id={competition.id}
+          description={competition.description}
+        />
         <TOC
           className="min-w-56 h-max hidden sm:sticky sm:block sm:top-4 "
           body={competition.description}

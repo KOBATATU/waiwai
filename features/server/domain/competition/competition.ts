@@ -1,4 +1,7 @@
-import { CompetitionOptionalDefaultsSchema } from "@/prisma/generated/zod"
+import {
+  CompetitionOptionalDefaultsSchema,
+  CompetitionSchema,
+} from "@/prisma/generated/zod"
 import { z } from "zod"
 
 export const CompetitionCustomOptionalDefaultsSchema =
@@ -34,6 +37,14 @@ export const CompetitionTitleAndSubtitleSchema =
   })
 export type CompetitionTitleAndSubtitle = z.infer<
   typeof CompetitionTitleAndSubtitleSchema
+>
+
+export const CompetitionOverviewSchema = CompetitionSchema.pick({
+  id: true,
+  description: true,
+})
+export type CompetitionOverviewSchema = z.infer<
+  typeof CompetitionOverviewSchema
 >
 
 export const EvaluationFuncEnum = {

@@ -16,7 +16,7 @@ const TOC = ({ body, className }: TOCProps) => {
       if (!match) return null
       const level = match[0].length
       const text = trimmedLine.replace(/^#+\s*/, "")
-      const id = text.toLowerCase().replace(/\s+/g, "-")
+      const id = text.toLowerCase().replace(/\s+/g, "-").replace(/-+$/, "")
       return { level, text, id }
     })
     .filter((item) => item !== null)
