@@ -20,3 +20,12 @@ export const createDateWithTimezone = (date: Date) => {
 
   return localDate
 }
+
+export const handleDownload = (url: string, filename?: string) => {
+  const link = document.createElement("a")
+  link.href = url
+  link.download = filename || "download"
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link) // リンクを削除
+}

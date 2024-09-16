@@ -23,7 +23,6 @@ export const getCompetitionService = {
    */
   getCompetitionById: async (id: string) => {
     const competition = await getCompetitionRepository.getCompeitionById(id)
-    console.log(id)
     if (!competition) {
       throw new NotFoundException({
         fieldsError: {
@@ -68,6 +67,46 @@ export const getCompetitionService = {
       })
     }
     return competition
+  },
+
+  /**
+   * get competition data
+   * @param competitionData id
+   */
+  getCompetitionDataById: async (id: string) => {
+    const competitionData =
+      await getCompetitionRepository.getCompeitionDataById(id)
+    if (!competitionData) {
+      throw new NotFoundException({
+        fieldsError: {
+          id: [ExceptionEnum.competitionDataNotFound.message],
+        },
+        message: ExceptionEnum.competitionDataNotFound.message,
+        code: ExceptionEnum.competitionDataNotFound.code,
+      })
+    }
+    return competitionData
+  },
+
+  getCompetitionParticipateByIdAndUserId: async (
+    id: string,
+    userId: string
+  ) => {
+    const competitionParticipate =
+      await getCompetitionRepository.getCompetitionParticipateByIdAndUserId(
+        id,
+        userId
+      )
+
+    if (!competitionParticipate) {
+      throw new NotFoundException({
+        fieldsError: {
+          id: [ExceptionEnum.competitionParticipateNotFound.message],
+        },
+        message: ExceptionEnum.competitionParticipateNotFound.message,
+        code: ExceptionEnum.competitionParticipateNotFound.code,
+      })
+    }
   },
 }
 

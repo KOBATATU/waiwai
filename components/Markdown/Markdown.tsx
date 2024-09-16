@@ -18,7 +18,6 @@ export const Markdown = ({ body, className }: MarkdownProps) => {
       remarkPlugins={[remarkGfm]}
       components={{
         h1: ({ node, ...props }) => {
-          console.log(node, props)
           return (
             <h1
               id={props.children?.toString().toLowerCase().replace(/\s+/g, "-")}

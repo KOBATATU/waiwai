@@ -1,7 +1,6 @@
+import { UploadData } from "@/features/client/competition/components/create/UploadData"
 import { EditData } from "@/features/client/competition/components/edit/EditData"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
-
-import TOC from "@/components/Markdown/TableContents"
 
 type RootContainerProps = {
   id: string
@@ -18,10 +17,12 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
           dataDescription={competition.dataDescription}
           id={competition.id}
         />
-        <TOC
-          className="w-72 h-max hidden sm:sticky sm:block sm:top-4 "
-          body={competition.dataDescription}
-        />
+        <div className="w-72 h-max hidden sm:sticky sm:block sm:top-4 ">
+          <UploadData
+            id={competition.id}
+            competitionDatas={competition.competitionDatas}
+          />
+        </div>
       </div>
     </div>
   )

@@ -19,6 +19,7 @@ const MINIMUM_COMPETITION_FIELDS = {
   updatedAt: true,
   competitionDatas: {
     select: {
+      id: true,
       dataPath: true,
     },
   },
@@ -86,6 +87,43 @@ const selectCompetitionUnique = async (
   })
 }
 
+const selectCompetitionDataUnique = async (
+  id: string,
+  where: Prisma.CompetitionDataWhereInput
+) => {
+  const prisma = getPrisma()
+  return await prisma.competitionData.findUnique({
+    select: {
+      id: true,
+      dataPath: true,
+      competitionId: true,
+    },
+    where: {
+      ...where,
+      id,
+    },
+  })
+}
+
+const selectCompetitionParticipateUnique = async (
+  id: string,
+  userId: string,
+  where: Prisma.CompetitionParticipateWhereInput
+) => {
+  const prisma = getPrisma()
+  return await prisma.competitionParticipate.findUnique({
+    select: {
+      id: true,
+      competitionId: true,
+    },
+    where: {
+      ...where,
+      id,
+      userId,
+    },
+  })
+}
+
 export const getCompetitionRepository = {
   /**
    * get competition list
@@ -123,5 +161,26 @@ export const getCompetitionRepository = {
    */
   getCompeitionByIdAndAdmin: async (id: string) => {
     return await selectCompetitionUnique(id, {}, "admin")
+  },
+
+  /**
+   * get competition data
+   * @param id
+   * @returns
+   */
+  getCompeitionDataById: async (id: string) => {
+    return await selectCompetitionDataUnique(id, {})
+  },
+
+  /**
+   *
+   * @param id
+   * @param userId
+   */
+  getCompetitionParticipateByIdAndUserId: async (
+    id: string,
+    userId: string
+  ) => {
+    return await selectCompetitionParticipateUnique(id, userId, {})
   },
 }

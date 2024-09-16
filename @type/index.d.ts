@@ -19,3 +19,13 @@ declare module "next-auth/jwt" {
     role: UserRole
   }
 }
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      GCS_PROJECT_ID: string
+      GCS_APPLICATION_CREDENTIALS: string
+      GCS_BUCKET: string
+    }
+  }
+}
