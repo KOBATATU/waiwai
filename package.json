@@ -18,6 +18,7 @@
   "dependencies": {
     "@conform-to/react": "^1.1.5",
     "@conform-to/zod": "^1.1.5",
+    "@google-cloud/storage": "^7.12.1",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/adapter-pg": "^5.19.0",
     "@prisma/client": "^5.19.0",
