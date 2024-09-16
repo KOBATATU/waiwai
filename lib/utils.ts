@@ -27,5 +27,5 @@ export const handleDownload = (url: string, filename?: string) => {
   link.download = filename || "download"
   document.body.appendChild(link)
   link.click()
-  document.body.removeChild(link) // リンクを削除
+  document.body.removeChild(link)
 }
