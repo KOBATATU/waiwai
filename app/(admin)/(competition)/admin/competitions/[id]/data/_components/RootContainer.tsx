@@ -1,6 +1,6 @@
+import { UploadData } from "@/features/client/competition/components/create/UploadData"
+import { EditData } from "@/features/client/competition/components/edit/EditData"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
-
-import { Markdown } from "@/components/Markdown/Markdown"
 
 type RootContainerProps = {
   id: string
@@ -12,8 +12,17 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
 
   return (
     <div>
-      <div className="flex">
-        <Markdown body={competition.dataDescription} />
+      <div className="flex gap-6">
+        <EditData
+          dataDescription={competition.dataDescription}
+          id={competition.id}
+        />
+        <div className="w-72 h-max hidden sm:sticky sm:block sm:top-4 ">
+          <UploadData
+            id={competition.id}
+            competitionDatas={competition.competitionDatas}
+          />
+        </div>
       </div>
     </div>
   )

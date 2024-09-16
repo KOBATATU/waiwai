@@ -1,5 +1,7 @@
 import { getPrisma } from "@/features/server/core/prisma"
 
+import { createGcs, extractPath } from "../storage/gcs"
+
 export const deleteCompetitionRepository = {
   /**
    * delete competition
@@ -12,5 +14,21 @@ export const deleteCompetitionRepository = {
         id,
       },
     })
+  },
+
+  /**
+   * delete competition data
+   * @param id
+   */
+  deleteCompetitionDataById: async (id: string) => {
+    const prisma = getPrisma()
+    const competitionData = await prisma.competitionData.delete({
+      where: {
+        id,
+      },
+    })
+
+    const gcs = createGcs()
+    await gcs.file(extractPath(competitionData.dataPath)).delete()
   },
 }

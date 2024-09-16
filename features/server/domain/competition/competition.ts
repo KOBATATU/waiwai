@@ -47,6 +47,21 @@ export type CompetitionOverviewSchema = z.infer<
   typeof CompetitionOverviewSchema
 >
 
+export const CompetitionDataSchema = CompetitionSchema.pick({
+  id: true,
+  dataDescription: true,
+})
+export type CompetitionData = z.infer<typeof CompetitionDataSchema>
+
+export const CompetitionDataFileSchema = z.object({
+  file: z.instanceof(File),
+  id: z.string(),
+})
+
+export const CompetitionDataDownloadSchema = z.object({
+  competitionDataId: z.string(),
+})
+
 export const EvaluationFuncEnum = {
   regression: {
     rmse: "rmse",

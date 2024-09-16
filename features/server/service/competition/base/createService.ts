@@ -1,7 +1,4 @@
-import {
-  CompetitionCustomOptionalDefaults,
-  CompetitionTitleAndSubtitle,
-} from "@/features/server/domain/competition/competition"
+import { CompetitionTitleAndSubtitle } from "@/features/server/domain/competition/competition"
 import { createCompetitionDefaultValue } from "@/features/server/domain/competition/value"
 import { checkUserRole } from "@/features/server/domain/user/user"
 import { createCompetitionRepository } from "@/features/server/repository/competition/createRepository"
@@ -14,7 +11,7 @@ export const createCompetitionService = {
    */
   createCompetition: async (requestBody: CompetitionTitleAndSubtitle) => {
     await checkUserRole(["admin"])
-    const competition: CompetitionCustomOptionalDefaults = {
+    const competition = {
       title: requestBody.title,
       subtitle: requestBody.subtitle,
       description: createCompetitionDefaultValue.description,
@@ -27,5 +24,13 @@ export const createCompetitionService = {
       limitSubmissionNum: createCompetitionDefaultValue.limitSubmissionNum,
     }
     return await createCompetitionRepository.createCompetition(competition)
+  },
+
+  createCompetitionData: async (id: string, filename: string) => {
+    await checkUserRole(["admin"])
+
+    const dataPath = `https://storage.googleapis.com/${filename}`
+
+    await createCompetitionRepository.createCompetitionData(id, dataPath)
   },
 }
