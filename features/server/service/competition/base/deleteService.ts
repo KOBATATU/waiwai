@@ -8,4 +8,12 @@ export const deleteCompetitionService = {
   deleteCompetitionById: async (id: string) => {
     await deleteCompetitionRepository.deleteCompetitionById(id)
   },
+
+  /**
+   * delete competition Data
+   * @param id
+   */
+  deleteCompetitionDataById: async (id: string) => {
+    await deleteCompetitionRepository.deleteCompetitionDataById(id)
+  },
 }

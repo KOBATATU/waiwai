@@ -1,9 +1,10 @@
 "use client"
 
-import { UploadIcon } from "lucide-react"
+import { Delete, UploadIcon } from "lucide-react"
 
 import { cn, handleDownload } from "@/lib/utils"
 
+import { deleteCompetitionDataAction } from "../../actions/deleteCompetitionDataAction"
 import { downloadCompetitionDataAction } from "../../actions/downloadCompetitionDataAction"
 import { uploadCompetitionDataAction } from "../../actions/uploadCompetitionDataAction"
 
@@ -49,13 +50,13 @@ export const UploadData = ({
       </form>
       <div>
         <h3 className="text-lg font-bold mb-4">File</h3>
-        <ul className="list-disc ml-5">
+        <ul className="list-disc ml-3">
           {competitionDatas.map((competitionData) => {
             const filename = competitionData.dataPath.split("/").at(-1)
             return (
-              <li key={competitionData.id} className="text-blue-500">
+              <li key={competitionData.id} className="flex gap-2 items-center">
                 <button
-                  className="hover:border-b cursor-pointer"
+                  className=" text-blue-500  hover:border-b cursor-pointer"
                   onClick={async () => {
                     const formData = new FormData()
                     formData.append("competitionDataId", competitionData.id)
@@ -69,8 +70,18 @@ export const UploadData = ({
                     }
                   }}
                 >
-                  {filename}
+                  ・{filename}
                 </button>
+                <Delete
+                  className="  cursor-pointer"
+                  onClick={async () => {
+                    if (confirm(`delete ${filename} ok?`)) {
+                      const formData = new FormData()
+                      formData.append("id", competitionData.id)
+                      await deleteCompetitionDataAction(undefined, formData)
+                    }
+                  }}
+                />
               </li>
             )
           })}
