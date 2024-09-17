@@ -13,7 +13,7 @@ import { z } from "zod"
 type HandlerFunction<T, P extends any[]> = (...params: P) => Promise<T>
 type HandlerOptions<T, P extends any[]> = {
   auth: boolean
-  permissions: UserRole[]
+  permissions?: UserRole[]
   handler: HandlerFunction<T, P>
 }
 export const getHandler = <T, P extends any[]>({
@@ -28,7 +28,7 @@ export const getHandler = <T, P extends any[]>({
         if (
           !session ||
           !session.user ||
-          !permissions.includes(session.user.role)
+          (permissions && !permissions.includes(session.user.role))
         ) {
           throw new NotFoundException({
             message: ExceptionEnum.userAuthBad.message,

@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { GetCompetitionServiceType } from "@/features/server/service/competition/base/getService"
 
+import { cn } from "@/lib/utils"
 import {
   Card,
   CardContent,
@@ -14,11 +15,22 @@ type CompetitionListProps = {
   competitions:
     | GetCompetitionServiceType["getCompetitionsByAdmin"]
     | GetCompetitionServiceType["getCompetitions"]
+  isAdminPage?: boolean
+  className?: string
 }
 
-export const CompetitionList = ({ competitions }: CompetitionListProps) => {
+export const CompetitionList = ({
+  competitions,
+  isAdminPage,
+  className,
+}: CompetitionListProps) => {
   return (
-    <section className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 p-4  overflow-hidden ">
+    <section
+      className={cn(
+        "grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 p-4  overflow-hidden ",
+        className
+      )}
+    >
       {competitions[0].map((competition) => {
         return (
           <Card
@@ -26,7 +38,11 @@ export const CompetitionList = ({ competitions }: CompetitionListProps) => {
             className="hover:scale-105 transition-all  flex flex-col justify-between  w-full max-w-sm rounded-lg overflow-hidden shadow-md  "
           >
             <Link
-              href={`/admin/competitions/${competition.id}`}
+              href={
+                isAdminPage
+                  ? `/admin/competitions/${competition.id}`
+                  : `/competitions/${competition.id}`
+              }
               className="flex-grow"
             >
               <img
@@ -53,27 +69,6 @@ export const CompetitionList = ({ competitions }: CompetitionListProps) => {
           </Card>
         )
       })}
-
-      {/* <Card className="h-[320px] overflow-hidden rounded-lg shadow-sm transition-all hover:scale-105 ">
-        <Link href="#">
-          <CardHeader className="p-0">
-            <img
-              src="/waiwai.png"
-              alt="Card Image"
-              width="250"
-              height="200"
-              className="h-20 w-full object-cover"
-            />
-          </CardHeader>
-          <CardContent className="p-4">
-            <CardTitle>Card Title Description Description</CardTitle>
-            <CardDescription>Card Description</CardDescription>
-          </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
-        </Link>
-      </Card> */}
     </section>
   )
 }

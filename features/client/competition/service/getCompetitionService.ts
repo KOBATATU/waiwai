@@ -1,4 +1,5 @@
 import { getHandler } from "@/features/server/core/handler"
+import { getServerSession } from "@/features/server/core/session"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 
 export const getCompetitionClientService = {
@@ -18,6 +19,34 @@ export const getCompetitionClientService = {
       permissions: ["admin"],
       handler: async () => {
         return await getCompetitionService.getCompetitionByIdAndAdmin(id)
+      },
+    })()
+  },
+  getCompetitions: async () => {
+    return await getHandler({
+      auth: false,
+      handler: async () => {
+        return await getCompetitionService.getCompetitions(1)
+      },
+    })()
+  },
+  getCompetitionById: async (id: string) => {
+    return await getHandler({
+      auth: false,
+      handler: async () => {
+        return await getCompetitionService.getCompetitionById(id)
+      },
+    })()
+  },
+  getCompetitionParticipateByCompetitionId: async (id: string) => {
+    return await getHandler({
+      auth: false,
+      handler: async () => {
+        const user = await getServerSession()
+        return await getCompetitionService.getCompetitionParticipateByIdAndUserId(
+          id,
+          user?.user.id ?? ""
+        )
       },
     })()
   },

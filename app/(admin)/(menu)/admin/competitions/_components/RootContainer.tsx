@@ -11,7 +11,7 @@ export const RootContainer = async () => {
         <div className="font-bold text-xl"> Competitions </div>
         <CreateCompetitionButton />
       </div>
-      <CompetitionList competitions={competitions} />
+      <CompetitionList competitions={competitions} isAdminPage />
     </div>
   )
 }
