@@ -88,6 +88,11 @@ export const getCompetitionService = {
     return competitionData
   },
 
+  /**
+   * check participate competition
+   * @param id
+   * @param userId
+   */
   checkCompetitionParticipateByIdAndUserId: async (
     id: string,
     userId: string

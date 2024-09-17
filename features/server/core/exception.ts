@@ -45,6 +45,10 @@ export const ExceptionEnum = {
     code: "B4002",
     message: "upload type bad",
   },
+  competitionParticipateBad: {
+    code: "B4003",
+    message: "you already participated competition bad",
+  },
   competitionNotFound: {
     code: "N4000",
     message: "not found competition",
