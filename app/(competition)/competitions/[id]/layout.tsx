@@ -12,13 +12,45 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  const [competition, competitionParticipate] = await Promise.all([
+  const [competition, isCompetitionParticipated] = await Promise.all([
     getCompetitionClientService.getCompetitionById(params.id),
     getCompetitionClientService.getCompetitionParticipateByCompetitionId(
       params.id
     ),
   ])
-  console.log("competitionParticipate", competitionParticipate)
+
+  const menus = [
+    {
+      value: "overview",
+      href: `/competitions/${params.id}/overview`,
+
+      label: "overview",
+    },
+    {
+      value: "data",
+      href: `/competitions/${params.id}/data`,
+      label: "data",
+    },
+    {
+      value: "discussion",
+      href: `/competitions/${params.id}/discussion`,
+      label: "discussion",
+    },
+    {
+      value: "leaderboard",
+      href: `/competitions/${params.id}/leaderboard`,
+      label: "leaderboard",
+    },
+    ...(!isCompetitionParticipated
+      ? [
+          {
+            value: "participate",
+            href: `/competitions/${params.id}/participate`,
+            label: "participate",
+          },
+        ]
+      : []),
+  ]
 
   return (
     <>
@@ -28,29 +60,7 @@ export default async function RootLayout({
           <SectionMenu
             title={competition.title}
             subtitle={competition.subtitle}
-            menus={[
-              {
-                value: "overview",
-                href: `/competitions/${params.id}/overview`,
-
-                label: "overview",
-              },
-              {
-                value: "data",
-                href: `/competitions/${params.id}/data`,
-                label: "data",
-              },
-              {
-                value: "discussion",
-                href: `/competitions/${params.id}/discussion`,
-                label: "discussion",
-              },
-              {
-                value: "leaderboard",
-                href: `/competitions/${params.id}/leaderboard`,
-                label: "leaderboard",
-              },
-            ]}
+            menus={menus}
             defaultValue="overview"
           />
           <div>{children}</div>

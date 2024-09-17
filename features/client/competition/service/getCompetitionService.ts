@@ -43,10 +43,12 @@ export const getCompetitionClientService = {
       auth: false,
       handler: async () => {
         const user = await getServerSession()
-        return await getCompetitionService.getCompetitionParticipateByIdAndUserId(
-          id,
-          user?.user.id ?? ""
-        )
+        const competitionParticipate =
+          await getCompetitionService.getCompetitionParticipateByIdAndUserId(
+            id,
+            user?.user.id ?? ""
+          )
+        return !!competitionParticipate
       },
     })()
   },
