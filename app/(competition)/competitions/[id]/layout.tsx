@@ -49,7 +49,13 @@ export default async function RootLayout({
             label: "participate",
           },
         ]
-      : []),
+      : [
+          {
+            value: "team",
+            href: `/competitions/${params.id}/team`,
+            label: "team",
+          },
+        ]),
   ]
 
   return (

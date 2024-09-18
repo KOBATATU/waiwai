@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache"
 import { BadException, ExceptionEnum } from "@/features/server/core/exception"
 import { actionHandler } from "@/features/server/core/handler"
+import { doTransaction } from "@/features/server/core/prisma"
 import { createCompetitionService } from "@/features/server/service/competition/base/createService"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
+import { createTeamService } from "@/features/server/service/team/createService"
 import { CompetitionSchema } from "@/prisma/generated/zod"
 import { SubmissionResult } from "@conform-to/react"
 
@@ -39,10 +41,19 @@ export const createCompetitionParticipateAction = async (
         })
       }
 
-      await createCompetitionService.createCompetitionParticipate(
-        payload.id,
-        user.id
-      )
+      await doTransaction(async () => {
+        await createCompetitionService.createCompetitionParticipate(
+          payload.id,
+          user.id
+        )
+        const team = await createTeamService.createTeam(
+          user.id,
+          user.name ?? "hoge",
+          payload.id
+        )
+        return await createTeamService.createTeamMember(team.id, user.id)
+      })
+
       revalidatePath(`/competitions${payload.id}`)
       return {}
     },
