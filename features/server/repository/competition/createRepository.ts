@@ -28,4 +28,23 @@ export const createCompetitionRepository = {
       },
     })
   },
+
+  /**
+   *
+   * @param competitionId
+   * @param dataPath
+   * @returns
+   */
+  createCompetitionParticipate: async (
+    competitionId: string,
+    userId: string
+  ) => {
+    const prisma = getPrisma()
+    return await prisma.competitionParticipate.create({
+      data: {
+        competitionId,
+        userId,
+      },
+    })
+  },
 }

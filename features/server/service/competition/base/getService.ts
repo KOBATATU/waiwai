@@ -88,7 +88,12 @@ export const getCompetitionService = {
     return competitionData
   },
 
-  getCompetitionParticipateByIdAndUserId: async (
+  /**
+   * check participate competition
+   * @param id
+   * @param userId
+   */
+  checkCompetitionParticipateByIdAndUserId: async (
     id: string,
     userId: string
   ) => {
@@ -107,6 +112,18 @@ export const getCompetitionService = {
         code: ExceptionEnum.competitionParticipateNotFound.code,
       })
     }
+  },
+
+  getCompetitionParticipateByIdAndUserId: async (
+    id: string,
+    userId: string
+  ) => {
+    const competitionParticipate =
+      await getCompetitionRepository.getCompetitionParticipateByIdAndUserId(
+        id,
+        userId
+      )
+    return competitionParticipate
   },
 }
 

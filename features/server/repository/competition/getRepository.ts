@@ -111,14 +111,14 @@ const selectCompetitionParticipateUnique = async (
   where: Prisma.CompetitionParticipateWhereInput
 ) => {
   const prisma = getPrisma()
-  return await prisma.competitionParticipate.findUnique({
+  return await prisma.competitionParticipate.findFirst({
     select: {
       id: true,
       competitionId: true,
     },
     where: {
       ...where,
-      id,
+      competitionId: id,
       userId,
     },
   })

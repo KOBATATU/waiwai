@@ -23,7 +23,7 @@ const TOC = ({ body, className }: TOCProps) => {
 
   return (
     <div className={cn("p-4 bg-gray-100 rounded-md shadow-md", className)}>
-      <h2 className="text-xl font-bold mb-4">table of contents</h2>
+      <h2 className="text-lg font-bold mb-4">table of contents</h2>
       <ul className="list-disc ">
         {tocItems.map((item, index) => (
           <li

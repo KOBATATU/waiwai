@@ -27,7 +27,7 @@ export const downloadCompetitionDataAction = async (
         )
 
       if (user.role === "user") {
-        await getCompetitionService.getCompetitionParticipateByIdAndUserId(
+        await getCompetitionService.checkCompetitionParticipateByIdAndUserId(
           competitionData.id,
           user.id
         )

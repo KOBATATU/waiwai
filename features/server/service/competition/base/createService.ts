@@ -33,4 +33,19 @@ export const createCompetitionService = {
 
     await createCompetitionRepository.createCompetitionData(id, dataPath)
   },
+
+  /**
+   *
+   * @param id
+   * @param filename
+   */
+  createCompetitionParticipate: async (
+    competitionId: string,
+    userId: string
+  ) => {
+    await createCompetitionRepository.createCompetitionParticipate(
+      competitionId,
+      userId
+    )
+  },
 }
