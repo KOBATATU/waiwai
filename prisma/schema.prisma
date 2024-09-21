@@ -66,6 +66,7 @@ model User {
 
   competitionParticipates CompetitionParticipate[]
   teamMembers TeamMember[]
+  teamSubmissions TeamSubmission[]
 }
 
 model VerificationRequest {
@@ -136,6 +137,7 @@ model CompetitionTeam {
   competition Competition @relation(fields: [competitionId], references: [id])
 
   teamMembers TeamMember[]
+  teamSubmissions TeamSubmission[]
 }
 
 model TeamMember {
@@ -147,4 +149,21 @@ model TeamMember {
 
   team CompetitionTeam @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
+}
+
+
+model TeamSubmission {
+  id            String    @id @default(uuid())
+  teamId        String    @map("team_id")　// @zod.string({ required_error: "required" })
+  userId        String    @map("user_id")　/// @zod.string({ required_error: "required" })
+  publicScore   Float?    @map("public_score")
+  privateScore  Float?    @map("private_score")
+  sourceFile    String?   @map("source_file")
+  status        String    
+  createdAt     DateTime  @default(now()) @db.Timestamptz() @map("created_at")
+  updatedAt     DateTime  @updatedAt @db.Timestamptz() @map("updated_at")
+
+  team CompetitionTeam @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
 }

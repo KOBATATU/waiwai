@@ -1,4 +1,5 @@
 import { getPrisma } from "@/features/server/core/prisma"
+import { EnumTeamSubmissionStatus } from "@/features/server/domain/team/team"
 
 export const createTeamRepository = {
   /**
@@ -33,6 +34,27 @@ export const createTeamRepository = {
       data: {
         userId,
         teamId,
+      },
+    })
+  },
+
+  /**
+   *
+   * @param teamId
+   * @param userId
+   */
+  createSubmission: async (
+    teamId: string,
+    userId: string,
+    filename: string
+  ) => {
+    const prisma = getPrisma()
+    return await prisma.teamSubmission.create({
+      data: {
+        userId,
+        teamId,
+        status: EnumTeamSubmissionStatus.processing,
+        sourceFile: filename,
       },
     })
   },
