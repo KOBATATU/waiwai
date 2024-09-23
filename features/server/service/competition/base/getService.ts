@@ -4,6 +4,7 @@ import {
 } from "@/features/server/core/exception"
 import { checkUserRole, UserRole } from "@/features/server/domain/user/user"
 import { getCompetitionRepository } from "@/features/server/repository/competition/getRepository"
+import { getTeamRepository } from "@/features/server/repository/team/getRepository"
 import { UnwrapObject } from "@/features/server/type"
 
 export const getCompetitionService = {
@@ -124,6 +125,25 @@ export const getCompetitionService = {
         userId
       )
     return competitionParticipate
+  },
+
+  /**
+   *
+   * @param page
+   * @param competitionId
+   * @param useMax
+   * @returns
+   */
+  getTeamPublicScoresByCompetitionId: async (
+    page: number,
+    competitionId: string,
+    useMax: boolean
+  ) => {
+    return await getTeamRepository.getTeamPublicScoresByCompetitionId(
+      competitionId,
+      page,
+      useMax
+    )
   },
 }
 
