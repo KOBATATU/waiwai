@@ -1,6 +1,7 @@
 import { PublicLeaderBoard } from "@/features/client/competition/components/detail/PublicLeaderBoard"
 import { SubmitCsvFileButton } from "@/features/client/competition/components/detail/SubmitCsvFileButton"
-import { getTeamService } from "@/features/server/service/team/getService"
+import { getTeamClientService } from "@/features/client/team/service/getTeamService"
+import { getServerSession } from "@/features/server/core/session"
 
 import { LeaderBoardMenu } from "./LeaderBoardMenu"
 
@@ -11,8 +12,9 @@ type RootContainerProps = {
 
 export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
   const publicLeaderBoard =
-    await getTeamService.getTeamPublicScoresByCompetitionId(1, id, true)
-  console.log(publicLeaderBoard)
+    await getTeamClientService.getTeamPublicScoresByCompetitionId(id)
+
+  const user = await getServerSession()
   return (
     <div className="mt-2">
       <div className="mb-4 flex gap-2 items-center">
@@ -23,7 +25,12 @@ export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
       <LeaderBoardMenu
         id={id}
         tabQuery={tabQuery}
-        PublicLeaderBoard={<PublicLeaderBoard />}
+        PublicLeaderBoard={
+          <PublicLeaderBoard
+            publicLeaderBoard={publicLeaderBoard}
+            userId={user?.user.id}
+          />
+        }
         PrivateLeaderBoard={"hoge"}
       />
     </div>

@@ -42,9 +42,11 @@ type ScoreRecord = {
   team_id: number
   team_name: string
   best_score: number
+  cnt_team_submissions: number
+  latest_created_at: Date
   total_count: number
-  users: {
-    user_id: number
+  members: {
+    user_id: string
     name: string
     image: string | null
   }[]
@@ -57,49 +59,57 @@ const selectPublicScoresPaginationRecords = async (
 ) => {
   const offset = (page - 1) * limit
   const query = Prisma.sql`
-    WITH TeamData AS (
-      SELECT
-        ct.id AS team_id,
-        ct.name AS team_name,
-        tm.user_id
-      FROM
-        "CompetitionTeam" ct
-      JOIN
-        "TeamMember" tm ON "ct"."id" = "tm"."team_id"
-      WHERE
-        ct.competition_id = ${competitionId}
-    ), GroupSubmission AS (
-      SELECT
-        td.*,
-        ts.public_score
-      FROM
-        "TeamSubmission" ts
-      INNER JOIN 
-        TeamData td
-      ON
-        ts.team_id = td.team_id
-    )
+  WITH TeamData AS (
     SELECT
-      gs.team_id,
-      gs.team_name,
-      MAX(gs.public_score) AS best_score,
-      COUNT(*) OVER() AS total_count,
-      json_agg(
-        json_build_object(
-          'user_id', u.id,
-          'name', u.name,
-          'image', u.image
-        )
-      ) AS users
+      ct.id AS team_id,
+      ct.name AS team_name,
+      tm.user_id,
+      u.name AS user_name,
+      u.image AS user_image
     FROM
-      GroupSubmission gs
+      "CompetitionTeam" ct
     JOIN
-      "User" u ON gs.user_id = u.id
-    GROUP BY
-      gs.team_id, gs.team_name
-    ORDER BY
-      best_score DESC
-    LIMIT ${limit} OFFSET ${offset}
+      "TeamMember" tm ON ct.id = tm.team_id
+    JOIN
+      "User" u ON tm.user_id = u.id
+    WHERE
+      ct.competition_id = 'df2d2f6c-8d5e-480e-a981-467c48182767'
+  ), GroupSubmission AS (
+    SELECT
+      td.team_id,
+      td.team_name,
+      ts.public_score,
+      ts.created_at
+    FROM
+      "TeamSubmission" ts
+    INNER JOIN 
+      TeamData td ON ts.team_id = td.team_id
+  ), UniqueMembers AS (
+    SELECT 
+      team_id,
+      json_build_object(
+        'user_id', user_id,
+        'name', user_name,
+        'image', user_image
+      ) AS member_info
+    FROM
+      TeamData
+  )
+  SELECT
+    gs.team_id,
+    gs.team_name,
+    MAX(gs.public_score) AS best_score,
+    CAST(COUNT(*) AS INTEGER) AS cnt_team_submissions,
+    CAST(COUNT(*) OVER() AS INTEGER) AS total_count,
+    MAX(gs.created_at) AS latest_created_at,
+    (SELECT json_agg(member_info) FROM UniqueMembers um WHERE um.team_id = gs.team_id) AS members
+  FROM
+    GroupSubmission gs
+  GROUP BY
+    gs.team_id, gs.team_name
+  ORDER BY
+    best_score DESC
+  LIMIT ${limit} OFFSET ${offset}
   `
 
   const prisma = getPrisma()

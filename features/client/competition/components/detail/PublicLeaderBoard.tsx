@@ -1,19 +1,18 @@
 "use client"
 
 import * as React from "react"
+import { GetTeamServiceType } from "@/features/client/team/service/getTeamService"
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
 } from "@tanstack/react-table"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -24,107 +23,96 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const data: PublicLeaderBoardType[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-]
-
 export type PublicLeaderBoardType = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
+  team_id: number
+  team_name: string
+  members: {
+    user_id: string
+    name: string
+    image: string | null
+  }[]
+  best_score: number
+  cnt_team_submissions: number
 }
 
-export const columns: ColumnDef<PublicLeaderBoardType>[] = [
-  {
-    accessorKey: "id",
-    header: "Id",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "email",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
+type PublicLeaderBoardProps = {
+  publicLeaderBoard: GetTeamServiceType["getTeamPublicScoresByCompetitionId"]
+  userId?: string
+}
 
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
+export const PublicLeaderBoard = ({
+  publicLeaderBoard,
+  userId,
+}: PublicLeaderBoardProps) => {
+  const columns: ColumnDef<PublicLeaderBoardType>[] = [
+    {
+      accessorKey: "id",
+      header: "#",
+      cell: ({ row }) => <div className="capitalize">{row.index + 1}</div>,
     },
-  },
-]
+    {
+      accessorKey: "team_name",
+      header: "name",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("team_name")}</div>
+      ),
+    },
+    {
+      accessorKey: "members",
+      header: "members",
+      cell: ({ row }) => {
+        const members = row.getValue(
+          "members"
+        ) as PublicLeaderBoardType["members"]
 
-export const PublicLeaderBoard = () => {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+        return (
+          <div className="lowercase flex gap-1">
+            {members.map((member) => {
+              return (
+                <div key={member.user_id}>
+                  <Avatar>
+                    <AvatarImage
+                      width={"20"}
+                      height={"20"}
+                      src={member.image || ""}
+                      alt={member.name || "User"}
+                    />
+                    <AvatarFallback>?</AvatarFallback>
+                  </Avatar>
+                </div>
+              )
+            })}
+          </div>
+        )
+      },
+    },
+    {
+      accessorKey: "best_score",
+      header: "best_score",
+      cell: ({ row }) => {
+        return <div className=" font-medium">{row.getValue("best_score")}</div>
+      },
+    },
+    {
+      accessorKey: "cnt_team_submissions",
+      header: "entries",
+      cell: ({ row }) => {
+        return (
+          <div className=" font-medium">
+            {row.getValue("cnt_team_submissions")}
+          </div>
+        )
+      },
+    },
+  ]
 
   const table = useReactTable({
-    data,
+    data: publicLeaderBoard.data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
   })
 
   return (
@@ -185,10 +173,6 @@ export const PublicLeaderBoard = () => {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

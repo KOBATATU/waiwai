@@ -35,7 +35,6 @@ export const LeaderBoardMenu = ({
   ]
 
   useEffect(() => {
-    console.log(tabQuery)
     menus.forEach((menu) => {
       if (menu.value === tabQuery) {
         setValue(tabQuery)
