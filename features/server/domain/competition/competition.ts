@@ -76,6 +76,10 @@ export const EvaluationFuncEnum = {
     },
   },
 } as const
+type EvaluationFuncEnumType = typeof EvaluationFuncEnum
+export type ProblemKeys = keyof EvaluationFuncEnumType
+export type EvaluationFuncKeys<T extends ProblemKeys> =
+  keyof EvaluationFuncEnumType[T]
 export const evaluationFuncOptions = Object.entries(EvaluationFuncEnum).flatMap(
   ([problem, metrics]) =>
     Object.entries(metrics).map(([metricName, metricObj]) => ({

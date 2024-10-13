@@ -43,11 +43,13 @@ export const getTeamService = {
   getTeamPublicScoresByCompetitionId: async (
     page: number,
     competitionId: string,
+    userId: string,
     useMax: boolean
   ) => {
     return await getTeamRepository.getTeamPublicScoresByCompetitionId(
       competitionId,
       page,
+      userId,
       useMax
     )
   },

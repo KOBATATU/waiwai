@@ -45,6 +45,7 @@ type ScoreRecord = {
   cnt_team_submissions: number
   latest_created_at: Date
   total_count: number
+  is_user_member: boolean
   members: {
     user_id: string
     name: string
@@ -54,10 +55,13 @@ type ScoreRecord = {
 const selectPublicScoresPaginationRecords = async (
   page: number,
   competitionId: string,
+  userId: string,
+  order: "desc" | "asc",
   where: Prisma.CompetitionWhereInput,
   limit: number = 20
 ) => {
   const offset = (page - 1) * limit
+
   const query = Prisma.sql`
   WITH TeamData AS (
     SELECT
@@ -65,7 +69,8 @@ const selectPublicScoresPaginationRecords = async (
       ct.name AS team_name,
       tm.user_id,
       u.name AS user_name,
-      u.image AS user_image
+      u.image AS user_image,
+      CASE WHEN user_id = ${userId} THEN true ELSE false END as is_user_member
     FROM
       "CompetitionTeam" ct
     JOIN
@@ -73,17 +78,18 @@ const selectPublicScoresPaginationRecords = async (
     JOIN
       "User" u ON tm.user_id = u.id
     WHERE
-      ct.competition_id = 'df2d2f6c-8d5e-480e-a981-467c48182767'
+      ct.competition_id = ${competitionId}
   ), GroupSubmission AS (
     SELECT
       td.team_id,
       td.team_name,
+      td.is_user_member,
       ts.public_score,
       ts.created_at
     FROM
       "TeamSubmission" ts
     INNER JOIN 
-      TeamData td ON ts.team_id = td.team_id
+      TeamData td ON ts.team_id = td.team_id AND ts.user_id = td.user_id
   ), UniqueMembers AS (
     SELECT 
       team_id,
@@ -102,13 +108,14 @@ const selectPublicScoresPaginationRecords = async (
     CAST(COUNT(*) AS INTEGER) AS cnt_team_submissions,
     CAST(COUNT(*) OVER() AS INTEGER) AS total_count,
     MAX(gs.created_at) AS latest_created_at,
+    bool_or(gs.is_user_member) AS is_user_member,
     (SELECT json_agg(member_info) FROM UniqueMembers um WHERE um.team_id = gs.team_id) AS members
   FROM
     GroupSubmission gs
   GROUP BY
     gs.team_id, gs.team_name
   ORDER BY
-    best_score DESC
+    best_score ${Prisma.raw(order)} 
   LIMIT ${limit} OFFSET ${offset}
   `
 
@@ -154,8 +161,15 @@ export const getTeamRepository = {
   getTeamPublicScoresByCompetitionId: async (
     competitionId: string,
     page: number,
+    userId: string,
     useMax: boolean
   ) => {
-    return await selectPublicScoresPaginationRecords(1, competitionId, {})
+    return await selectPublicScoresPaginationRecords(
+      1,
+      competitionId,
+      userId,
+      useMax ? "desc" : "asc",
+      {}
+    )
   },
 }

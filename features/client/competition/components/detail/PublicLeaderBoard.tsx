@@ -32,6 +32,7 @@ export type PublicLeaderBoardType = {
     image: string | null
   }[]
   best_score: number
+  is_user_member: boolean
   cnt_team_submissions: number
 }
 
@@ -146,6 +147,7 @@ export const PublicLeaderBoard = ({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className={row.getValue("is_user_member") ?? "bg-green-100"}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >

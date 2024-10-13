@@ -1,5 +1,6 @@
 import { PublicLeaderBoard } from "@/features/client/competition/components/detail/PublicLeaderBoard"
 import { SubmitCsvFileButton } from "@/features/client/competition/components/detail/SubmitCsvFileButton"
+import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 import { getTeamClientService } from "@/features/client/team/service/getTeamService"
 import { getServerSession } from "@/features/server/core/session"
 
@@ -11,8 +12,12 @@ type RootContainerProps = {
 }
 
 export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
+  const competition = await getCompetitionClientService.getCompetitionById(id)
   const publicLeaderBoard =
-    await getTeamClientService.getTeamPublicScoresByCompetitionId(id)
+    await getTeamClientService.getTeamPublicScoresByCompetitionId(
+      id,
+      competition
+    )
 
   const user = await getServerSession()
   return (

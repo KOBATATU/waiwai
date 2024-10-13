@@ -116,7 +116,7 @@ export const createCompetitionDefaultValue = {
   startDate: new Date("2025-12-01"),
   endDate: new Date("2025-12-31"),
   open: false,
-  evaluationFunc: EvaluationFuncEnum.regression.rmse,
+  evaluationFunc: EvaluationFuncEnum.regression.rmse.value,
   problem: ProblemEnum.regression,
   limitSubmissionNum: 50,
 }
