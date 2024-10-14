@@ -2,7 +2,7 @@ import {
   ExceptionEnum,
   NotFoundException,
 } from "@/features/server/core/exception"
-import { checkUserRole, UserRole } from "@/features/server/domain/user/user"
+import { checkUserRole, UserRole } from "@/features/server/domain/user/service"
 import { getCompetitionRepository } from "@/features/server/repository/competition/getRepository"
 import { getTeamRepository } from "@/features/server/repository/team/getRepository"
 import { UnwrapObject } from "@/features/server/type"

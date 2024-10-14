@@ -1,6 +1,6 @@
 import { CompetitionTitleAndSubtitle } from "@/features/server/domain/competition/competition"
 import { createCompetitionDefaultValue } from "@/features/server/domain/competition/value"
-import { checkUserRole } from "@/features/server/domain/user/user"
+import { checkUserRole } from "@/features/server/domain/user/service"
 import { createCompetitionRepository } from "@/features/server/repository/competition/createRepository"
 
 export const createCompetitionService = {

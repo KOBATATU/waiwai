@@ -49,6 +49,10 @@ export const ExceptionEnum = {
     code: "B4003",
     message: "you already participated competition bad",
   },
+  userAlreadyRegisterd: {
+    code: "B4004",
+    message: "your email already registered",
+  },
   competitionNotFound: {
     code: "N4000",
     message: "not found competition",

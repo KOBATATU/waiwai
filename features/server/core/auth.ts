@@ -1,5 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 
 import { prismaClient } from "./prisma"
@@ -28,6 +29,37 @@ export const authOption: NextAuthOptions = {
         }
       },
     }),
+    // CredentialsProvider({
+    //   name: "base-auto",
+    //   credentials: {
+    //     username: { label: "Username", type: "text", placeholder: "jsmith" },
+    //     password: { label: "Password", type: "password" },
+    //     email: {label: "Email", type: "email"}
+    //   },
+    //   async authorize(credentials, req) {
+    //     const email = credentials?.email ?? ''
+    //     const username = credentials?.username ?? ''
+    //     const password = credentials?.password ?? ''
+
+    //     const user = await prismaClient.user.findUnique({
+    //       where: { email },
+    //     });
+
+    //     // パスワードの検証（ハッシュ化されたパスワードを使用している場合は適切に比較）
+    //     if (user && user.password === password) {
+    //       // 認証成功
+    //       return {
+    //         id: user.id,
+    //         name: user.name,
+    //         email: user.email,
+    //         role: user.role,
+    //       };
+    //     }
+
+    //     // 認証失敗
+    //     return null;
+    //   },
+    // }),
   ],
   pages: {
     signIn: "/",

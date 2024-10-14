@@ -16,7 +16,7 @@ export const AccountScalarFieldEnumSchema = z.enum(['id','userId','type','provid
 
 export const SessionScalarFieldEnumSchema = z.enum(['id','sessionToken','userId','expires']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerified','image','role','createdAt','updatedAt']);
+export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerified','password','image','role','createdAt','updatedAt']);
 
 export const VerificationRequestScalarFieldEnumSchema = z.enum(['id','identifier','token','expires','createdAt','updatedAt']);
 
@@ -102,6 +102,7 @@ export const UserSchema = z.object({
   name: z.string().nullish(),
   email: z.string().nullish(),
   emailVerified: z.date().nullish(),
+  password: z.string().nullish(),
   image: z.string().nullish(),
   role: z.string().nullish(),
   createdAt: z.date(),
