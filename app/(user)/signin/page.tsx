@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { Signup } from "@/features/client/user/components/signup/Signup"
+import { Signin } from "@/features/client/user/components/signin/Signin"
 import { getServerSession } from "@/features/server/core/session"
 
 import { SiteHeader } from "@/components/Header/Header"
@@ -13,7 +13,7 @@ export default async function IndexPage() {
     <div>
       <SiteHeader />
       <div className="container mt-10 ">
-        <Signup />
+        <Signin />
       </div>
     </div>
   )
