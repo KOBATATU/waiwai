@@ -61,4 +61,8 @@ export const ExceptionEnum = {
     code: "N4002",
     message: "not found competition participate",
   },
+  competitionTeamNotFound: {
+    code: "N4003",
+    message: "not found competition team",
+  },
 } as const

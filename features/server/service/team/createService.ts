@@ -28,4 +28,20 @@ export const createTeamService = {
   createTeamMember: async (teamId: string, userId: string) => {
     return await createTeamRepository.createTeamMember(teamId, userId)
   },
+
+  /**
+   *
+   * @param teamId
+   * @param userId
+   * @param filename
+   * @returns
+   */
+  createSubmission: async (
+    teamId: string,
+    userId: string,
+    filename: string
+  ) => {
+    const dataPath = `https://storage.googleapis.com/${filename}`
+    return await createTeamRepository.createSubmission(teamId, userId, dataPath)
+  },
 }

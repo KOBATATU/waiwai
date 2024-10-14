@@ -64,29 +64,41 @@ export const CompetitionDataDownloadSchema = z.object({
 
 export const EvaluationFuncEnum = {
   regression: {
-    rmse: "rmse",
+    rmse: {
+      value: "rmse",
+      order: "min",
+    },
   },
   classification: {
-    logistic: "logistic",
+    f1: {
+      value: "f1",
+      order: "max",
+    },
   },
 } as const
+type EvaluationFuncEnumType = typeof EvaluationFuncEnum
+export type ProblemKeys = keyof EvaluationFuncEnumType
+export type EvaluationFuncKeys<T extends ProblemKeys> =
+  keyof EvaluationFuncEnumType[T]
 export const evaluationFuncOptions = Object.entries(EvaluationFuncEnum).flatMap(
   ([problem, metrics]) =>
-    Object.entries(metrics).map(([metricName, metricValue]) => ({
-      label: `${metricValue}(${problem})`,
-      value: metricValue,
+    Object.entries(metrics).map(([metricName, metricObj]) => ({
+      label: `${metricObj.value}(${problem})`,
+      value: metricObj.value,
       problem,
     }))
 )
+
 export const valueToProblemMap = Object.entries(EvaluationFuncEnum).reduce(
-  (acc, [problem, metric]) => {
-    Object.entries(metric).forEach(([key, value]) => {
-      acc[value] = problem
+  (acc, [problem, metrics]) => {
+    Object.values(metrics).forEach((metricObj) => {
+      acc[metricObj.value] = problem
     })
     return acc
   },
   {} as Record<string, string>
 )
+
 export const ProblemEnum = {
   regression: "regression",
   classification: "classification",

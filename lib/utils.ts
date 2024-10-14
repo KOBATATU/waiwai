@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -28,4 +29,9 @@ export const handleDownload = (url: string, filename?: string) => {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
+}
+
+export const createRandomFileName = () => {
+  const uuid = randomUUID()
+  return uuid.slice(0, 8)
 }
