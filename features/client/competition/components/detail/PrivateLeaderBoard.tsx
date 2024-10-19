@@ -13,6 +13,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -24,21 +25,19 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-export type PublicLeaderBoardType = Omit<
-  ScoreRecord,
-  "private_best_score" | "private_rank"
->
+export type PrivateLeaderBoardType = ScoreRecord
 
-type PublicLeaderBoardProps = {
-  publicLeaderBoard: GetTeamServiceType["getTeamPrivateScoresByCompetitionId"]
+type PrivateLeaderBoardProps = {
+  privateLeaderBoard: GetTeamServiceType["getTeamPrivateScoresByCompetitionId"]
   userId?: string
 }
 
-export const PublicLeaderBoard = ({
-  publicLeaderBoard,
+export const PrivateLeaderBoard = ({
+  privateLeaderBoard,
   userId,
-}: PublicLeaderBoardProps) => {
-  const columns: ColumnDef<PublicLeaderBoardType>[] = [
+}: PrivateLeaderBoardProps) => {
+  console.log(privateLeaderBoard)
+  const columns: ColumnDef<PrivateLeaderBoardType>[] = [
     {
       accessorKey: "id",
       header: "#",
@@ -47,9 +46,27 @@ export const PublicLeaderBoard = ({
     {
       accessorKey: "team_name",
       header: "name",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("team_name")}</div>
-      ),
+      cell: ({ row }) => {
+        const rankDiff =
+          row.original.public_rank - (row.original.private_rank ?? 0)
+        return (
+          <div className="flex gap-2">
+            <span
+              className={cn(
+                "text-sm",
+                rankDiff === 0
+                  ? "text-gray-500"
+                  : rankDiff < 0
+                    ? "text-red-500"
+                    : "text-green-500"
+              )}
+            >
+              {rankDiff}
+            </span>
+            <div className="capitalize">{row.getValue("team_name")}</div>
+          </div>
+        )
+      },
     },
     {
       accessorKey: "members",
@@ -57,7 +74,7 @@ export const PublicLeaderBoard = ({
       cell: ({ row }) => {
         const members = row.getValue(
           "members"
-        ) as PublicLeaderBoardType["members"]
+        ) as PrivateLeaderBoardType["members"]
 
         return (
           <div className="lowercase flex gap-1">
@@ -81,12 +98,12 @@ export const PublicLeaderBoard = ({
       },
     },
     {
-      accessorKey: "public_best_score",
-      header: "public_best_score",
+      accessorKey: "private_best_score",
+      header: "private_best_score",
       cell: ({ row }) => {
         return (
           <div className=" font-medium">
-            {row.getValue("public_best_score")}
+            {row.getValue("private_best_score")}
           </div>
         )
       },
@@ -105,7 +122,7 @@ export const PublicLeaderBoard = ({
   ]
 
   const table = useReactTable({
-    data: publicLeaderBoard.data,
+    data: privateLeaderBoard.data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -115,11 +132,6 @@ export const PublicLeaderBoard = ({
 
   return (
     <div className="w-full mt-4">
-      <p className="text-sm text-gray-500">
-        This leaderboard is calculated with approximately 35% of the test data.
-        The final results will be based on the other 65%, so the final standings
-        may be different.
-      </p>
       <div className="rounded-md border mt-4">
         <Table>
           <TableHeader>

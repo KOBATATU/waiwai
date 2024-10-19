@@ -38,7 +38,7 @@ const selectTeamUnique = async (
   })
 }
 
-type ScoreRecord = {
+export type ScoreRecord = {
   team_id: number
   team_name: string
   public_best_score: number
@@ -129,8 +129,8 @@ const selectScoresPaginationRecords = async (
   )
   SELECT
     *,
-    RANK() OVER (ORDER BY public_best_score ${Prisma.raw(order)} ) AS public_rank,
-    RANK() OVER (ORDER BY private_best_score ${Prisma.raw(order)} ) AS private_rank
+    CAST(RANK() OVER (ORDER BY public_best_score ${Prisma.raw(order)}) AS INTEGER) AS public_rank,
+    CAST(RANK() OVER (ORDER BY private_best_score ${Prisma.raw(order)}) AS INTEGER ) AS private_rank
   FROM BestScores
   ORDER BY
     public_best_score ${Prisma.raw(order)} 
