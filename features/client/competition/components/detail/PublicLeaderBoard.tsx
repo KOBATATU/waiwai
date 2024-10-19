@@ -31,7 +31,7 @@ export type PublicLeaderBoardType = {
     name: string
     image: string | null
   }[]
-  best_score: number
+  public_best_score: number
   is_user_member: boolean
   cnt_team_submissions: number
 }
@@ -88,10 +88,14 @@ export const PublicLeaderBoard = ({
       },
     },
     {
-      accessorKey: "best_score",
-      header: "best_score",
+      accessorKey: "public_best_score",
+      header: "public_best_score",
       cell: ({ row }) => {
-        return <div className=" font-medium">{row.getValue("best_score")}</div>
+        return (
+          <div className=" font-medium">
+            {row.getValue("public_best_score")}
+          </div>
+        )
       },
     },
     {
@@ -147,7 +151,7 @@ export const PublicLeaderBoard = ({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className={row.getValue("is_user_member") ?? "bg-green-100"}
+                  className={row.original.is_user_member ? "bg-green-100" : ""}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
