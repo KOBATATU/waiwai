@@ -104,3 +104,47 @@ export const actionHandler = async <T>({
     throw e
   }
 }
+type NotActionHandlerType<T> = {
+  formData: FormData
+  schema: z.ZodType<T>
+  callback: (parsedData: T) => Promise<any>
+}
+export const notAuthActionHandler = async <T>({
+  formData,
+  schema,
+  callback,
+}: NotActionHandlerType<T>) => {
+  const submission = parseWithZod(formData, {
+    schema,
+  })
+
+  try {
+    if (submission.status === "error") {
+      return {
+        submission: submission.reply(),
+        value: null,
+      }
+    }
+    if (submission.status === "success") {
+      return {
+        submission: submission.reply(),
+        value: await callback(submission.value),
+      }
+    }
+    return {
+      submission: submission.reply(),
+      value: null,
+    }
+  } catch (e) {
+    // エラーハンドリング
+    if (e instanceof BadException) {
+      return {
+        submission: submission.reply({
+          fieldErrors: e.fieldsError,
+        }),
+        value: null,
+      }
+    }
+    throw e
+  }
+}

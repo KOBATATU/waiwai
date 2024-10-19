@@ -29,7 +29,7 @@ export const useConform = (
       return parsed
     },
     constraint: getZodConstraint(schema),
-    shouldValidate: "onBlur",
+    shouldValidate: "onSubmit",
     ...options,
   })
 
