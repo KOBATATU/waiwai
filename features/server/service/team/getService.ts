@@ -53,4 +53,18 @@ export const getTeamService = {
       useMax
     )
   },
+
+  getTeamPrivateScoresByCompetitionId: async (
+    page: number,
+    competitionId: string,
+    userId: string,
+    useMax: boolean
+  ) => {
+    return await getTeamRepository.getTeamPrivateScoresByCompetitionId(
+      competitionId,
+      page,
+      userId,
+      useMax
+    )
+  },
 }

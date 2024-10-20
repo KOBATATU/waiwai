@@ -38,10 +38,13 @@ const selectTeamUnique = async (
   })
 }
 
-type ScoreRecord = {
+export type ScoreRecord = {
   team_id: number
   team_name: string
-  best_score: number
+  public_best_score: number
+  public_rank: number
+  private_best_score?: number
+  private_rank?: number
   cnt_team_submissions: number
   latest_created_at: Date
   total_count: number
@@ -52,11 +55,12 @@ type ScoreRecord = {
     image: string | null
   }[]
 }
-const selectPublicScoresPaginationRecords = async (
+const selectScoresPaginationRecords = async (
   page: number,
   competitionId: string,
   userId: string,
   order: "desc" | "asc",
+  scoreboard: "public" | "private",
   where: Prisma.CompetitionWhereInput,
   limit: number = 20
 ) => {
@@ -85,6 +89,7 @@ const selectPublicScoresPaginationRecords = async (
       td.team_name,
       td.is_user_member,
       ts.public_score,
+      ts.private_score,
       ts.created_at
     FROM
       "TeamSubmission" ts
@@ -100,11 +105,18 @@ const selectPublicScoresPaginationRecords = async (
       ) AS member_info
     FROM
       TeamData
-  )
+  ), BestScores AS (
   SELECT
     gs.team_id,
     gs.team_name,
-    MAX(gs.public_score) AS best_score,
+    CASE 
+      WHEN  ${order} = 'desc' THEN MAX(gs.public_score)
+      ELSE MIN(gs.public_score)
+    END AS public_best_score,
+    CASE 
+      WHEN  ${order}= 'desc' THEN MAX(gs.private_score)
+      ELSE MIN(gs.private_score)
+    END AS private_best_score,
     CAST(COUNT(*) AS INTEGER) AS cnt_team_submissions,
     CAST(COUNT(*) OVER() AS INTEGER) AS total_count,
     MAX(gs.created_at) AS latest_created_at,
@@ -114,20 +126,31 @@ const selectPublicScoresPaginationRecords = async (
     GroupSubmission gs
   GROUP BY
     gs.team_id, gs.team_name
+  )
+  SELECT
+    *,
+    CAST(RANK() OVER (ORDER BY public_best_score ${Prisma.raw(order)}) AS INTEGER) AS public_rank,
+    CAST(RANK() OVER (ORDER BY private_best_score ${Prisma.raw(order)}) AS INTEGER ) AS private_rank
+  FROM BestScores
   ORDER BY
-    best_score ${Prisma.raw(order)} 
+    public_best_score ${Prisma.raw(order)} 
   LIMIT ${limit} OFFSET ${offset}
   `
 
   const prisma = getPrisma()
   const result = (await prisma.$queryRaw(query)) as ScoreRecord[]
 
-  const totalCount = Number(result[0]?.total_count ?? 0)
+  const formattedResult =
+    scoreboard === "public"
+      ? result.map(({ private_best_score, private_rank, ...rest }) => rest)
+      : result
+
+  const totalCount = Number(formattedResult[0]?.total_count ?? 0)
   const totalPages = Math.ceil(totalCount / limit)
   const hasNextPage = page < totalPages
 
   return {
-    data: result,
+    data: formattedResult,
     meta: {
       totalCount,
       totalPages,
@@ -164,11 +187,28 @@ export const getTeamRepository = {
     userId: string,
     useMax: boolean
   ) => {
-    return await selectPublicScoresPaginationRecords(
+    return await selectScoresPaginationRecords(
       1,
       competitionId,
       userId,
       useMax ? "desc" : "asc",
+      "public",
+      {}
+    )
+  },
+
+  getTeamPrivateScoresByCompetitionId: async (
+    competitionId: string,
+    page: number,
+    userId: string,
+    useMax: boolean
+  ) => {
+    return await selectScoresPaginationRecords(
+      1,
+      competitionId,
+      userId,
+      useMax ? "desc" : "asc",
+      "private",
       {}
     )
   },

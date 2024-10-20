@@ -1,8 +1,11 @@
+import { PrivateLeaderBoard } from "@/features/client/competition/components/detail/PrivateLeaderBoard"
 import { PublicLeaderBoard } from "@/features/client/competition/components/detail/PublicLeaderBoard"
 import { SubmitCsvFileButton } from "@/features/client/competition/components/detail/SubmitCsvFileButton"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 import { getTeamClientService } from "@/features/client/team/service/getTeamService"
 import { getServerSession } from "@/features/server/core/session"
+
+import { createDateWithTimezone } from "@/lib/utils"
 
 import { LeaderBoardMenu } from "./LeaderBoardMenu"
 
@@ -13,8 +16,15 @@ type RootContainerProps = {
 
 export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
   const competition = await getCompetitionClientService.getCompetitionById(id)
+
   const publicLeaderBoard =
     await getTeamClientService.getTeamPublicScoresByCompetitionId(
+      id,
+      competition
+    )
+
+  const privateLeaderBoard =
+    await getTeamClientService.getTeamPrivateScoresByCompetitionId(
       id,
       competition
     )
@@ -36,7 +46,12 @@ export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
             userId={user?.user.id}
           />
         }
-        PrivateLeaderBoard={"hoge"}
+        PrivateLeaderBoard={
+          <PrivateLeaderBoard
+            privateLeaderBoard={privateLeaderBoard}
+            userId={user?.user.id}
+          />
+        }
       />
     </div>
   )
