@@ -77,6 +77,25 @@ export const getTeamClientService = {
       },
     })()
   },
+
+  /**
+   *
+   * @param competitionId
+   * @returns
+   */
+  getTeamByUserIdAndCompetitionId: async (competitionId: string) => {
+    return await getHandler({
+      auth: true,
+      permissions: ["user", "admin"],
+      handler: async () => {
+        const user = await getServerSession()
+        return await getTeamService.getTeamByUserIdAndCompetitionId(
+          user?.user.id ?? "",
+          competitionId
+        )
+      },
+    })()
+  },
 }
 
 export type GetTeamServiceType = UnwrapObject<typeof getTeamClientService>

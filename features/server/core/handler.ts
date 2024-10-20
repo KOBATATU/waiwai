@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from "@/features/server/core/exception"
 import { getServerSession } from "@/features/server/core/session"
-import { UserRole } from "@/features/server/domain/user/user"
+import { UserRole } from "@/features/server/domain/user/service"
 import { parseWithZod } from "@conform-to/zod"
 import { Session } from "next-auth"
 import { z } from "zod"

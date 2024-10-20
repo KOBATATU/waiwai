@@ -20,4 +20,13 @@ export const editTeamService = {
       privateScore
     )
   },
+
+  /**
+   *
+   * @param teamName
+   * @returns
+   */
+  editTeamName: async (teamId: string, teamName: string) => {
+    return await editTeamRepository.editTeamName(teamId, teamName)
+  },
 }
