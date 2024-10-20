@@ -7,7 +7,7 @@ import { getTeamService } from "@/features/server/service/team/getService"
 import { SubmissionResult } from "@conform-to/react"
 
 /**
- * submission csv file
+ * update team name
  * @param prevState
  * @param formData
  * @returns
