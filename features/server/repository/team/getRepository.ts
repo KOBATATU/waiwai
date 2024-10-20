@@ -212,4 +212,57 @@ export const getTeamRepository = {
       {}
     )
   },
+
+  /**
+   *
+   * @param teamId
+   * @param canGetPrivate
+   * @param page
+   * @param limit
+   * @returns
+   */
+  getTeamSubmissionsByTeamId: async (
+    teamId: string,
+    canGetPrivate: boolean,
+    page: number,
+    limit: number = 20
+  ) => {
+    const prisma = getPrisma("pagination")
+    const teamSubmissions = await prisma.teamSubmission
+      .paginate({
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          sourceFile: true,
+          status: true,
+          publicScore: true,
+          privateScore: canGetPrivate,
+          createdAt: true,
+          user: {
+            select: {
+              ...MINIMUM_REQUIRED_USER_FIELDS,
+            },
+          },
+        },
+        where: {
+          teamId,
+        },
+      })
+      .withPages({
+        limit: limit,
+        page: page,
+        includePageCount: true,
+      })
+
+    teamSubmissions[0] = teamSubmissions[0].map((teamSubmission) => {
+      return {
+        ...teamSubmission,
+        sourceFile:
+          teamSubmission.sourceFile?.split("/").pop()?.substring(9) ?? null,
+      }
+    })
+    return teamSubmissions
+  },
 }

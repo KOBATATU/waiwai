@@ -67,4 +67,23 @@ export const getTeamService = {
       useMax
     )
   },
+
+  /**
+   *
+   * @param teamId
+   * @param canGetPrivate
+   * @param page
+   * @returns
+   */
+  getTeamSubmissionsByTeamId: async (
+    teamId: string,
+    canGetPrivate: boolean,
+    page: number
+  ) => {
+    return await getTeamRepository.getTeamSubmissionsByTeamId(
+      teamId,
+      canGetPrivate,
+      page
+    )
+  },
 }

@@ -55,6 +55,12 @@ export default async function RootLayout({
             href: `/competitions/${params.id}/team`,
             label: "team",
           },
+
+          {
+            value: "submissions",
+            href: `/competitions/${params.id}/submissions`,
+            label: "submissions",
+          },
         ]),
   ]
 
