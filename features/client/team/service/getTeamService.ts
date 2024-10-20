@@ -1,7 +1,10 @@
 import { getHandler } from "@/features/server/core/handler"
 import { getServerSession } from "@/features/server/core/session"
 import { EvaluationFuncEnum } from "@/features/server/domain/competition/competition"
-import { GetCompetitionServiceType } from "@/features/server/service/competition/base/getService"
+import {
+  getCompetitionService,
+  GetCompetitionServiceType,
+} from "@/features/server/service/competition/base/getService"
 import { getTeamService } from "@/features/server/service/team/getService"
 import { UnwrapObject } from "@/features/server/type"
 
@@ -92,6 +95,36 @@ export const getTeamClientService = {
         return await getTeamService.getTeamByUserIdAndCompetitionId(
           user?.user.id ?? "",
           competitionId
+        )
+      },
+    })()
+  },
+
+  /**
+   *
+   * @param competitionId
+   * @returns
+   */
+  getTeamSubmissionsByTeamId: async (competitionId: string) => {
+    return await getHandler({
+      auth: true,
+      permissions: ["user", "admin"],
+      handler: async () => {
+        const user = await getServerSession()
+        const competition =
+          await getCompetitionService.getCompetitionById(competitionId)
+        const team = await getTeamService.getTeamByUserIdAndCompetitionId(
+          user?.user.id ?? "",
+          competitionId
+        )
+
+        const now = createDateWithTimezone(new Date())
+        const canGetPrivate = now.getTime() > competition.endDate.getTime()
+
+        return await getTeamService.getTeamSubmissionsByTeamId(
+          team.id,
+          canGetPrivate,
+          1
         )
       },
     })()
