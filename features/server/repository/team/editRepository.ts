@@ -1,5 +1,6 @@
 import { getPrisma } from "@/features/server/core/prisma"
 import { EnumTeamSubmissionStatus } from "@/features/server/domain/team/team"
+import { date } from "zod"
 
 export const editTeamRepository = {
   /**
@@ -28,5 +29,23 @@ export const editTeamRepository = {
     })
 
     return teamSubmission
+  },
+
+  /**
+   *
+   * @param teamId
+   * @param teamName
+   * @returns
+   */
+  editTeamName: async (teamId: string, teamName: string) => {
+    const prisma = getPrisma()
+    return await prisma.competitionTeam.update({
+      data: {
+        name: teamName,
+      },
+      where: {
+        id: teamId,
+      },
+    })
   },
 }
