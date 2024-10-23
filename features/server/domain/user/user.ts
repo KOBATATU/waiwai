@@ -9,3 +9,8 @@ export const UserSigninSchema = UserSignupSchema.pick({
   email: true,
   password: true,
 })
+
+export const UserRoleSchema = z.object({
+  role: z.enum(["user", "admin"]),
+  id: z.string(),
+})
