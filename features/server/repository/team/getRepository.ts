@@ -239,6 +239,7 @@ export const getTeamRepository = {
           status: true,
           publicScore: true,
           privateScore: canGetPrivate,
+          selected: true,
           createdAt: true,
           user: {
             select: {
@@ -264,5 +265,39 @@ export const getTeamRepository = {
       }
     })
     return teamSubmissions
+  },
+
+  /**
+   *
+   * @param id
+   * @returns
+   */
+  getTeamSubmissionByIdAndTeamId: async (id: string, teamId: string) => {
+    const prisma = getPrisma()
+    return await prisma.teamSubmission.findUnique({
+      select: {
+        id: true,
+      },
+      where: {
+        id,
+        teamId,
+      },
+    })
+  },
+
+  /**
+   *
+   * @param teamId
+   * @returns
+   */
+  getTeamSubmissionCountByTeamId: async (teamId: string) => {
+    const prisma = getPrisma()
+    const count = await prisma.teamSubmission.count({
+      where: {
+        teamId,
+        selected: true,
+      },
+    })
+    return count
   },
 }

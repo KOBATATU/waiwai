@@ -34,6 +34,24 @@ export const editTeamRepository = {
   /**
    *
    * @param teamId
+   * @param selected
+   * @returns
+   */
+  editTeamSubmissionSelected: async (id: string, selected: boolean) => {
+    const prisma = getPrisma()
+    return await prisma.teamSubmission.update({
+      data: {
+        selected,
+      },
+      where: {
+        id,
+      },
+    })
+  },
+
+  /**
+   *
+   * @param teamId
    * @param teamName
    * @returns
    */

@@ -1,4 +1,7 @@
-import { CompetitionTeamSchema } from "@/prisma/generated/zod"
+import {
+  CompetitionTeamSchema,
+  TeamSubmissionSchema,
+} from "@/prisma/generated/zod"
 import { z } from "zod"
 
 export const TeamSubmitFileSchema = z.object({
@@ -9,6 +12,12 @@ export const TeamSubmitFileSchema = z.object({
 export const TeamNameSchema = CompetitionTeamSchema.pick({
   competitionId: true,
   name: true,
+})
+
+export const TeamSubmissionSelectedSchema = z.object({
+  competitionId: z.string(),
+  id: z.string(),
+  selected: z.string(),
 })
 
 export const EnumTeamSubmissionStatus = {

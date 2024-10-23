@@ -29,4 +29,14 @@ export const editTeamService = {
   editTeamName: async (teamId: string, teamName: string) => {
     return await editTeamRepository.editTeamName(teamId, teamName)
   },
+
+  /**
+   *
+   * @param teamId
+   * @param selected
+   * @returns
+   */
+  editTeamSubmissionSelected: async (id: string, selected: boolean) => {
+    return await editTeamRepository.editTeamSubmissionSelected(id, selected)
+  },
 }

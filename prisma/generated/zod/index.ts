@@ -30,7 +30,7 @@ export const CompetitionTeamScalarFieldEnumSchema = z.enum(['id','competitionId'
 
 export const TeamMemberScalarFieldEnumSchema = z.enum(['id','teamId','userId','createdAt','updatedAt']);
 
-export const TeamSubmissionScalarFieldEnumSchema = z.enum(['id','teamId','userId','publicScore','privateScore','sourceFile','status','createdAt','updatedAt']);
+export const TeamSubmissionScalarFieldEnumSchema = z.enum(['id','teamId','userId','publicScore','privateScore','sourceFile','status','selected','createdAt','updatedAt']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -296,6 +296,7 @@ export const TeamSubmissionSchema = z.object({
   privateScore: z.number().nullish(),
   sourceFile: z.string().nullish(),
   status: z.string(),
+  selected: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
@@ -307,6 +308,7 @@ export type TeamSubmission = z.infer<typeof TeamSubmissionSchema>
 
 export const TeamSubmissionOptionalDefaultsSchema = TeamSubmissionSchema.merge(z.object({
   id: z.string().optional(),
+  selected: z.boolean().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 }))
