@@ -89,7 +89,10 @@ const selectScoresPaginationRecords = async (
       td.team_name,
       td.is_user_member,
       ts.public_score,
-      ts.private_score,
+      CASE 
+        WHEN ts.selected THEN ts.private_score 
+        ELSE NULL 
+      END AS private_score,
       ts.created_at
     FROM
       "TeamSubmission" ts

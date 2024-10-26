@@ -30,4 +30,17 @@ export const editCompetitionRepository = {
       },
     })
   },
+
+  editCompetitionComplete: async (id: string, completed: boolean) => {
+    const prisma = getPrisma()
+
+    return await prisma.competition.update({
+      data: {
+        completed,
+      },
+      where: {
+        id,
+      },
+    })
+  },
 }

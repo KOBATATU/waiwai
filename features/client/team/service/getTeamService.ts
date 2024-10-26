@@ -1,6 +1,9 @@
 import { getHandler } from "@/features/server/core/handler"
 import { getServerSession } from "@/features/server/core/session"
-import { EvaluationFuncEnum } from "@/features/server/domain/competition/competition"
+import {
+  EvaluationFuncEnum,
+  getUseMax,
+} from "@/features/server/domain/competition/competition"
 import {
   getCompetitionService,
   GetCompetitionServiceType,
@@ -57,16 +60,17 @@ export const getTeamClientService = {
       handler: async () => {
         const session = await getServerSession()
         const userId = session?.user.id ?? ""
-        type ProblemKeys = keyof typeof EvaluationFuncEnum
-        const problem =
-          competition.problem in EvaluationFuncEnum
-            ? EvaluationFuncEnum[competition.problem as ProblemKeys]
-            : EvaluationFuncEnum["regression"]
-        // @ts-ignore
-        const useMax = problem[competition.evaluationFunc].order === "max"
+
+        const useMax = getUseMax(
+          competition.problem,
+          competition.evaluationFunc
+        )
 
         const now = createDateWithTimezone(new Date())
-        if (now.getTime() > competition.endDate.getTime()) {
+        if (
+          now.getTime() > competition.endDate.getTime() &&
+          competition.completed
+        ) {
           return await getTeamService.getTeamPrivateScoresByCompetitionId(
             1,
             competitionId,

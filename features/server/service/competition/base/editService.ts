@@ -12,4 +12,11 @@ export const editCompetitionService = {
   ) => {
     return await editCompetitionRepository.editCompetition(competition)
   },
+
+  editCompetitionComplete: async (id: string, completed: boolean) => {
+    return await editCompetitionRepository.editCompetitionComplete(
+      id,
+      completed
+    )
+  },
 }

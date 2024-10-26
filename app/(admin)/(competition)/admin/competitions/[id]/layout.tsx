@@ -40,6 +40,11 @@ export default async function RootLayout({
                 href: `/admin/competitions/${params.id}/settings`,
                 label: "settings",
               },
+              {
+                value: "completed",
+                href: `/admin/competitions/${params.id}/completed`,
+                label: "completed",
+              },
             ]}
             defaultValue="overview"
           />

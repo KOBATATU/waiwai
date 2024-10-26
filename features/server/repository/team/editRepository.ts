@@ -1,5 +1,6 @@
 import { getPrisma } from "@/features/server/core/prisma"
 import { EnumTeamSubmissionStatus } from "@/features/server/domain/team/team"
+import { Prisma } from "@prisma/client"
 import { date } from "zod"
 
 export const editTeamRepository = {
@@ -65,5 +66,74 @@ export const editTeamRepository = {
         id: teamId,
       },
     })
+  },
+
+  /**
+   *
+   * @param competitionId
+   */
+  editIdsNeedSelecteByCompetitionId: async (
+    competitionId: string,
+    useMax: boolean
+  ) => {
+    const order = useMax ? "desc" : "asc"
+
+    const query = Prisma.sql`
+      WITH submissions AS (
+        SELECT 
+          ts.id as id,
+          ts."team_id",
+          ROW_NUMBER() OVER (partition by ts.team_id ORDER BY public_score ${Prisma.raw(order)}) AS rank,
+          COUNT(*) FILTER (WHERE ts.selected = true) OVER (PARTITION BY ts."team_id") AS submission_count
+        FROM 
+          public."TeamSubmission" ts
+        INNER JOIN public."CompetitionTeam" ct
+          ON ts."team_id" = ct."id"
+        WHERE 
+          ct."competition_id" =${competitionId}
+      ), NotAllSelected AS (
+  
+        SELECT
+          id
+        FROM submissions s
+        WHERE
+          s.submission_count = 0 AND s.rank = 1
+        UNION ALL 
+        SELECT
+          id
+        FROM submissions s
+        WHERE
+          s.submission_count = 0 AND s.rank = 2
+      ),OnlyOneSelected AS (
+        SELECT
+          id
+        FROM submissions s
+        WHERE
+          s.submission_count =1 AND s.rank = 1
+      )
+    SELECT * FROM NotAllSelected
+    UNION ALL
+    SELECT * FROM OnlyOneSelected;
+      `
+
+    const prisma = getPrisma()
+    const results = (await prisma.$queryRaw(query)) as { id: string }[]
+
+    const ids = results.map((result) => result.id)
+
+    if (ids.length >= 1) {
+      await prisma.teamSubmission.updateMany({
+        where: {
+          id: {
+            in: ids,
+          },
+        },
+        data: {
+          selected: true,
+        },
+      })
+    }
+
+    return ids
   },
 }

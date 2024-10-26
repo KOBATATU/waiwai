@@ -1,5 +1,5 @@
 import { getPrisma } from "@/features/server/core/prisma"
-import { UserRole } from "@/features/server/domain/user/user"
+import { UserRole } from "@/features/server/domain/user/service"
 import { Prisma } from "@prisma/client"
 
 const MINIMUM_COMPETITION_FIELDS = {
@@ -15,6 +15,7 @@ const MINIMUM_COMPETITION_FIELDS = {
   evaluationFunc: true,
   problem: true,
   limitSubmissionNum: true,
+  completed: true,
   createdAt: true,
   updatedAt: true,
   competitionDatas: {
