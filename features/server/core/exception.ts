@@ -53,6 +53,14 @@ export const ExceptionEnum = {
     code: "B4004",
     message: "your email already registered",
   },
+  teamSubmissionCountOver: {
+    code: "B4005",
+    message: "your submission count over",
+  },
+  competitionSubmitBad: {
+    code: "B4006",
+    message: "competition not open or end",
+  },
   competitionNotFound: {
     code: "N4000",
     message: "not found competition",
@@ -68,5 +76,9 @@ export const ExceptionEnum = {
   competitionTeamNotFound: {
     code: "N4003",
     message: "not found competition team",
+  },
+  competitionTeamSubmissionNotFound: {
+    code: "N4004",
+    message: "not found team submission",
   },
 } as const

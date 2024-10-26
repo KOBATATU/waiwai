@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
+import { updateTeamSubmissionSelectedAction } from "@/features/client/team/actions/updateTeamSubmissionSelected"
 import { GetTeamServiceType } from "@/features/client/team/service/getTeamService"
+import { TeamSubmissionSelectedSchema } from "@/features/server/domain/team/team"
 import {
   ColumnDef,
   flexRender,
@@ -13,7 +15,9 @@ import {
 } from "@tanstack/react-table"
 import { CircleHelp } from "lucide-react"
 
+import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Table,
   TableBody,
@@ -30,10 +34,12 @@ import {
 } from "@/components/ui/tooltip"
 
 export type SubmissionTableType = {
+  id: string
   sourceFile: string | null
   privateScore?: number | null
   publicScore: number | null
   status: string
+  selected: boolean
   createdAt: Date
   user: {
     id: string
@@ -45,13 +51,16 @@ export type SubmissionTableType = {
 
 type SubmissionTableProps = {
   submissions: GetTeamServiceType["getTeamSubmissionsByTeamId"]
-  userId?: string
+  competitionId: string
 }
 
 export const SubmissionTable = ({
   submissions,
-  userId,
+  competitionId,
 }: SubmissionTableProps) => {
+  const selectedCount = React.useMemo(() => {
+    return submissions[0].filter((submission) => submission.selected).length
+  }, [submissions])
   const columns: ColumnDef<SubmissionTableType>[] = [
     {
       accessorKey: "submittedBy",
@@ -107,6 +116,42 @@ export const SubmissionTable = ({
       header: "status",
       cell: ({ row }) => {
         return <div>{row.getValue("status")}</div>
+      },
+    },
+    {
+      accessorKey: "selected",
+      header: "selected",
+      cell: ({ row }) => {
+        const [form, fields, action] = useConform(
+          async (prev: ConformStateType, formData: FormData) => {
+            const result = await updateTeamSubmissionSelectedAction(
+              prev,
+              formData
+            )
+            return result.submission
+          },
+          {
+            schema: TeamSubmissionSelectedSchema,
+          }
+        )
+
+        return (
+          <Checkbox
+            disabled={
+              selectedCount === 2 && row.original.selected === false
+                ? true
+                : false
+            }
+            defaultChecked={row.original.selected}
+            onCheckedChange={(value) => {
+              const formData = new FormData()
+              formData.append("competitionId", competitionId)
+              formData.append("id", row.original.id)
+              formData.append("selected", value ? "on" : "off")
+              action(formData)
+            }}
+          />
+        )
       },
     },
   ]

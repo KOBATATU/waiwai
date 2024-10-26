@@ -161,6 +161,7 @@ model TeamSubmission {
   privateScore  Float?    @map("private_score")
   sourceFile    String?   @map("source_file")
   status        String    
+  selected Boolean @default(false)
   createdAt     DateTime  @default(now()) @db.Timestamptz() @map("created_at")
   updatedAt     DateTime  @updatedAt @db.Timestamptz() @map("updated_at")
 

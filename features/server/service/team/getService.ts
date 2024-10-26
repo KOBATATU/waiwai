@@ -1,4 +1,5 @@
 import {
+  BadException,
   ExceptionEnum,
   NotFoundException,
 } from "@/features/server/core/exception"
@@ -85,5 +86,45 @@ export const getTeamService = {
       canGetPrivate,
       page
     )
+  },
+
+  /**
+   *
+   * @param id
+   * @param teamId
+   * @returns
+   */
+  getTeamSubmissionByIdAndTeamId: async (id: string, teamId: string) => {
+    const teamSubmission =
+      await getTeamRepository.getTeamSubmissionByIdAndTeamId(id, teamId)
+
+    if (!teamSubmission) {
+      throw new NotFoundException({
+        fieldsError: {
+          id: [ExceptionEnum.competitionTeamSubmissionNotFound.message],
+        },
+        message: ExceptionEnum.competitionTeamSubmissionNotFound.message,
+        code: ExceptionEnum.competitionTeamSubmissionNotFound.code,
+      })
+    }
+    return teamSubmission
+  },
+
+  /**
+   *
+   * @param teamId
+   */
+  getTeamSubmissionCountByTeamId: async (teamId: string) => {
+    const count = await getTeamRepository.getTeamSubmissionCountByTeamId(teamId)
+
+    if (count >= 2) {
+      throw new BadException({
+        fieldsError: {
+          id: [ExceptionEnum.teamSubmissionCountOver.message],
+        },
+        message: ExceptionEnum.teamSubmissionCountOver.message,
+        code: ExceptionEnum.teamSubmissionCountOver.code,
+      })
+    }
   },
 }

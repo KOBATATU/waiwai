@@ -14,7 +14,7 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
       <div className="mb-4 flex gap-2 items-center">
         <h2 className="text-xl font-bold ">Your Team Submissions</h2>
       </div>
-      <SubmissionTable submissions={teamSubmissions} />
+      <SubmissionTable submissions={teamSubmissions} competitionId={id} />
     </div>
   )
 }
