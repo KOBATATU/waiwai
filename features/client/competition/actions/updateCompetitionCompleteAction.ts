@@ -40,7 +40,7 @@ export const updateCompetitionCompleteAction = async (
           )
         await editCompetitionService.editCompetitionComplete(
           competition.id,
-          false
+          true
         )
         return updatedCompetition
       })
