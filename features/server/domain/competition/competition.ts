@@ -1,8 +1,11 @@
+import { BadException, ExceptionEnum } from "@/features/server/core/exception"
 import {
   CompetitionOptionalDefaultsSchema,
   CompetitionSchema,
 } from "@/prisma/generated/zod"
 import { z } from "zod"
+
+import { createDateWithTimezone } from "@/lib/utils"
 
 export const CompetitionCustomOptionalDefaultsSchema =
   CompetitionOptionalDefaultsSchema.merge(
@@ -61,6 +64,25 @@ export const CompetitionDataFileSchema = z.object({
 export const CompetitionDataDownloadSchema = z.object({
   competitionDataId: z.string(),
 })
+
+/**
+ * user can upload submission file or select submission file
+ * @param open
+ * @param endDate
+ */
+export const canSubmitAndSelectedData = (open: boolean, endDate: Date) => {
+  const now = createDateWithTimezone(new Date())
+
+  if (!open || now.getTime() > endDate.getTime()) {
+    throw new BadException({
+      fieldsError: {
+        endDate: [ExceptionEnum.competitionSubmitBad.message],
+      },
+      message: ExceptionEnum.competitionSubmitBad.message,
+      code: ExceptionEnum.competitionSubmitBad.code,
+    })
+  }
+}
 
 export const EvaluationFuncEnum = {
   regression: {
