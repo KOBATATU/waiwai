@@ -20,7 +20,7 @@ export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerif
 
 export const VerificationRequestScalarFieldEnumSchema = z.enum(['id','identifier','token','expires','createdAt','updatedAt']);
 
-export const CompetitionScalarFieldEnumSchema = z.enum(['id','title','subtitle','description','dataDescription','thumbnail','startDate','endDate','open','evaluationFunc','problem','limitSubmissionNum','createdAt','updatedAt']);
+export const CompetitionScalarFieldEnumSchema = z.enum(['id','title','subtitle','description','dataDescription','thumbnail','startDate','endDate','open','completed','evaluationFunc','problem','limitSubmissionNum','createdAt','updatedAt']);
 
 export const CompetitionDataScalarFieldEnumSchema = z.enum(['id','competitionId','dataPath','createdAt','updatedAt']);
 
@@ -162,6 +162,7 @@ export const CompetitionSchema = z.object({
   startDate: z.date({ required_error: "required" }),
   endDate: z.date({ required_error: "required" }),
   open: z.boolean(),
+  completed: z.boolean(),
   evaluationFunc: z.string({ required_error: "required" }).max(20, { message: "Please enter less than 20 characters" }),
   problem: z.string({ required_error: "required" }).max(20, { message: "Please enter less than 20 characters" }),
   limitSubmissionNum: z.number({ required_error: "required" }),
@@ -176,6 +177,7 @@ export type Competition = z.infer<typeof CompetitionSchema>
 
 export const CompetitionOptionalDefaultsSchema = CompetitionSchema.merge(z.object({
   id: z.string().optional(),
+  completed: z.boolean().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 }))

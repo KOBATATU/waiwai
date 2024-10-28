@@ -88,10 +88,11 @@ model Competition {
   subtitle              String                 @db.VarChar(500) /// @zod.string({ required_error: "required" }).max(500, { message: "Please enter less than 500 characters" })
   description           String                 @db.Text /// @zod.string({ required_error: "required" })
   dataDescription       String                 @db.Text @map("data_description") /// @zod.string({ required_error: "required" })
-  thumbnail             String?                 @db.VarChar(255)
+  thumbnail             String?                @db.VarChar(255)
   startDate             DateTime               @db.Timestamptz() @map("start_date") /// @zod.date({ required_error: "required" })
   endDate               DateTime               @db.Timestamptz() @map("end_date") /// @zod.date({ required_error: "required" })
   open                  Boolean                
+  completed             Boolean @default(false) 
   evaluationFunc        String                 @db.VarChar(20) @map("evaluation_func") /// @zod.string({ required_error: "required" }).max(20, { message: "Please enter less than 20 characters" })
   problem               String                 @db.VarChar(20) /// @zod.string({ required_error: "required" }).max(20, { message: "Please enter less than 20 characters" })
   limitSubmissionNum    Int                    @map("limit_submission_num") /// @zod.number({ required_error: "required" })

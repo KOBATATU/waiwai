@@ -65,6 +65,10 @@ export const CompetitionDataDownloadSchema = z.object({
   competitionDataId: z.string(),
 })
 
+export const CompetitionCompleteSchema = CompetitionSchema.pick({
+  id: true,
+})
+
 /**
  * user can upload submission file or select submission file
  * @param open
@@ -125,3 +129,13 @@ export const ProblemEnum = {
   regression: "regression",
   classification: "classification",
 } as const
+
+export const getUseMax = (problem: string, evaluationFunc: string): boolean => {
+  const selectedProblem =
+    problem in EvaluationFuncEnum
+      ? EvaluationFuncEnum[problem as ProblemKeys]
+      : EvaluationFuncEnum["regression"]
+
+  // @ts-ignore
+  return selectedProblem[evaluationFunc]?.order === "max"
+}

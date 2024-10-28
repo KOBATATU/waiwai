@@ -39,4 +39,17 @@ export const editTeamService = {
   editTeamSubmissionSelected: async (id: string, selected: boolean) => {
     return await editTeamRepository.editTeamSubmissionSelected(id, selected)
   },
+
+  /**
+   *
+   */
+  editIdsNeedSelecteByCompetitionId: async (
+    competitionId: string,
+    useMax: boolean
+  ) => {
+    return await editTeamRepository.editIdsNeedSelecteByCompetitionId(
+      competitionId,
+      useMax
+    )
+  },
 }
