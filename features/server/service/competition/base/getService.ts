@@ -126,25 +126,6 @@ export const getCompetitionService = {
       )
     return competitionParticipate
   },
-
-  /**
-   *
-   * @param page
-   * @param competitionId
-   * @param useMax
-   * @returns
-   */
-  getTeamPublicScoresByCompetitionId: async (
-    page: number,
-    competitionId: string,
-    useMax: boolean
-  ) => {
-    return await getTeamRepository.getTeamPublicScoresByCompetitionId(
-      competitionId,
-      page,
-      useMax
-    )
-  },
 }
 
 export type GetCompetitionServiceType = UnwrapObject<

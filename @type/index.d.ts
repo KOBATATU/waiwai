@@ -26,6 +26,7 @@ declare global {
       GCS_PROJECT_ID: string
       GCS_APPLICATION_CREDENTIALS: string
       GCS_BUCKET: string
+      WAIWAI_EVALUATE_API: string
     }
   }
 }

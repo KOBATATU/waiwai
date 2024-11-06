@@ -1,8 +1,10 @@
+import { cookies } from "next/headers"
 import {
   BadException,
   ExceptionEnum,
   NotFoundException,
 } from "@/features/server/core/exception"
+import { post } from "@/features/server/repository/evaluate/evaluate"
 import { getTeamRepository } from "@/features/server/repository/team/getRepository"
 
 export const getTeamService = {
@@ -126,5 +128,17 @@ export const getTeamService = {
         code: ExceptionEnum.teamSubmissionCountOver.code,
       })
     }
+  },
+
+  /**
+   *
+   * @param competitionId
+   * @param object_path hoge.csv
+   */
+  getEvaluationScore: async (competitionId: string, object_path: string) => {
+    return await post<{ public_score: number; private_score: number }>(
+      "/evaluate/",
+      { object_path: object_path, competition_id: competitionId }
+    )
   },
 }

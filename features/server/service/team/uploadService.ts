@@ -11,10 +11,11 @@ export const uploadTeamService = {
   ) => {
     checkFileType(file)
 
-    const filename = `competitions/${competitionId}/submission/${userId}/${createRandomFileName()}_${file.name}`
+    const objectPath = `${createRandomFileName()}_${file.name}`
+    const filename = `competitions/${competitionId}/submission/${userId}/${objectPath}`
 
     await uploadCompetitionDataRepository.uploadData(file, filename)
 
-    return filename
+    return { filename, objectPath }
   },
 }

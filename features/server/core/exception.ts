@@ -61,6 +61,10 @@ export const ExceptionEnum = {
     code: "B4006",
     message: "competition not open or end",
   },
+  evaluateApiFailed: {
+    code: "B4007",
+    message: "waiwai evaluate api failed",
+  },
   competitionNotFound: {
     code: "N4000",
     message: "not found competition",
