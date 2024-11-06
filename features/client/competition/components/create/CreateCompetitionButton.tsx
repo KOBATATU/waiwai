@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { createCompetitionAction } from "@/features/client/competition/actions/createCompetitionAction"
 import { CompetitionTitleAndSubtitleSchema } from "@/features/server/domain/competition/competition"
 import {
   getFormProps,
@@ -9,6 +11,7 @@ import {
 } from "@conform-to/react"
 import { PlusIcon } from "lucide-react"
 
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Button } from "@/components/ui/button"
 import {
@@ -24,12 +27,20 @@ import { Textarea } from "@/components/ui/textarea"
 import { ActionButton } from "@/components/Button/ActionButton"
 import { AnyField } from "@/components/Form/AnyField"
 
-import { createCompetitionAction } from "../../actions/createCompetitionAction"
-
 export const CreateCompetitionButton = () => {
+  const { toast } = useToast()
+  const router = useRouter()
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
       const result = await createCompetitionAction(prev, formData)
+
+      if (result.submission.status === "success") {
+        toast({
+          title: "success",
+          description: "you can create competition",
+        })
+        router.push(`/admin/competitions/${result.value.id}`)
+      }
 
       return result.submission
     },

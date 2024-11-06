@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import { actionHandler } from "@/features/server/core/handler"
 import { CompetitionTitleAndSubtitleSchema } from "@/features/server/domain/competition/competition"
 import { createCompetitionService } from "@/features/server/service/competition/base/createService"
@@ -20,7 +21,11 @@ export const createCompetitionAction = async (
     schema: CompetitionTitleAndSubtitleSchema,
     permissions: ["admin"],
     callback: async (user, payload) => {
-      return await createCompetitionService.createCompetition(payload)
+      const competition =
+        await createCompetitionService.createCompetition(payload)
+
+      revalidatePath("/competitions")
+      return competition
     },
   })
 }
