@@ -1,4 +1,3 @@
-/* 共通のスタイル */
 .markdown {
   margin: 0 auto;
   line-height: 1.6;
@@ -11,7 +10,6 @@
   hyphens: auto;
 }
 
-/* PC向けのスタイル (768px以上) */
 @media (min-width: 768px) {
   .markdown h1 {
     font-size: 1.4rem;
@@ -19,12 +17,12 @@
   }
 
   .markdown h2 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
   }
 
   .markdown h3 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 500;
   }
 }
@@ -42,20 +40,17 @@
   }
 
   .markdown h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
   }
 }
 
 /* 共通のスタイル（続き） */
 .markdown h1,
-.markdown h2 {
+.markdown h2,
+.markdown h3 {
   border-bottom: 2px solid #ddd;
   padding-bottom: 0.3rem;
-  margin-bottom: 0.5rem;
-}
-
-.markdown h3 {
   margin-bottom: 0.5rem;
 }
 

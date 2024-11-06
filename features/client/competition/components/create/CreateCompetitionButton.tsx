@@ -37,9 +37,15 @@ export const CreateCompetitionButton = () => {
       if (result.submission.status === "success") {
         toast({
           title: "success",
-          description: "you can create competition",
+          description: "create competition!",
         })
         router.push(`/admin/competitions/${result.value.id}`)
+      } else {
+        toast({
+          variant: "destructive",
+          title: "failed",
+          description: "failed create competition",
+        })
       }
 
       return result.submission

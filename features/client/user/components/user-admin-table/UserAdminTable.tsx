@@ -15,6 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -49,6 +50,7 @@ type UserAdminTableProps = {
 }
 
 export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
+  const { toast } = useToast()
   const columns: ColumnDef<UserAdminTableType>[] = [
     {
       accessorKey: "id",
@@ -86,6 +88,7 @@ export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
         const [form, fields, action] = useConform(
           async (prev: ConformStateType, formData: FormData) => {
             const result = await editUserRoleAction(prev, formData)
+
             return result.submission
           },
           {
@@ -103,9 +106,14 @@ export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
                   const formData = new FormData()
                   formData.append("id", id)
                   formData.append("role", value)
+                  fields.role.value = value
                   action(formData)
+
+                  toast({
+                    title: "success",
+                    description: "success role change!",
+                  })
                 }}
-                value={fields.role.value as string}
               >
                 <SelectTrigger disabled={id === userId}>
                   <SelectValue />
