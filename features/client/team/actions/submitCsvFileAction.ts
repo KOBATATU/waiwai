@@ -32,30 +32,34 @@ export const submitCsvFileAction = async (
         payload.competitionId
       )
 
-      const filename = await uploadTeamService.uploadSubmissionFile(
-        payload.competitionId,
-        user.id,
-        payload.file
-      )
+      const { filename, objectPath } =
+        await uploadTeamService.uploadSubmissionFile(
+          payload.competitionId,
+          user.id,
+          payload.file
+        )
       // async function
       createTeamService
         .createSubmission(team.id, user.id, filename)
         .then(async (teamSubmission) => {
           try {
-            //TODO: evaluation
+            const result = await getTeamService.getEvaluationScore(
+              payload.competitionId,
+              objectPath
+            )
 
             await editTeamService.editTeamSubmission(
               teamSubmission.id,
               EnumTeamSubmissionStatus.success,
-              0,
-              0
+              result.public_score,
+              result.private_score
             )
           } catch (e) {
             await editTeamService.editTeamSubmission(
               teamSubmission.id,
               EnumTeamSubmissionStatus.error,
-              0,
-              0
+              undefined,
+              undefined
             )
           }
         })

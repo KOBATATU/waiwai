@@ -1,7 +1,6 @@
 import { getPrisma } from "@/features/server/core/prisma"
 import { EnumTeamSubmissionStatus } from "@/features/server/domain/team/team"
 import { Prisma } from "@prisma/client"
-import { date } from "zod"
 
 export const editTeamRepository = {
   /**
