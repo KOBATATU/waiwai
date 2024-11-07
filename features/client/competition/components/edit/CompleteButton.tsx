@@ -4,6 +4,7 @@ import { updateCompetitionCompleteAction } from "@/features/client/competition/a
 import { CompetitionCompleteSchema } from "@/features/server/domain/competition/competition"
 import { getFormProps, getInputProps } from "@conform-to/react"
 
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Input } from "@/components/ui/input"
 import { ActionButton } from "@/components/Button/ActionButton"
@@ -13,12 +14,26 @@ type CompleteButtonProps = {
 }
 
 export const CompleteButton = ({ id }: CompleteButtonProps) => {
+  const { toast } = useToast()
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
       if (!confirm("competition completed ok?")) {
         return
       }
       const result = await updateCompetitionCompleteAction(prev, formData)
+
+      if (result.submission.status === "success") {
+        toast({
+          title: "success",
+          description: "success edit data!",
+        })
+      } else {
+        toast({
+          variant: "destructive",
+          title: "failed",
+          description: "failed edit data",
+        })
+      }
 
       return result.submission
     },

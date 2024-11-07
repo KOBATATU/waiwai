@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import { actionHandler } from "@/features/server/core/handler"
 import { UserRoleSchema } from "@/features/server/domain/user/user"
 import { editUserService } from "@/features/server/service/user/editService"
@@ -21,6 +22,7 @@ export const editUserRoleAction = async (
     schema: UserRoleSchema,
     callback: async (user, payload) => {
       await editUserService.editUserRoleByAdmin(payload.id, payload.role)
+      revalidatePath("/")
 
       return payload
     },

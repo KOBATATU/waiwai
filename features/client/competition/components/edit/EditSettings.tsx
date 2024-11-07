@@ -14,6 +14,7 @@ import {
 } from "@conform-to/react"
 
 import { toLocalISOString } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Input } from "@/components/ui/input"
 import {
@@ -33,9 +34,23 @@ type EditSettingsProps = {
 }
 
 export const EditSettings = ({ competition }: EditSettingsProps) => {
+  const { toast } = useToast()
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
       const result = await updateCompetitionAction(prev, formData)
+
+      if (result.submission.status === "success") {
+        toast({
+          title: "success",
+          description: "success edit settings!",
+        })
+      } else {
+        toast({
+          variant: "destructive",
+          title: "failed",
+          description: "failed edit settings",
+        })
+      }
 
       return result.submission
     },

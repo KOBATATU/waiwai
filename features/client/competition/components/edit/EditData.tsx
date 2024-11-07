@@ -12,6 +12,7 @@ import DOMPurify from "isomorphic-dompurify"
 import { EditIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,11 +29,26 @@ type EditDataProp = {
 export const EditData = ({ id, dataDescription }: EditDataProp) => {
   const [editMode, setEditMode] = useState(false)
   const [previewMode, setPreviewMode] = useState(false)
+  const { toast } = useToast()
 
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
       const result = await updateCompetitioDataAction(prev, formData)
       setEditMode(false)
+
+      if (result.submission.status === "success") {
+        toast({
+          title: "success",
+          description: "success edit data!",
+        })
+      } else {
+        toast({
+          variant: "destructive",
+          title: "failed",
+          description: "failed edit data",
+        })
+      }
+
       return result.submission
     },
     {
@@ -77,9 +93,6 @@ export const EditData = ({ id, dataDescription }: EditDataProp) => {
                   type="button"
                 >
                   {previewMode ? "edit" : "preview"}
-                </Button>
-                <Button variant={"outline"} size={"sm"} type="button">
-                  image upload
                 </Button>
               </div>
 

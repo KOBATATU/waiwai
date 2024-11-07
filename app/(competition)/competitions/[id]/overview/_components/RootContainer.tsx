@@ -15,7 +15,7 @@ export const RootContainer = async ({ id }: RootContainerProps) => {
       <div className="flex gap-6">
         <Markdown body={competition.description} />
         <TOC
-          className=" h-max hidden sm:sticky sm:block sm:top-4 "
+          className="min-w-72 h-max hidden sm:sticky sm:block sm:top-4 "
           body={competition.description}
         />
       </div>

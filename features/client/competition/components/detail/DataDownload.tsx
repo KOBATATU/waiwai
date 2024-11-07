@@ -1,8 +1,9 @@
 "use client"
 
-import { cn, handleDownload } from "@/lib/utils"
+import { downloadCompetitionDataAction } from "@/features/client/competition/actions/downloadCompetitionDataAction"
 
-import { downloadCompetitionDataAction } from "../../actions/downloadCompetitionDataAction"
+import { cn, handleDownload } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 
 type DataDownloadProps = {
   id: string
@@ -19,6 +20,8 @@ export const DataDownload = ({
   isCompetitionParticipated,
   competitionDatas,
 }: DataDownloadProps) => {
+  const { toast } = useToast()
+
   return (
     <div className={cn("mt-4 p-4  rounded-md shadow-md", className)}>
       <h2 className="text-xl font-bold mb-4">datasource</h2>
@@ -37,12 +40,25 @@ export const DataDownload = ({
                     const formData = new FormData()
                     formData.append("competitionDataId", competitionData.id)
 
-                    const url = await downloadCompetitionDataAction(
+                    const result = await downloadCompetitionDataAction(
                       undefined,
                       formData
                     )
-                    if (url.value.url) {
-                      handleDownload(url.value.url, filename)
+
+                    if (result.submission.status === "success") {
+                      toast({
+                        title: "success",
+                        description: "success download data!",
+                      })
+                      if (result.value.url) {
+                        handleDownload(result.value.url, filename)
+                      }
+                    } else {
+                      toast({
+                        variant: "destructive",
+                        title: "failed",
+                        description: "failed download data",
+                      })
                     }
                   }}
                 >

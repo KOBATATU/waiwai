@@ -3,6 +3,7 @@
 import { Delete, UploadIcon } from "lucide-react"
 
 import { cn, handleDownload } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 
 import { deleteCompetitionDataAction } from "../../actions/deleteCompetitionDataAction"
 import { downloadCompetitionDataAction } from "../../actions/downloadCompetitionDataAction"
@@ -22,10 +23,14 @@ export const UploadData = ({
   className,
   competitionDatas,
 }: UploadDataProps) => {
+  const { toast } = useToast()
   return (
     <div className={cn("mt-4 p-4  rounded-md shadow-md", className)}>
-      <h2 className="text-xl font-bold mb-4">datasource</h2>
-      <form className="mx-auto mb-4 max-w-sm cursor-pointer items-center rounded-lg border-2 border-dashed border-gray-400  p-6 ">
+      <h2 className="text-xl font-bold ">datasource</h2>
+      <p className="text-sm text-gray-500">
+        The datasource represents CSV data that users can download.
+      </p>
+      <form className="mt-4 mx-auto mb-4 max-w-sm cursor-pointer items-center rounded-lg border-2 border-dashed border-gray-400  p-6 ">
         <input
           onChange={async (e) => {
             const file = e.target.files && e.target.files[0]
@@ -33,7 +38,23 @@ export const UploadData = ({
               const formData = new FormData()
               formData.append("id", id)
               formData.append("file", file)
-              await uploadCompetitionDataAction(undefined, formData)
+
+              const result = await uploadCompetitionDataAction(
+                undefined,
+                formData
+              )
+              if (result.submission.status === "success") {
+                toast({
+                  title: "success",
+                  description: "success upload data!",
+                })
+              } else {
+                toast({
+                  variant: "destructive",
+                  title: "failed",
+                  description: "failed upload data",
+                })
+              }
             }
           }}
           id="upload"
