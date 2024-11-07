@@ -4,6 +4,7 @@ import { updateTeamNameAction } from "@/features/client/team/actions/updateTeamN
 import { TeamNameSchema } from "@/features/server/domain/team/team"
 import { getFormProps, getInputProps } from "@conform-to/react"
 
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Input } from "@/components/ui/input"
 import { ActionButton } from "@/components/Button/ActionButton"
@@ -15,11 +16,23 @@ type TeamNameProps = {
 }
 
 export const TeamName = ({ competitionId, teamName }: TeamNameProps) => {
+  const { toast } = useToast()
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
       const result = await updateTeamNameAction(prev, formData)
-      console.log(result)
 
+      if (result.submission.status === "success") {
+        toast({
+          title: "success",
+          description: "success change teamname!",
+        })
+      } else {
+        toast({
+          variant: "destructive",
+          title: "failed",
+          description: "failed change teamname",
+        })
+      }
       return result.submission
     },
     {

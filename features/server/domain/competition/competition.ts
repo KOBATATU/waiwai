@@ -3,7 +3,7 @@ import {
   CompetitionOptionalDefaultsSchema,
   CompetitionSchema,
 } from "@/prisma/generated/zod"
-import { z } from "zod"
+import { boolean, z } from "zod"
 
 import { createDateWithTimezone } from "@/lib/utils"
 
@@ -74,10 +74,14 @@ export const CompetitionCompleteSchema = CompetitionSchema.pick({
  * @param open
  * @param endDate
  */
-export const canSubmitAndSelectedData = (open: boolean, endDate: Date) => {
+export const canSubmitAndSelectedData = (
+  open: boolean,
+  endDate: Date,
+  throwException: boolean = true
+) => {
   const now = createDateWithTimezone(new Date())
-
-  if (!open || now.getTime() > endDate.getTime()) {
+  const canSubmit = open && now.getTime() < endDate.getTime()
+  if (!canSubmit && throwException) {
     throw new BadException({
       fieldsError: {
         endDate: [ExceptionEnum.competitionSubmitBad.message],
@@ -86,6 +90,7 @@ export const canSubmitAndSelectedData = (open: boolean, endDate: Date) => {
       code: ExceptionEnum.competitionSubmitBad.code,
     })
   }
+  return canSubmit
 }
 
 export const EvaluationFuncEnum = {

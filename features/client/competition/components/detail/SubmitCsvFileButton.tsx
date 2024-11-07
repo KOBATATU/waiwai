@@ -11,6 +11,7 @@ import {
 } from "@conform-to/react"
 import { PlusIcon, UploadIcon } from "lucide-react"
 
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,14 +27,30 @@ import { ActionButton } from "@/components/Button/ActionButton"
 
 type SubmitCsvFileButtonProps = {
   competitionId: string
+  canSubmit: boolean
 }
 
 export const SubmitCsvFileButton = ({
   competitionId,
+  canSubmit,
 }: SubmitCsvFileButtonProps) => {
+  const { toast } = useToast()
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
       const result = await submitCsvFileAction(prev, formData)
+
+      if (result.submission.status === "success") {
+        toast({
+          title: "success",
+          description: "success upload data!",
+        })
+      } else {
+        toast({
+          variant: "destructive",
+          title: "failed",
+          description: "failed upload data",
+        })
+      }
 
       return result.submission
     },
@@ -47,7 +64,11 @@ export const SubmitCsvFileButton = ({
     <div className="mt-2">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="rounded-full flex gap-2" size="sm">
+          <Button
+            disabled={!canSubmit}
+            className="rounded-full flex gap-2"
+            size="sm"
+          >
             submit prediction <PlusIcon width={"20"} height={"20"} />
           </Button>
         </DialogTrigger>

@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-table"
 import { CircleHelp } from "lucide-react"
 
+import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -122,12 +123,26 @@ export const SubmissionTable = ({
       accessorKey: "selected",
       header: "selected",
       cell: ({ row }) => {
+        const { toast } = useToast()
         const [form, fields, action] = useConform(
           async (prev: ConformStateType, formData: FormData) => {
             const result = await updateTeamSubmissionSelectedAction(
               prev,
               formData
             )
+
+            if (result.submission.status === "success") {
+              toast({
+                title: "success",
+                description: "success upload data!",
+              })
+            } else {
+              toast({
+                variant: "destructive",
+                title: "failed",
+                description: "failed upload data",
+              })
+            }
             return result.submission
           },
           {

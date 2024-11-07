@@ -4,8 +4,7 @@ import { SubmitCsvFileButton } from "@/features/client/competition/components/de
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 import { getTeamClientService } from "@/features/client/team/service/getTeamService"
 import { getServerSession } from "@/features/server/core/session"
-
-import { createDateWithTimezone } from "@/lib/utils"
+import { canSubmitAndSelectedData } from "@/features/server/domain/competition/competition"
 
 import { LeaderBoardMenu } from "./LeaderBoardMenu"
 
@@ -29,12 +28,18 @@ export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
       competition
     )
 
+  const canSubmit = canSubmitAndSelectedData(
+    competition.open,
+    competition.endDate,
+    false
+  )
+
   const user = await getServerSession()
   return (
     <div className="mt-2">
       <div className="mb-4 flex gap-2 items-center">
         <h2 className="text-xl font-bold ">Leaderboard</h2>
-        <SubmitCsvFileButton competitionId={id} />
+        <SubmitCsvFileButton competitionId={id} canSubmit={canSubmit} />
       </div>
 
       <LeaderBoardMenu
