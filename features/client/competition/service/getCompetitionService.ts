@@ -3,12 +3,12 @@ import { getServerSession } from "@/features/server/core/session"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 
 export const getCompetitionClientService = {
-  getCompetitionsByAdmin: async () => {
+  getCompetitionsByAdmin: async (page: number) => {
     return await getHandler({
       auth: true,
       permissions: ["admin"],
       handler: async () => {
-        return await getCompetitionService.getCompetitionsByAdmin(1)
+        return await getCompetitionService.getCompetitionsByAdmin(page)
       },
     })()
   },

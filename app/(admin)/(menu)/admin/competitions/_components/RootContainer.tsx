@@ -2,9 +2,16 @@ import { CreateCompetitionButton } from "@/features/client/competition/component
 import { CompetitionList } from "@/features/client/competition/components/list/CompetitionList"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 
-export const RootContainer = async () => {
-  const competitions =
-    await getCompetitionClientService.getCompetitionsByAdmin()
+import { QueryParameters } from "@/lib/utils"
+
+type RootContainerProps = {
+  queryParameter: QueryParameters
+}
+
+export const RootContainer = async ({ queryParameter }: RootContainerProps) => {
+  const competitions = await getCompetitionClientService.getCompetitionsByAdmin(
+    queryParameter.page
+  )
   return (
     <div>
       <div className="flex items-center gap-5">
