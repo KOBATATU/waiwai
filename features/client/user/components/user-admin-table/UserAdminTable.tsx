@@ -50,7 +50,6 @@ type UserAdminTableProps = {
 }
 
 export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
-  const { toast } = useToast()
   const columns: ColumnDef<UserAdminTableType>[] = [
     {
       accessorKey: "id",
@@ -82,12 +81,26 @@ export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
       accessorKey: "role change",
       header: "role change",
       cell: ({ row }) => {
+        const { toast } = useToast()
         const role = row.original.role as string
         const id = row.getValue("id") as string
 
         const [form, fields, action] = useConform(
           async (prev: ConformStateType, formData: FormData) => {
             const result = await editUserRoleAction(prev, formData)
+
+            if (result.submission.status === "success") {
+              toast({
+                title: "success",
+                description: "success change user role!",
+              })
+            } else {
+              toast({
+                variant: "destructive",
+                title: "failed",
+                description: "failed change user role",
+              })
+            }
 
             return result.submission
           },
@@ -108,11 +121,6 @@ export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
                   formData.append("role", value)
                   fields.role.value = value
                   action(formData)
-
-                  toast({
-                    title: "success",
-                    description: "success role change!",
-                  })
                 }}
               >
                 <SelectTrigger disabled={id === userId}>

@@ -134,13 +134,13 @@ export const SubmissionTable = ({
             if (result.submission.status === "success") {
               toast({
                 title: "success",
-                description: "success upload data!",
+                description: "success selected data!",
               })
             } else {
               toast({
                 variant: "destructive",
                 title: "failed",
-                description: "failed upload data",
+                description: "failed selected data",
               })
             }
             return result.submission
