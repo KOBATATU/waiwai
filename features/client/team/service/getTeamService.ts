@@ -105,7 +105,7 @@ export const getTeamClientService = {
    * @param competitionId
    * @returns
    */
-  getTeamSubmissionsByTeamId: async (competitionId: string) => {
+  getTeamSubmissionsByTeamId: async (competitionId: string, page: number) => {
     return await getHandler({
       auth: true,
       permissions: ["user", "admin"],
@@ -124,7 +124,7 @@ export const getTeamClientService = {
         return await getTeamService.getTeamSubmissionsByTeamId(
           team.id,
           canGetPrivate,
-          1
+          page
         )
       },
     })()

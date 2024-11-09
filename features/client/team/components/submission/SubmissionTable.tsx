@@ -8,16 +8,12 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 import { CircleHelp } from "lucide-react"
 
 import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
-import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Table,
@@ -33,6 +29,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Pagination } from "@/components/Pagination/Pagination"
 
 export type SubmissionTableType = {
   id: string
@@ -175,9 +172,6 @@ export const SubmissionTable = ({
     data: submissions[0],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
   })
 
   return (
@@ -234,22 +228,11 @@ export const SubmissionTable = ({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+          <Pagination
+            nextPagePath={`/competitions/${competitionId}/submissions?page=${submissions[1].nextPage}`}
+            previousPagePath={`/competitions/${competitionId}/submissions?page=${submissions[1].previousPage}`}
+            meta={submissions[1]}
+          />
         </div>
       </div>
     </div>
