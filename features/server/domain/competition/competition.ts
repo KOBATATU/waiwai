@@ -23,6 +23,7 @@ export const CompetitionCustomOptionalDefaultsSchema =
       endDate: true,
       open: true,
       evaluationFunc: true,
+      testDataRate: true,
       limitSubmissionNum: true,
     })
     .refine((data) => data.startDate < data.endDate, {

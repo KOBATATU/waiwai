@@ -134,7 +134,7 @@ export const EditSettings = ({ competition }: EditSettingsProps) => {
         </AnyField>
       </div>
 
-      <h2 className="font-bold text-xl">Evaluation Func</h2>
+      <h2 className="font-bold text-xl">Evaluation Func & Data</h2>
       <AnyField
         className="flex-1"
         error={fields.evaluationFunc.errors}
@@ -158,6 +158,51 @@ export const EditSettings = ({ competition }: EditSettingsProps) => {
           </SelectTrigger>
           <SelectContent>
             {evaluationFuncOptions.map((option) => {
+              return (
+                <SelectItem value={option.value} key={option.value}>
+                  {option.label}
+                </SelectItem>
+              )
+            })}
+          </SelectContent>
+        </Select>
+      </AnyField>
+      <AnyField
+        className="flex-1"
+        error={fields.testDataRate.errors}
+        label="competition testDataRate"
+        description="Percentage of data evaluated with public data"
+        required
+      >
+        <Select
+          key={fields.testDataRate.key}
+          name={fields.testDataRate.name}
+          defaultValue={competition.testDataRate.toString()}
+          onValueChange={(value) => {
+            form.update({
+              name: fields.testDataRate.name,
+              value: Number(value),
+            })
+          }}
+          value={fields.testDataRate.value as string}
+        >
+          <SelectTrigger id={fields.testDataRate.id}>
+            <SelectValue placeholder="select testDataRate" />
+          </SelectTrigger>
+          <SelectContent>
+            {[
+              { value: "0", label: "0" },
+              { value: "10", label: "10" },
+              { value: "20", label: "20" },
+              { value: "30", label: "30" },
+              { value: "40", label: "40" },
+              { value: "50", label: "50" },
+              { value: "60", label: "60" },
+              { value: "70", label: "70" },
+              { value: "80", label: "80" },
+              { value: "90", label: "90" },
+              { value: "100", label: "100" },
+            ].map((option) => {
               return (
                 <SelectItem value={option.value} key={option.value}>
                   {option.label}

@@ -45,6 +45,7 @@ export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
         tabQuery={tabQuery}
         PublicLeaderBoard={
           <PublicLeaderBoard
+            testDataRate={competition.testDataRate}
             publicLeaderBoard={publicLeaderBoard}
             userId={user?.user.id}
           />

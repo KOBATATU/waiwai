@@ -21,6 +21,7 @@ export const editCompetitionRepository = {
         startDate: competition.startDate,
         endDate: competition.endDate,
         open: competition.open,
+        testDataRate: competition.testDataRate,
         evaluationFunc: competition.evaluationFunc,
         problem: competition.problem,
         limitSubmissionNum: competition.limitSubmissionNum,
