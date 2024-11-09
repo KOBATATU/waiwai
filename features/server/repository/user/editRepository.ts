@@ -19,4 +19,24 @@ export const editUserRepository = {
     })
     return user
   },
+
+  /**
+   *
+   * @param userId
+   * @param name
+   * @returns
+   */
+  editUserById: async (userId: string, name: string) => {
+    const prisma = getPrisma()
+
+    const user = prisma.user.update({
+      data: {
+        name,
+      },
+      where: {
+        id: userId,
+      },
+    })
+    return user
+  },
 }

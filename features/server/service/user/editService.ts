@@ -9,4 +9,14 @@ export const editUserService = {
   editUserRoleByAdmin: async (userId: string, role: string) => {
     return await editUserRepository.editUserRoleByAdmin(userId, role)
   },
+
+  /**
+   *
+   * @param userId
+   * @param name
+   * @returns
+   */
+  editUserById: async (userId: string, name: string) => {
+    return await editUserRepository.editUserById(userId, name)
+  },
 }

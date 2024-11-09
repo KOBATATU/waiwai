@@ -1,3 +1,4 @@
+import { UserSchema } from "@/prisma/generated/zod"
 import { z } from "zod"
 
 export const UserSignupSchema = z.object({
@@ -13,4 +14,8 @@ export const UserSigninSchema = UserSignupSchema.pick({
 export const UserRoleSchema = z.object({
   role: z.enum(["user", "admin"]),
   id: z.string(),
+})
+
+export const UserNameSchema = z.object({
+  name: z.string({ required_error: "required" }),
 })
