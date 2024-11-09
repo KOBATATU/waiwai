@@ -15,13 +15,11 @@ type RootContainerProps = {
 
 export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
   const competition = await getCompetitionClientService.getCompetitionById(id)
-
   const publicLeaderBoard =
     await getTeamClientService.getTeamPublicScoresByCompetitionId(
       id,
       competition
     )
-
   const privateLeaderBoard =
     await getTeamClientService.getTeamPrivateScoresByCompetitionId(
       id,

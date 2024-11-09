@@ -23,16 +23,18 @@ export const createDateWithTimezone = (date: Date) => {
 }
 
 export const editDateWithTimezone = (localDate: Date) => {
-  const formatNumber = (num: number) => String(num).padStart(2, "0")
-  const { year, month, day, hours, minutes } = {
-    year: localDate.getFullYear(),
-    month: formatNumber(localDate.getUTCMonth() + 1),
-    day: formatNumber(localDate.getUTCDate()),
-    hours: formatNumber(localDate.getHours()),
-    minutes: formatNumber(localDate.getUTCMinutes()),
-  }
+  const isoString = localDate.toISOString()
+  // ISO形式の文字列から必要な部分を抽出
+  const year = isoString.substring(0, 4) // yyyy
+  const month = isoString.substring(5, 7) // mm
+  const day = isoString.substring(8, 10) // dd
+  const hours = isoString.substring(11, 13) // hh
+  const minutes = isoString.substring(14, 16) // mm
 
-  return `${year}/${month}/${day}T${hours}:${minutes}`
+  // フォーマットを整える
+  const formattedDate = `${year}/${month}/${day}: ${hours}:${minutes}`
+
+  return formattedDate
 }
 
 export const handleDownload = (url: string, filename?: string) => {

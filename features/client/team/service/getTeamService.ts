@@ -28,16 +28,13 @@ export const getTeamClientService = {
       handler: async () => {
         const session = await getServerSession()
         const userId = session?.user.id ?? ""
-        type ProblemKeys = keyof typeof EvaluationFuncEnum
-        const problem =
-          competition.problem in EvaluationFuncEnum
-            ? EvaluationFuncEnum[competition.problem as ProblemKeys]
-            : EvaluationFuncEnum["regression"]
-        // @ts-ignore
-        const useMax = problem[competition.evaluationFunc].order === "max"
+
+        const useMax = getUseMax(
+          competition.problem,
+          competition.evaluationFunc
+        )
 
         return await getTeamService.getTeamPublicScoresByCompetitionId(
-          1,
           competitionId,
           userId,
           useMax
@@ -72,7 +69,6 @@ export const getTeamClientService = {
           competition.completed
         ) {
           return await getTeamService.getTeamPrivateScoresByCompetitionId(
-            1,
             competitionId,
             userId,
             useMax

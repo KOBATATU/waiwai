@@ -38,34 +38,29 @@ export const getTeamService = {
 
   /**
    *
-   * @param page
    * @param competitionId
    * @param useMax
    * @returns
    */
   getTeamPublicScoresByCompetitionId: async (
-    page: number,
     competitionId: string,
     userId: string,
     useMax: boolean
   ) => {
     return await getTeamRepository.getTeamPublicScoresByCompetitionId(
       competitionId,
-      page,
       userId,
       useMax
     )
   },
 
   getTeamPrivateScoresByCompetitionId: async (
-    page: number,
     competitionId: string,
     userId: string,
     useMax: boolean
   ) => {
     return await getTeamRepository.getTeamPrivateScoresByCompetitionId(
       competitionId,
-      page,
       userId,
       useMax
     )
