@@ -12,7 +12,7 @@ export const getUserClientService = {
       auth: true,
       permissions: ["admin"],
       handler: async () => {
-        return getUserService.getUsersByAdmin(1)
+        return getUserService.getUsersByAdmin(page)
       },
     })()
   },

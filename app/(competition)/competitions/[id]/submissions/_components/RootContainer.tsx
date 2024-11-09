@@ -1,13 +1,21 @@
 import { SubmissionTable } from "@/features/client/team/components/submission/SubmissionTable"
 import { getTeamClientService } from "@/features/client/team/service/getTeamService"
 
+import { QueryParameters } from "@/lib/utils"
+
 type RootContainerProps = {
   id: string
+  queryParameter: QueryParameters
 }
 
-export const RootContainer = async ({ id }: RootContainerProps) => {
-  const teamSubmissions =
-    await getTeamClientService.getTeamSubmissionsByTeamId(id)
+export const RootContainer = async ({
+  id,
+  queryParameter,
+}: RootContainerProps) => {
+  const teamSubmissions = await getTeamClientService.getTeamSubmissionsByTeamId(
+    id,
+    queryParameter.page
+  )
 
   return (
     <div className="mt-2">
