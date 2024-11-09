@@ -20,7 +20,7 @@ export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerif
 
 export const VerificationRequestScalarFieldEnumSchema = z.enum(['id','identifier','token','expires','createdAt','updatedAt']);
 
-export const CompetitionScalarFieldEnumSchema = z.enum(['id','title','subtitle','description','dataDescription','thumbnail','startDate','endDate','open','completed','evaluationFunc','problem','limitSubmissionNum','createdAt','updatedAt']);
+export const CompetitionScalarFieldEnumSchema = z.enum(['id','title','subtitle','description','dataDescription','thumbnail','startDate','endDate','open','completed','evaluationFunc','problem','limitSubmissionNum','testDataRate','createdAt','updatedAt']);
 
 export const CompetitionDataScalarFieldEnumSchema = z.enum(['id','competitionId','dataPath','createdAt','updatedAt']);
 
@@ -166,6 +166,7 @@ export const CompetitionSchema = z.object({
   evaluationFunc: z.string({ required_error: "required" }).max(20, { message: "Please enter less than 20 characters" }),
   problem: z.string({ required_error: "required" }).max(20, { message: "Please enter less than 20 characters" }),
   limitSubmissionNum: z.number({ required_error: "required" }),
+  testDataRate: z.number({ required_error: "required" }),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

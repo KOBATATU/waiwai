@@ -34,6 +34,7 @@ export const updateCompetitionAction = async (
         description: competition.description,
         dataDescription: competition.dataDescription,
         thumbnail: competition.thumbnail,
+        completed: competition.completed,
         ...payload,
         startDate: createDateWithTimezone(payload.startDate),
         endDate: createDateWithTimezone(payload.endDate),

@@ -26,11 +26,13 @@ export type PublicLeaderBoardType = Omit<
 >
 
 type PublicLeaderBoardProps = {
+  testDataRate: number
   publicLeaderBoard: GetTeamServiceType["getTeamPrivateScoresByCompetitionId"]
   userId?: string
 }
 
 export const PublicLeaderBoard = ({
+  testDataRate,
   publicLeaderBoard,
   userId,
 }: PublicLeaderBoardProps) => {
@@ -109,9 +111,9 @@ export const PublicLeaderBoard = ({
   return (
     <div className="w-full mt-4">
       <p className="text-sm text-gray-500">
-        This leaderboard is calculated with approximately 35% of the test data.
-        The final results will be based on the other 65%, so the final standings
-        may be different.
+        This leaderboard is calculated with approximately {testDataRate}% of the
+        test data. The final results will be based on the other{" "}
+        {100 - testDataRate}%, so the final standings may be different.
       </p>
       <div className="rounded-md border mt-4">
         <Table>

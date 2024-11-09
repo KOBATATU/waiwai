@@ -18,6 +18,7 @@ const MINIMUM_COMPETITION_FIELDS = {
   completed: true,
   createdAt: true,
   updatedAt: true,
+  testDataRate: true,
   competitionDatas: {
     select: {
       id: true,
