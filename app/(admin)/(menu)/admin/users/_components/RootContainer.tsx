@@ -2,8 +2,14 @@ import { UserAdminTable } from "@/features/client/user/components/user-admin-tab
 import { getUserClientService } from "@/features/client/user/service/getUserService"
 import { getServerSession } from "@/features/server/core/session"
 
-export const RootContainer = async () => {
-  const users = await getUserClientService.getUsersByAdmin(1)
+import { QueryParameters } from "@/lib/utils"
+
+type RootContainerProps = {
+  queryParameter: QueryParameters
+}
+
+export const RootContainer = async ({ queryParameter }: RootContainerProps) => {
+  const users = await getUserClientService.getUsersByAdmin(queryParameter.page)
   const user = await getServerSession()
   return (
     <div>

@@ -36,6 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { AnyField } from "@/components/Form/AnyField"
+import { Pagination } from "@/components/Pagination/Pagination"
 
 export type UserAdminTableType = {
   id: string
@@ -151,9 +152,6 @@ export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
     data: data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
   })
 
   return (
@@ -210,22 +208,11 @@ export const UserAdminTable = ({ users, userId }: UserAdminTableProps) => {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+          <Pagination
+            nextPagePath={`/admin/users?page=${users[1].nextPage}`}
+            previousPagePath={`/admin/users?page=${users[1].previousPage}`}
+            meta={users[1]}
+          />
         </div>
       </div>
     </div>

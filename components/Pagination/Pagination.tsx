@@ -22,12 +22,12 @@ export const Pagination = ({
     <div className={cn("flex justify-center", className)}>
       {meta.previousPage && (
         <Link href={previousPagePath} className="text-center">
-          <Button variant="outline">戻る({meta.previousPage}ページへ)</Button>
+          <Button variant="outline">back({meta.previousPage}ページへ)</Button>
         </Link>
       )}
       {meta.nextPage && (
         <Link href={nextPagePath} className="text-center">
-          <Button>次のページへ</Button>
+          <Button>next page</Button>
         </Link>
       )}
     </div>
