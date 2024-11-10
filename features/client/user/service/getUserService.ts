@@ -14,6 +14,6 @@ export const getUserClientService = {
       handler: async () => {
         return getUserService.getUsersByAdmin(page)
       },
-    })()
+    })
   },
 }

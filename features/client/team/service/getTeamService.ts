@@ -40,7 +40,7 @@ export const getTeamClientService = {
           useMax
         )
       },
-    })()
+    })
   },
 
   /**
@@ -78,7 +78,7 @@ export const getTeamClientService = {
           data: [],
         }
       },
-    })()
+    })
   },
 
   /**
@@ -97,7 +97,7 @@ export const getTeamClientService = {
           competitionId
         )
       },
-    })()
+    })
   },
 
   /**
@@ -127,7 +127,7 @@ export const getTeamClientService = {
           page
         )
       },
-    })()
+    })
   },
 }
 
