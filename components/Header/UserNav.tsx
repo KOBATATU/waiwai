@@ -43,10 +43,7 @@ export const UserNav = ({ session }: UserNav) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="p-3">
-              <Link href="/user/profile">profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="p-3">
-              <Link href="/user/competition">competition</Link>
+              <Link href="/user/me">profile</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="p-3" onClick={() => signOut()}>
