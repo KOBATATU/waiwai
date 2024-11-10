@@ -21,6 +21,7 @@ export const createCompetitionService = {
       open: createCompetitionDefaultValue.open,
       evaluationFunc: createCompetitionDefaultValue.evaluationFunc,
       problem: createCompetitionDefaultValue.problem,
+      testDataRate: createCompetitionDefaultValue.testDataRate,
       limitSubmissionNum: createCompetitionDefaultValue.limitSubmissionNum,
     }
     return await createCompetitionRepository.createCompetition(competition)

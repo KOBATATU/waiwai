@@ -1,8 +1,4 @@
-import {
-  CompetitionCustomOptionalDefaults,
-  EvaluationFuncEnum,
-  ProblemEnum,
-} from "./competition"
+import { EvaluationFuncEnum, ProblemEnum } from "./competition"
 
 /**
  * I wanna write source code using zod default parameters, zod-prisma-types doesn't generate zod default parameters.
@@ -50,6 +46,15 @@ huga = 1
 print(hoge + huga)
 \`\`\`
 
+math:
+
+inline math: $E=mc^2$。
+
+block math:
+
+$$
+\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}
+$$
 
 ## Schedule
 
@@ -120,4 +125,5 @@ Below are examples of the data in each file.
   evaluationFunc: EvaluationFuncEnum.regression.rmse.value,
   problem: ProblemEnum.regression,
   limitSubmissionNum: 50,
+  testDataRate: 0,
 }

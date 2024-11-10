@@ -1,7 +1,9 @@
 import ReactMarkdown from "react-markdown"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"
+import rehypeKatex from "rehype-katex"
 import remarkGfm from "remark-gfm"
+import remarkMath from "remark-math"
 
 import { cn } from "@/lib/utils"
 
@@ -15,7 +17,8 @@ export const Markdown = ({ body, className }: MarkdownProps) => {
       skipHtml={true}
       children={body!}
       className={cn(`${styles.markdown} `, className)}
-      remarkPlugins={[remarkGfm]}
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
       components={{
         h1: ({ node, ...props }) => {
           return (

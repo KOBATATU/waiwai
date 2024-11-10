@@ -1,3 +1,4 @@
+@import "katex/dist/katex.min.css";
 .markdown {
   margin: 0 auto;
   line-height: 1.6;
