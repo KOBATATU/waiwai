@@ -1,4 +1,5 @@
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
+import { getServerSession } from "@/features/server/core/session"
 
 import { SiteHeader } from "@/components/Header/Header"
 import { SectionMenu } from "@/components/Layout/SectionMenu"
@@ -12,11 +13,12 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  const [competition, isCompetitionParticipated] = await Promise.all([
+  const [competition, isCompetitionParticipated, session] = await Promise.all([
     getCompetitionClientService.getCompetitionById(params.id),
     getCompetitionClientService.getCompetitionParticipateByCompetitionId(
       params.id
     ),
+    getServerSession(),
   ])
 
   const menus = [
@@ -41,27 +43,31 @@ export default async function RootLayout({
       href: `/competitions/${params.id}/leaderboard`,
       label: "leaderboard",
     },
-    ...(!isCompetitionParticipated
-      ? [
-          {
-            value: "participate",
-            href: `/competitions/${params.id}/participate`,
-            label: "participate",
-          },
-        ]
-      : [
-          {
-            value: "team",
-            href: `/competitions/${params.id}/team`,
-            label: "team",
-          },
+    session
+      ? {
+          ...(!isCompetitionParticipated
+            ? [
+                {
+                  value: "participate",
+                  href: `/competitions/${params.id}/participate`,
+                  label: "participate",
+                },
+              ]
+            : [
+                {
+                  value: "team",
+                  href: `/competitions/${params.id}/team`,
+                  label: "team",
+                },
 
-          {
-            value: "submissions",
-            href: `/competitions/${params.id}/submissions`,
-            label: "submissions",
-          },
-        ]),
+                {
+                  value: "submissions",
+                  href: `/competitions/${params.id}/submissions`,
+                  label: "submissions",
+                },
+              ]),
+        }
+      : {},
   ]
 
   return (
