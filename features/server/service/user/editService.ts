@@ -19,4 +19,15 @@ export const editUserService = {
   editUserById: async (userId: string, name: string) => {
     return await editUserRepository.editUserById(userId, name)
   },
+
+  /**
+   *
+   * @param userId
+   * @param filename
+   * @returns
+   */
+  editUserAvatarById: async (userId: string, filename: string) => {
+    const objectPath = `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${filename}`
+    return await editUserRepository.editUserAvatarById(userId, objectPath)
+  },
 }

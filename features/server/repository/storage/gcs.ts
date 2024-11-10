@@ -19,11 +19,15 @@ export const createGcs = () => {
   return bucket
 }
 
-export const checkFileType = (file: File) => {
-  if (file.type !== "text/csv") {
+export const checkFileType = (
+  file: File,
+  allowedTypes: string = "text/csv"
+) => {
+  const typesArray = allowedTypes.split(",").map((type) => type.trim())
+  if (!typesArray.includes(file.type)) {
     throw new BadException({
       fieldsError: {
-        role: [ExceptionEnum.competitionDataUploadBad.message],
+        type: [ExceptionEnum.competitionDataUploadBad.message],
       },
       message: ExceptionEnum.competitionDataUploadBad.message,
       code: ExceptionEnum.competitionDataUploadBad.code,

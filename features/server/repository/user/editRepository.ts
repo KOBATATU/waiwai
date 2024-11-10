@@ -39,4 +39,18 @@ export const editUserRepository = {
     })
     return user
   },
+
+  editUserAvatarById: async (userId: string, avatar: string) => {
+    const prisma = getPrisma()
+
+    const user = prisma.user.update({
+      data: {
+        image: avatar,
+      },
+      where: {
+        id: userId,
+      },
+    })
+    return user
+  },
 }

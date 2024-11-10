@@ -91,6 +91,7 @@ export const actionHandler = async <T>({
       value: null,
     }
   } catch (e) {
+    console.log(e)
     if (e instanceof NotFoundException) {
       notFound()
     } else if (e instanceof BadException) {
@@ -98,7 +99,10 @@ export const actionHandler = async <T>({
         submission: submission.reply({
           fieldErrors: e.fieldsError,
         }),
-        value: null,
+        value: {
+          message: e.message,
+          code: e.code,
+        },
       }
     }
     throw e

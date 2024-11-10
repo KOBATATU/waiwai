@@ -19,3 +19,7 @@ export const UserRoleSchema = z.object({
 export const UserNameSchema = z.object({
   name: z.string({ required_error: "required" }),
 })
+
+export const UserAvatarSchema = z.object({
+  file: z.instanceof(File),
+})
