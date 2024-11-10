@@ -10,7 +10,7 @@ export const getCompetitionClientService = {
       handler: async () => {
         return await getCompetitionService.getCompetitionsByAdmin(page)
       },
-    })()
+    })
   },
 
   getCompetitionByAdmin: async (id: string) => {
@@ -20,7 +20,7 @@ export const getCompetitionClientService = {
       handler: async () => {
         return await getCompetitionService.getCompetitionByIdAndAdmin(id)
       },
-    })()
+    })
   },
   getCompetitions: async () => {
     return await getHandler({
@@ -28,7 +28,7 @@ export const getCompetitionClientService = {
       handler: async () => {
         return await getCompetitionService.getCompetitions(1)
       },
-    })()
+    })
   },
   getCompetitionById: async (id: string) => {
     return await getHandler({
@@ -36,7 +36,7 @@ export const getCompetitionClientService = {
       handler: async () => {
         return await getCompetitionService.getCompetitionById(id)
       },
-    })()
+    })
   },
   getCompetitionParticipateByCompetitionId: async (id: string) => {
     return await getHandler({
@@ -50,6 +50,6 @@ export const getCompetitionClientService = {
           )
         return !!competitionParticipate
       },
-    })()
+    })
   },
 }

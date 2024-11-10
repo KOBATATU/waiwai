@@ -10,40 +10,39 @@ import { parseWithZod } from "@conform-to/zod"
 import { Session } from "next-auth"
 import { z } from "zod"
 
-type HandlerFunction<T, P extends any[]> = (...params: P) => Promise<T>
 type HandlerOptions<T, P extends any[]> = {
   auth: boolean
   permissions?: UserRole[]
-  handler: HandlerFunction<T, P>
+  handler: Function
 }
-export const getHandler = <T, P extends any[]>({
+
+export const getHandler = async <T, P extends any[]>({
   auth,
   permissions,
   handler,
-}: HandlerOptions<T, P>) => {
-  return async (...params: P): Promise<T> => {
-    try {
-      if (auth) {
-        const session = await getServerSession()
-        if (
-          !session ||
-          !session.user ||
-          (permissions && !permissions.includes(session.user.role))
-        ) {
-          throw new NotFoundException({
-            message: ExceptionEnum.userAuthBad.message,
-            code: ExceptionEnum.userAuthBad.code,
-            fieldsError: {},
-          })
-        }
+}: HandlerOptions<T, P>): Promise<T> => {
+  try {
+    if (auth) {
+      const session = await getServerSession()
+      if (
+        !session ||
+        !session.user ||
+        (permissions && !permissions.includes(session.user.role))
+      ) {
+        throw new NotFoundException({
+          message: ExceptionEnum.userAuthBad.message,
+          code: ExceptionEnum.userAuthBad.code,
+          fieldsError: {},
+        })
       }
-      return await handler(...params)
-    } catch (e) {
-      if (e instanceof NotFoundException) {
-        notFound()
-      }
-      throw e
     }
+
+    return await handler()
+  } catch (e) {
+    if (e instanceof NotFoundException) {
+      notFound()
+    }
+    throw e
   }
 }
 
