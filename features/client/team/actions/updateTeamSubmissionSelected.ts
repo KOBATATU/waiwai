@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { actionHandler } from "@/features/server/core/handler"
-import { canSubmitAndSelectedData } from "@/features/server/domain/competition/competition"
+import { isNowBeforeEndDate } from "@/features/server/domain/competition/competition"
 import { TeamSubmissionSelectedSchema } from "@/features/server/domain/team/team"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 import { editTeamService } from "@/features/server/service/team/editService"
@@ -33,7 +33,7 @@ export const updateTeamSubmissionSelectedAction = async (
       const competition = await getCompetitionService.getCompetitionById(
         payload.competitionId
       )
-      canSubmitAndSelectedData(competition.open, competition.endDate)
+      isNowBeforeEndDate(competition.open, competition.endDate)
 
       const selected = payload.selected === "on"
       if (selected) {

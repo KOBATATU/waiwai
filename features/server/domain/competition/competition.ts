@@ -75,7 +75,7 @@ export const CompetitionCompleteSchema = CompetitionSchema.pick({
  * @param open
  * @param endDate
  */
-export const canSubmitAndSelectedData = (
+export const isNowBeforeEndDate = (
   open: boolean,
   endDate: Date,
   throwException: boolean = true
@@ -92,6 +92,25 @@ export const canSubmitAndSelectedData = (
     })
   }
   return canSubmit
+}
+
+export const isNowAfterStartDate = (
+  open: boolean,
+  startDate: Date,
+  throwException: boolean = true
+) => {
+  const now = createDateWithTimezone(new Date())
+  const _isNowAfterStartDate = open && now.getTime() > startDate.getTime()
+  if (throwException && _isNowAfterStartDate) {
+    throw new BadException({
+      fieldsError: {
+        endDate: [ExceptionEnum.competitionNotStart.message],
+      },
+      message: ExceptionEnum.competitionNotStart.message,
+      code: ExceptionEnum.competitionNotStart.code,
+    })
+  }
+  return _isNowAfterStartDate
 }
 
 export const EvaluationFuncEnum = {
