@@ -18,14 +18,13 @@ export default async function RootLayout({
     getCompetitionClientService.getCompetitionParticipateByCompetitionId(
       params.id
     ),
-    getServerSession,
+    getServerSession(),
   ])
 
   const menus = [
     {
       value: "overview",
       href: `/competitions/${params.id}/overview`,
-
       label: "overview",
     },
     {
@@ -43,27 +42,30 @@ export default async function RootLayout({
       href: `/competitions/${params.id}/leaderboard`,
       label: "leaderboard",
     },
-    ...(!isCompetitionParticipated
+    ...(session
       ? [
-          {
-            value: "participate",
-            href: `/competitions/${params.id}/participate`,
-            label: "participate",
-          },
+          ...(isCompetitionParticipated
+            ? [
+                {
+                  value: "team",
+                  href: `/competitions/${params.id}/team`,
+                  label: "team",
+                },
+                {
+                  value: "submissions",
+                  href: `/competitions/${params.id}/submissions`,
+                  label: "submissions",
+                },
+              ]
+            : [
+                {
+                  value: "participate",
+                  href: `/competitions/${params.id}/participate`,
+                  label: "participate",
+                },
+              ]),
         ]
-      : [
-          {
-            value: "team",
-            href: `/competitions/${params.id}/team`,
-            label: "team",
-          },
-
-          {
-            value: "submissions",
-            href: `/competitions/${params.id}/submissions`,
-            label: "submissions",
-          },
-        ]),
+      : []),
   ]
 
   return (
