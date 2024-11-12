@@ -2,10 +2,12 @@
 
 import { redirect } from "next/navigation"
 import { actionHandler } from "@/features/server/core/handler"
+import { isNowAfterStartDate } from "@/features/server/domain/competition/competition"
 import {
   EnumTeamSubmissionStatus,
   TeamSubmitFileSchema,
 } from "@/features/server/domain/team/team"
+import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 import { createTeamService } from "@/features/server/service/team/createService"
 import { editTeamService } from "@/features/server/service/team/editService"
 import { getTeamService } from "@/features/server/service/team/getService"
@@ -27,11 +29,15 @@ export const submitCsvFileAction = async (
     schema: TeamSubmitFileSchema,
     permissions: ["admin", "user"],
     callback: async (user, payload) => {
+      const competition = await getCompetitionService.getCompetitionById(
+        payload.competitionId
+      )
+      isNowAfterStartDate(competition.open, competition.startDate)
+
       const team = await getTeamService.getTeamByUserIdAndCompetitionId(
         user.id,
         payload.competitionId
       )
-
       const { filename, objectPath } =
         await uploadTeamService.uploadSubmissionFile(
           payload.competitionId,
@@ -65,7 +71,6 @@ export const submitCsvFileAction = async (
         })
 
       redirect(`/competitions/${payload.competitionId}/team`)
-      return {}
     },
   })
 }

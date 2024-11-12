@@ -10,17 +10,17 @@ import { parseWithZod } from "@conform-to/zod"
 import { Session } from "next-auth"
 import { z } from "zod"
 
-type HandlerOptions<T, P extends any[]> = {
+type HandlerOptions<T> = {
   auth: boolean
   permissions?: UserRole[]
-  handler: Function
+  handler: () => Promise<T>
 }
 
-export const getHandler = async <T, P extends any[]>({
+export const getHandler = async <T>({
   auth,
   permissions,
   handler,
-}: HandlerOptions<T, P>): Promise<T> => {
+}: HandlerOptions<T>): Promise<T> => {
   try {
     if (auth) {
       const session = await getServerSession()

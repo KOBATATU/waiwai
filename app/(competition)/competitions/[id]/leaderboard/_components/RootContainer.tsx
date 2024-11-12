@@ -4,7 +4,10 @@ import { SubmitCsvFileButton } from "@/features/client/competition/components/de
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 import { getTeamClientService } from "@/features/client/team/service/getTeamService"
 import { getServerSession } from "@/features/server/core/session"
-import { canSubmitAndSelectedData } from "@/features/server/domain/competition/competition"
+import {
+  isNowAfterStartDate,
+  isNowBeforeEndDate,
+} from "@/features/server/domain/competition/competition"
 
 import { LeaderBoardMenu } from "./LeaderBoardMenu"
 
@@ -15,24 +18,23 @@ type RootContainerProps = {
 
 export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
   const competition = await getCompetitionClientService.getCompetitionById(id)
-  const publicLeaderBoard =
-    await getTeamClientService.getTeamPublicScoresByCompetitionId(
-      id,
-      competition
-    )
-  const privateLeaderBoard =
-    await getTeamClientService.getTeamPrivateScoresByCompetitionId(
-      id,
-      competition
-    )
+  const [
+    publicLeaderBoard,
+    privateLeaderBoard,
+    isCompetitionParticipated,
+    user,
+  ] = await Promise.all([
+    getTeamClientService.getTeamPublicScoresByCompetitionId(id, competition),
+    getTeamClientService.getTeamPublicScoresByCompetitionId(id, competition),
+    getCompetitionClientService.getCompetitionParticipateByCompetitionId(id),
+    getServerSession(),
+  ])
 
-  const canSubmit = canSubmitAndSelectedData(
-    competition.open,
-    competition.endDate,
-    false
-  )
+  const canSubmit =
+    isNowBeforeEndDate(competition.open, competition.endDate, false) &&
+    isNowAfterStartDate(competition.open, competition.startDate, false) &&
+    isCompetitionParticipated
 
-  const user = await getServerSession()
   return (
     <div className="mt-2">
       <div className="mb-4 flex gap-2 items-center">
