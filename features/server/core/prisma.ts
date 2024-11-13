@@ -5,17 +5,30 @@ import { pagination } from "prisma-extension-pagination"
 /**
  * only pagination prisma client
  */
-export const prismaPagination = new PrismaClient({
+export let prismaPagination = new PrismaClient({
   transactionOptions: {
     timeout: 10000,
   },
 }).$extends(pagination())
 
-export const prismaClient = new PrismaClient({
+export let prismaClient = new PrismaClient({
   transactionOptions: {
     timeout: 10000,
   },
 })
+
+/**
+ * only use test
+ * @param testPrisma
+ * @param testPaginaionPrisma
+ */
+export const setTestPrisma = (
+  testPrisma: typeof prismaClient,
+  testPaginaionPrisma: typeof prismaPagination
+) => {
+  prismaClient = testPrisma
+  prismaPagination = testPaginaionPrisma
+}
 
 /**
  * transaction prisma

@@ -3,8 +3,7 @@
 import { redirect } from "next/navigation"
 import { BadException, ExceptionEnum } from "@/features/server/core/exception"
 import { notAuthActionHandler } from "@/features/server/core/handler"
-import { prismaClient } from "@/features/server/core/prisma"
-// import { prismaClient } from "@/features/server/core/prisma"
+import { getPrisma } from "@/features/server/core/prisma"
 import { UserSignupSchema } from "@/features/server/domain/user/user"
 import { SubmissionResult } from "@conform-to/react"
 import * as bcrypt from "bcrypt"
@@ -24,7 +23,8 @@ export const signupAction = async (
     formData: formData,
     schema: UserSignupSchema,
     callback: async (payload) => {
-      const user = await prismaClient.user.findUnique({
+      const prisma = getPrisma()
+      const user = await prisma.user.findUnique({
         where: { email: payload.email },
       })
 
@@ -38,7 +38,7 @@ export const signupAction = async (
         })
       } else {
         const encodePassword = await bcrypt.hash(payload.password, 10)
-        const user = await prismaClient.user.create({
+        const user = await prisma.user.create({
           data: {
             name: payload.name,
             email: payload.email,
