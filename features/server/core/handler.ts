@@ -90,9 +90,8 @@ export const actionHandler = async <T>({
       value: null,
     }
   } catch (e) {
-    console.log(e)
     if (e instanceof NotFoundException) {
-      notFound()
+      return notFound()
     } else if (e instanceof BadException) {
       return {
         submission: submission.reply({
