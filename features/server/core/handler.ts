@@ -145,7 +145,10 @@ export const notAuthActionHandler = async <T>({
         submission: submission.reply({
           fieldErrors: e.fieldsError,
         }),
-        value: null,
+        value: {
+          message: e.message,
+          code: e.code,
+        },
       }
     }
     throw e
