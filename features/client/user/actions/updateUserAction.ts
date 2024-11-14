@@ -12,7 +12,7 @@ import { SubmissionResult } from "@conform-to/react"
  * @param formData
  * @returns
  */
-export const updateUserRoleAction = async (
+export const updateUserAction = async (
   prevState: SubmissionResult<string[]> | undefined,
   formData: FormData
 ) => {
