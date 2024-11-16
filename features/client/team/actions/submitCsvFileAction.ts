@@ -70,7 +70,7 @@ export const submitCsvFileAction = async (
           }
         })
 
-      redirect(`/competitions/${payload.competitionId}/team`)
+      redirect(`/competitions/${payload.competitionId}/submissions`)
     },
   })
 }

@@ -101,7 +101,7 @@ export const isNowAfterStartDate = (
 ) => {
   const now = createDateWithTimezone(new Date())
   const _isNowAfterStartDate = open && now.getTime() > startDate.getTime()
-  if (throwException && _isNowAfterStartDate) {
+  if (throwException && !_isNowAfterStartDate) {
     throw new BadException({
       fieldsError: {
         endDate: [ExceptionEnum.competitionNotStart.message],

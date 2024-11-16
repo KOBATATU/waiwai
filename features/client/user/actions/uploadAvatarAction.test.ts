@@ -18,7 +18,7 @@ describe("uploadAvatarAction test", () => {
     vi.resetAllMocks()
   })
 
-  test("user not auth", async () => {
+  test("access user doesn't have permission", async () => {
     vi.mocked(getServerSession).mockResolvedValue(null)
     const mockNotFound = vi.mocked(notFound)
 
