@@ -1,7 +1,6 @@
 import "@/lib/testcontainer"
 
 import { notFound } from "next/navigation"
-import { ExceptionEnum } from "@/features/server/core/exception"
 import { getPrisma } from "@/features/server/core/prisma"
 import {
   mockAdminUser1,

@@ -1,5 +1,6 @@
 import "@/lib/testcontainer"
 
+import { notFound } from "next/navigation"
 import { ExceptionEnum } from "@/features/server/core/exception"
 import { getPrisma } from "@/features/server/core/prisma"
 import { mockUser1 } from "@/features/server/domain/user/__mock__/user.mock"
@@ -15,6 +16,22 @@ describe("uploadAvatarAction test", () => {
   })
   beforeEach(() => {
     vi.resetAllMocks()
+  })
+
+  test("user not auth", async () => {
+    vi.mocked(getServerSession).mockResolvedValue(null)
+    const mockNotFound = vi.mocked(notFound)
+
+    const form = new FormData()
+    const blob = new Blob([], { type: "image/png" })
+    const file = new File([blob], "mockImage." + "png", {
+      type: "image/png",
+    })
+    form.append("file", file)
+
+    const editUser = await uploadUserAvatarAction(undefined, form)
+
+    expect(mockNotFound).toHaveBeenCalledTimes(1)
   })
 
   test.each([["image/png"], ["image/jpeg"]])(
