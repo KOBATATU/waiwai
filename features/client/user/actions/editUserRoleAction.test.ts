@@ -15,6 +15,7 @@ describe("editUserRoleAction test", () => {
   beforeAll(async () => {
     const prisma = getPrisma()
     await prisma.user.create({ data: mockAdminUser1.user })
+    await prisma.user.create({ data: mockUser1.user })
   })
   beforeEach(() => {
     vi.resetAllMocks()
