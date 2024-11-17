@@ -1,6 +1,7 @@
 "use server"
 
 import { redirect } from "next/navigation"
+import { BadException, ExceptionEnum } from "@/features/server/core/exception"
 import { actionHandler } from "@/features/server/core/handler"
 import {
   isNowAfterStartDate,
@@ -42,6 +43,17 @@ export const submitCsvFileAction = async (
         user.id,
         payload.competitionId
       )
+
+      if (competition.limitSubmissionNum < team._count.teamSubmissions) {
+        throw new BadException({
+          fieldsError: {
+            endDate: [ExceptionEnum.teamSubmitLimit.message],
+          },
+          message: ExceptionEnum.teamSubmitLimit.message,
+          code: ExceptionEnum.teamSubmitLimit.code,
+        })
+      }
+
       const { filename, objectPath } =
         await uploadTeamService.uploadSubmissionFile(
           payload.competitionId,

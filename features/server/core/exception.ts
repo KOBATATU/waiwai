@@ -69,6 +69,11 @@ export const ExceptionEnum = {
     code: "B4008",
     message: "competition not started",
   },
+  teamSubmitLimit: {
+    code: "B4009",
+    message:
+      "team cann't submit file because of competition limit submission num",
+  },
   competitionNotFound: {
     code: "N4000",
     message: "not found competition",

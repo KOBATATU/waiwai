@@ -24,6 +24,11 @@ const selectTeamUnique = async (
           },
         },
       },
+      _count: {
+        select: {
+          teamSubmissions: true,
+        },
+      },
     },
     where: {
       competitionId: competitionId,
