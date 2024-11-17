@@ -136,7 +136,7 @@ const selectScoresPaginationRecords = async (
     CAST(RANK() OVER (ORDER BY private_best_score ${Prisma.raw(order)}) AS INTEGER ) AS private_rank
   FROM BestScores
   ORDER BY
-    public_best_score ${Prisma.raw(order)} 
+    ${Prisma.raw(`${scoreboard}_best_score`)} ${Prisma.raw(order)}  NULLS LAST
   `
 
   const prisma = getPrisma()
