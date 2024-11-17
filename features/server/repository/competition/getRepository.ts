@@ -2,6 +2,8 @@ import { getPrisma } from "@/features/server/core/prisma"
 import { UserRole } from "@/features/server/domain/user/service"
 import { Prisma } from "@prisma/client"
 
+import { createDateWithTimezone } from "@/lib/utils"
+
 const MINIMUM_COMPETITION_FIELDS = {
   id: true,
   title: true,
@@ -46,7 +48,7 @@ const selectCompetitionPaginationRecords = async (
     }
   }
   const prisma = getPrisma("pagination")
-  return await prisma.competition
+  const competitions = await prisma.competition
     .paginate({
       orderBy: {
         createdAt: "desc",
@@ -63,6 +65,17 @@ const selectCompetitionPaginationRecords = async (
       page: page,
       includePageCount: true,
     })
+
+  competitions[0].forEach((competition) => {
+    if (competition?.endDate) {
+      competition.endDate = createDateWithTimezone(competition.endDate)
+    }
+    if (competition?.startDate) {
+      competition.startDate = createDateWithTimezone(competition.startDate)
+    }
+  })
+
+  return competitions
 }
 
 const selectCompetitionUnique = async (
@@ -78,7 +91,7 @@ const selectCompetitionUnique = async (
   }
 
   const prisma = getPrisma()
-  return await prisma.competition.findUnique({
+  const competition = await prisma.competition.findUnique({
     select: {
       ...MINIMUM_COMPETITION_FIELDS,
     },
@@ -87,6 +100,14 @@ const selectCompetitionUnique = async (
       id,
     },
   })
+  if (competition?.endDate) {
+    competition.endDate = createDateWithTimezone(competition.endDate)
+  }
+  if (competition?.startDate) {
+    competition.startDate = createDateWithTimezone(competition.startDate)
+  }
+
+  return competition
 }
 
 const selectCompetitionDataUnique = async (

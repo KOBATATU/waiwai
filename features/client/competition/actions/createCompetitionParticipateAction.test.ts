@@ -41,9 +41,7 @@ describe("updateTeamSubmissionSelectedAction test", () => {
   })
   beforeEach(() => {
     vi.resetAllMocks()
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
+    vi.setSystemTime(new Date(competitionDefault.startDate.getTime() + 1))
   })
   afterEach(() => {
     vi.useRealTimers()
@@ -76,9 +74,7 @@ describe("updateTeamSubmissionSelectedAction test", () => {
 
   test("competition not start because of startDate > now ", async () => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser1)
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 - 1)
-    )
+    vi.setSystemTime(new Date(competitionDefault.startDate.getTime() - 1))
     const form = new FormData()
     form.append("id", competitionDefault.id)
     const result = await createCompetitionParticipateAction(undefined, form)
@@ -87,9 +83,7 @@ describe("updateTeamSubmissionSelectedAction test", () => {
   })
   test("competition end because of endDate < now  ", async () => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser1)
-    vi.setSystemTime(
-      new Date(competitionDefault.endDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
+    vi.setSystemTime(new Date(competitionDefault.endDate.getTime() + 1))
     const form = new FormData()
     form.append("id", competitionDefault.id)
     const result = await createCompetitionParticipateAction(undefined, form)

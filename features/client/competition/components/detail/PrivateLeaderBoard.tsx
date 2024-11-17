@@ -32,7 +32,6 @@ export const PrivateLeaderBoard = ({
   privateLeaderBoard,
   userId,
 }: PrivateLeaderBoardProps) => {
-  console.log(privateLeaderBoard)
   const columns: ColumnDef<PrivateLeaderBoardType>[] = [
     {
       accessorKey: "id",

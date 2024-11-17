@@ -40,9 +40,7 @@ describe("submitCsvFileAction test", () => {
   })
   beforeEach(() => {
     vi.resetAllMocks()
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
+    vi.setSystemTime(new Date(competitionDefault.startDate.getTime() + 1))
   })
   afterEach(() => {
     vi.useRealTimers()
