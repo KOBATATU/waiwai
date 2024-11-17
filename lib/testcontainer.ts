@@ -30,6 +30,9 @@ beforeAll(async () => {
   execSync("npx prisma migrate deploy", { stdio: "inherit" })
 
   testPrisma = new PrismaClient({
+    transactionOptions: {
+      timeout: 10000,
+    },
     datasources: {
       db: {
         url: process.env.DATABASE_URL,

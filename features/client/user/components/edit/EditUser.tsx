@@ -1,6 +1,6 @@
 "use client"
 
-import { updateUserRoleAction } from "@/features/client/user/actions/updateUserAction"
+import { updateUserAction } from "@/features/client/user/actions/updateUserAction"
 import { UserNameSchema } from "@/features/server/domain/user/user"
 import { getFormProps, getInputProps } from "@conform-to/react"
 
@@ -18,7 +18,7 @@ export const EditUser = ({ name }: EditUserProps) => {
   const { toast } = useToast()
   const [form, fields, action] = useConform(
     async (prev: ConformStateType, formData: FormData) => {
-      const result = await updateUserRoleAction(prev, formData)
+      const result = await updateUserAction(prev, formData)
 
       if (result.submission.status === "success") {
         toast({

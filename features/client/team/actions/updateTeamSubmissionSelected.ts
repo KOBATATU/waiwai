@@ -2,7 +2,10 @@
 
 import { revalidatePath } from "next/cache"
 import { actionHandler } from "@/features/server/core/handler"
-import { isNowBeforeEndDate } from "@/features/server/domain/competition/competition"
+import {
+  isNowAfterStartDate,
+  isNowBeforeEndDate,
+} from "@/features/server/domain/competition/competition"
 import { TeamSubmissionSelectedSchema } from "@/features/server/domain/team/team"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 import { editTeamService } from "@/features/server/service/team/editService"
@@ -24,17 +27,17 @@ export const updateTeamSubmissionSelectedAction = async (
     schema: TeamSubmissionSelectedSchema,
     permissions: ["admin", "user"],
     callback: async (user, payload) => {
+      const competition = await getCompetitionService.getCompetitionById(
+        payload.competitionId
+      )
+      isNowAfterStartDate(competition.open, competition.startDate)
+      isNowBeforeEndDate(competition.open, competition.endDate)
+
       const team = await getTeamService.getTeamByUserIdAndCompetitionId(
         user.id,
         payload.competitionId
       )
       await getTeamService.getTeamSubmissionByIdAndTeamId(payload.id, team.id)
-
-      const competition = await getCompetitionService.getCompetitionById(
-        payload.competitionId
-      )
-      isNowBeforeEndDate(competition.open, competition.endDate)
-
       const selected = payload.selected === "on"
       if (selected) {
         await getTeamService.getTeamSubmissionCountByTeamId(team.id)

@@ -26,8 +26,12 @@ export const uploadUserAvatarAction = async (
         payload.file,
         user.id
       )
-      await editUserService.editUserAvatarById(user.id, filepath)
+      const editUser = await editUserService.editUserAvatarById(
+        user.id,
+        filepath
+      )
       revalidatePath("/user/me/")
+      return editUser
     },
   })
 }
