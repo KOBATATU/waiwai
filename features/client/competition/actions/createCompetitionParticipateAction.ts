@@ -4,6 +4,10 @@ import { revalidatePath } from "next/cache"
 import { BadException, ExceptionEnum } from "@/features/server/core/exception"
 import { actionHandler } from "@/features/server/core/handler"
 import { doTransaction } from "@/features/server/core/prisma"
+import {
+  isNowAfterStartDate,
+  isNowBeforeEndDate,
+} from "@/features/server/domain/competition/competition"
 import { createCompetitionService } from "@/features/server/service/competition/base/createService"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 import { createTeamService } from "@/features/server/service/team/createService"
@@ -25,6 +29,11 @@ export const createCompetitionParticipateAction = async (
     schema: CompetitionSchema.pick({ id: true }),
     permissions: ["admin", "user"],
     callback: async (user, payload) => {
+      const competition = await getCompetitionService.getCompetitionById(
+        payload.id
+      )
+      isNowAfterStartDate(competition.open, competition.startDate)
+      isNowBeforeEndDate(competition.open, competition.endDate)
       const isCompetitionParticipated =
         !!(await getCompetitionService.getCompetitionParticipateByIdAndUserId(
           payload.id,

@@ -1,3 +1,5 @@
+import "@/lib/testcontainer"
+
 import { notFound } from "next/navigation"
 import { getPrisma } from "@/features/server/core/prisma"
 import {
