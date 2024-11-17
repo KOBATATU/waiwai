@@ -25,7 +25,7 @@ export const RootContainer = async ({ id, tabQuery }: RootContainerProps) => {
     user,
   ] = await Promise.all([
     getTeamClientService.getTeamPublicScoresByCompetitionId(id, competition),
-    getTeamClientService.getTeamPublicScoresByCompetitionId(id, competition),
+    getTeamClientService.getTeamPrivateScoresByCompetitionId(id, competition),
     getCompetitionClientService.getCompetitionParticipateByCompetitionId(id),
     getServerSession(),
   ])

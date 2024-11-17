@@ -70,14 +70,14 @@ export const UploadData = ({
         </label>
       </form>
       <div>
-        <h3 className="text-lg font-bold mb-4">File</h3>
+        <h3 className="text-lg font-bold ">File</h3>
         <ul className="list-disc ml-3">
           {competitionDatas.map((competitionData) => {
             const filename = competitionData.dataPath.split("/").at(-1)
             return (
               <li key={competitionData.id} className="flex gap-2 items-center">
                 <button
-                  className=" text-blue-500  hover:border-b cursor-pointer"
+                  className=" text-sm text-blue-500  hover:border-b cursor-pointer"
                   onClick={async () => {
                     const formData = new FormData()
                     formData.append("competitionDataId", competitionData.id)

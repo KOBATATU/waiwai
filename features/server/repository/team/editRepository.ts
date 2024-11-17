@@ -83,13 +83,14 @@ export const editTeamRepository = {
           ts.id as id,
           ts."team_id",
           ROW_NUMBER() OVER (partition by ts.team_id ORDER BY public_score ${Prisma.raw(order)}) AS rank,
-          COUNT(*) FILTER (WHERE ts.selected = true) OVER (PARTITION BY ts."team_id") AS submission_count
+          COUNT(*) FILTER (WHERE ts.selected = true) OVER (PARTITION BY ts."team_id") AS submission_count,
+          ts.selected as selected
         FROM 
           public."TeamSubmission" ts
         INNER JOIN public."CompetitionTeam" ct
           ON ts."team_id" = ct."id"
         WHERE 
-          ct."competition_id" =${competitionId}
+          ct."competition_id" =${competitionId} AND ts.status = 'success'
       ), NotAllSelected AS (
   
         SELECT
@@ -105,7 +106,12 @@ export const editTeamRepository = {
           s.submission_count = 0 AND s.rank = 2
       ),OnlyOneSelected AS (
         SELECT
-          id
+          CASE
+            WHEN selected = true THEN 
+              (SELECT id FROM submissions WHERE rank = 2 AND team_id = s.team_id)
+            ELSE
+              id
+          END AS id
         FROM submissions s
         WHERE
           s.submission_count =1 AND s.rank = 1
@@ -118,7 +124,9 @@ export const editTeamRepository = {
     const prisma = getPrisma()
     const results = (await prisma.$queryRaw(query)) as { id: string }[]
 
-    const ids = results.map((result) => result.id)
+    const ids = results
+      .map((result) => result.id)
+      .filter((id) => id !== null) as string[]
 
     if (ids.length >= 1) {
       await prisma.teamSubmission.updateMany({
