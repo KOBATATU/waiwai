@@ -36,8 +36,8 @@ export const updateCompetitionAction = async (
         thumbnail: competition.thumbnail,
         completed: competition.completed,
         ...payload,
-        startDate: createDateWithTimezone(payload.startDate),
-        endDate: createDateWithTimezone(payload.endDate),
+        startDate: payload.startDate,
+        endDate: payload.endDate,
         open: !!payload.open,
         problem: valueToProblemMap[payload.evaluationFunc],
       })

@@ -100,6 +100,7 @@ export const isNowAfterStartDate = (
   throwException: boolean = true
 ) => {
   const now = createDateWithTimezone(new Date())
+
   const _isNowAfterStartDate = open && now.getTime() > startDate.getTime()
   if (throwException && !_isNowAfterStartDate) {
     throw new BadException({
