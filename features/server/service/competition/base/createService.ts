@@ -10,7 +10,6 @@ export const createCompetitionService = {
    * @returns
    */
   createCompetition: async (requestBody: CompetitionTitleAndSubtitle) => {
-    await checkUserRole(["admin"])
     const competition = {
       title: requestBody.title,
       subtitle: requestBody.subtitle,
