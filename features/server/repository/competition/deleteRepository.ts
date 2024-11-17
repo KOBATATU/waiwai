@@ -28,7 +28,9 @@ export const deleteCompetitionRepository = {
       },
     })
 
-    const gcs = createGcs()
-    await gcs.file(extractPath(competitionData.dataPath)).delete()
+    if (process.env.NODE_ENV !== "test") {
+      const gcs = createGcs()
+      await gcs.file(extractPath(competitionData.dataPath)).delete()
+    }
   },
 }
