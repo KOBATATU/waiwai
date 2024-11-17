@@ -57,7 +57,7 @@ export const ExceptionEnum = {
     code: "B4005",
     message: "your submission count over",
   },
-  competitionSubmitBad: {
+  competitionEnd: {
     code: "B4006",
     message: "competition not open or end",
   },

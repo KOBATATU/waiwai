@@ -2,7 +2,10 @@
 
 import { redirect } from "next/navigation"
 import { actionHandler } from "@/features/server/core/handler"
-import { isNowAfterStartDate } from "@/features/server/domain/competition/competition"
+import {
+  isNowAfterStartDate,
+  isNowBeforeEndDate,
+} from "@/features/server/domain/competition/competition"
 import {
   EnumTeamSubmissionStatus,
   TeamSubmitFileSchema,
@@ -33,6 +36,7 @@ export const submitCsvFileAction = async (
         payload.competitionId
       )
       isNowAfterStartDate(competition.open, competition.startDate)
+      isNowBeforeEndDate(competition.open, competition.endDate)
 
       const team = await getTeamService.getTeamByUserIdAndCompetitionId(
         user.id,

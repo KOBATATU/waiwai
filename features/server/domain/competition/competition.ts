@@ -85,10 +85,10 @@ export const isNowBeforeEndDate = (
   if (!canSubmit && throwException) {
     throw new BadException({
       fieldsError: {
-        endDate: [ExceptionEnum.competitionSubmitBad.message],
+        endDate: [ExceptionEnum.competitionEnd.message],
       },
-      message: ExceptionEnum.competitionSubmitBad.message,
-      code: ExceptionEnum.competitionSubmitBad.code,
+      message: ExceptionEnum.competitionEnd.message,
+      code: ExceptionEnum.competitionEnd.code,
     })
   }
   return canSubmit

@@ -58,6 +58,9 @@ describe("submitCsvFileAction test", () => {
   })
   beforeEach(() => {
     vi.resetAllMocks()
+    vi.setSystemTime(
+      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
+    )
   })
   afterEach(() => {
     vi.useRealTimers()
@@ -83,9 +86,7 @@ describe("submitCsvFileAction test", () => {
 
   test("user compeition csv file submit scuccess", async () => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser1)
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
+
     const redirectMock = vi.mocked(redirect)
     const mockGetTeamScore = vi.mocked(getTeamService.getEvaluationScore)
     const mockScore = { public_score: 10, private_score: 5 }
@@ -134,9 +135,6 @@ describe("submitCsvFileAction test", () => {
     ["text/tab-separated-values"],
   ])("returns error for unsupported MIME type: %s", async (mimeType) => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser1)
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
 
     const form = new FormData()
     const blob = new Blob([], { type: mimeType })
@@ -171,6 +169,24 @@ describe("submitCsvFileAction test", () => {
     expect(editUser.value.code).toBe(ExceptionEnum.competitionNotStart.code)
   })
 
+  test("competition end because of endDate < now ", async () => {
+    vi.mocked(getServerSession).mockResolvedValue(mockUser1)
+    vi.setSystemTime(
+      new Date(competitionDefault.endDate.getTime() - 9 * 60 * 60 * 1000 + 1)
+    )
+    const form = new FormData()
+    const blob = new Blob([], { type: "text/csv" })
+    const file = new File([blob], "mockData." + "csv", {
+      type: "text/csv",
+    })
+    form.append("file", file)
+    form.append("competitionId", competitionDefault.id)
+
+    const editUser = await submitCsvFileAction(undefined, form)
+
+    expect(editUser.value.code).toBe(ExceptionEnum.competitionEnd.code)
+  })
+
   test("competition not start because of not open(user cannn't get competition)", async () => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser1)
     const mockNotFound = vi.mocked(notFound)
@@ -199,9 +215,7 @@ describe("submitCsvFileAction test", () => {
   test("user doesn't participate competition ", async () => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser2)
     const mockNotFound = vi.mocked(notFound)
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
+
     const form = new FormData()
     const blob = new Blob([], { type: "text/csv" })
     const file = new File([blob], "mockData." + "csv", {
@@ -217,9 +231,7 @@ describe("submitCsvFileAction test", () => {
 
   test("waiwai api error", async () => {
     vi.mocked(getServerSession).mockResolvedValue(mockAdminUser1)
-    vi.setSystemTime(
-      new Date(competitionDefault.startDate.getTime() - 9 * 60 * 60 * 1000 + 1)
-    )
+
     const mockGetTeamScore = vi.mocked(getTeamService.getEvaluationScore)
 
     mockGetTeamScore.mockImplementation(() => {
