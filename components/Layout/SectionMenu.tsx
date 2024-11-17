@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -14,6 +14,7 @@ type SectionMenuProps = {
     label: string
     href?: string
   }[]
+  children?: ReactNode
 }
 
 export const SectionMenu = ({
@@ -21,6 +22,7 @@ export const SectionMenu = ({
   subtitle,
   defaultValue,
   menus,
+  children,
 }: SectionMenuProps) => {
   const router = useRouter()
   const pathname = usePathname()
@@ -42,6 +44,7 @@ export const SectionMenu = ({
         <p className="max-w-[700px] text-lg text-muted-foreground">
           {subtitle}
         </p>
+        {children}
       </div>
       <Tabs
         defaultValue={defaultValue}

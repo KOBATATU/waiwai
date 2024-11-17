@@ -72,13 +72,20 @@ export default async function RootLayout({
     <>
       <div className="">
         <SiteHeader />
-        <section className="sm:container px-2 grid items-center gap-6 pb-8 pt-6 md:py-10">
+        <section className="sm:container px-2 grid items-center gap-4 pb-8 pt-6 md:py-10">
           <SectionMenu
             title={competition.title}
             subtitle={competition.subtitle}
             menus={menus}
             defaultValue="overview"
-          />
+          >
+            <ul className="flex gap-2 text-sm text-gray-500">
+              <li>teams: {competition._count.teams}</li>
+              <li>
+                participates: {competition._count.competitionParticipates}
+              </li>
+            </ul>
+          </SectionMenu>
           <div>{children}</div>
         </section>
       </div>
