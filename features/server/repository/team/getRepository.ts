@@ -264,6 +264,7 @@ export const getTeamRepository = {
     return await prisma.teamSubmission.findUnique({
       select: {
         id: true,
+        status: true,
       },
       where: {
         id,
