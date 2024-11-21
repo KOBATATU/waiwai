@@ -31,7 +31,7 @@ export const createCompetitionService = {
 
     const dataPath = `https://storage.googleapis.com/${filename}`
 
-    await createCompetitionRepository.createCompetitionData(id, dataPath)
+    return await createCompetitionRepository.createCompetitionData(id, dataPath)
   },
 
   /**

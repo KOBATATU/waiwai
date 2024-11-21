@@ -9,7 +9,7 @@ import { uploadCompetitionService } from "@/features/server/service/competition/
 import { SubmissionResult } from "@conform-to/react"
 
 /**
- * update competition settings
+ * upload competition data
  * @param prevState
  * @param formData
  * @returns
@@ -30,13 +30,15 @@ export const uploadCompetitionDataAction = async (
         competition.id,
         payload.file
       )
-      await createCompetitionService.createCompetitionData(
+      const result = await createCompetitionService.createCompetitionData(
         competition.id,
         filename
       )
       revalidatePath(`/admin/competitions${competition.id}`)
 
-      return {}
+      return {
+        id: result.id,
+      }
     },
   })
 }
