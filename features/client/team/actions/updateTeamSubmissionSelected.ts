@@ -6,7 +6,11 @@ import {
   isNowAfterStartDate,
   isNowBeforeEndDate,
 } from "@/features/server/domain/competition/competition"
-import { TeamSubmissionSelectedSchema } from "@/features/server/domain/team/team"
+import {
+  EnumTeamSubmissionStatus,
+  isStatusSuccess,
+  TeamSubmissionSelectedSchema,
+} from "@/features/server/domain/team/team"
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 import { editTeamService } from "@/features/server/service/team/editService"
 import { getTeamService } from "@/features/server/service/team/getService"
@@ -37,17 +41,20 @@ export const updateTeamSubmissionSelectedAction = async (
         user.id,
         payload.competitionId
       )
-      await getTeamService.getTeamSubmissionByIdAndTeamId(payload.id, team.id)
+      const teamSubmission =
+        await getTeamService.getTeamSubmissionByIdAndTeamId(payload.id, team.id)
+      isStatusSuccess(teamSubmission.status as EnumTeamSubmissionStatus)
+
       const selected = payload.selected === "on"
       if (selected) {
         await getTeamService.getTeamSubmissionCountByTeamId(team.id)
       }
-      const teamSubmission = await editTeamService.editTeamSubmissionSelected(
+      const result = await editTeamService.editTeamSubmissionSelected(
         payload.id,
         payload.selected === "on"
       )
       revalidatePath(`competitions/${payload.competitionId}/submissions`)
-      return teamSubmission
+      return result
     },
   })
 }

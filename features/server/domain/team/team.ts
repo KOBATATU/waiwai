@@ -1,3 +1,4 @@
+import { BadException, ExceptionEnum } from "@/features/server/core/exception"
 import {
   CompetitionTeamSchema,
   TeamSubmissionSchema,
@@ -25,3 +26,20 @@ export const EnumTeamSubmissionStatus = {
   success: "success",
   error: "error",
 } as const
+export type EnumTeamSubmissionStatus = keyof typeof EnumTeamSubmissionStatus
+export const isStatusSuccess = (
+  status: EnumTeamSubmissionStatus,
+  throwException: boolean = true
+) => {
+  const valid = status !== EnumTeamSubmissionStatus.success
+  if (status !== EnumTeamSubmissionStatus.success && throwException) {
+    throw new BadException({
+      fieldsError: {
+        endDate: [ExceptionEnum.teamSubmitMustSuccessStatus.message],
+      },
+      message: ExceptionEnum.teamSubmitMustSuccessStatus.message,
+      code: ExceptionEnum.teamSubmitMustSuccessStatus.code,
+    })
+  }
+  return valid
+}
