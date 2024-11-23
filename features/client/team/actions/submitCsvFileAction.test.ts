@@ -1,5 +1,3 @@
-import "@/lib/testcontainer"
-
 import { notFound, redirect } from "next/navigation"
 import { ExceptionEnum } from "@/features/server/core/exception"
 import { getPrisma } from "@/features/server/core/prisma"
@@ -21,6 +19,8 @@ import {
   test,
   vi,
 } from "vitest"
+
+import { cleanupDatabase } from "@/lib/testutils"
 
 import { submitCsvFileAction } from "./submitCsvFileAction"
 
@@ -47,7 +47,8 @@ const competitionDefault = {
   open: true,
 }
 describe("submitCsvFileAction test", () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await cleanupDatabase()
     const prisma = getPrisma()
     await prisma.user.create({ data: mockAdminUser1.user })
     await prisma.user.create({ data: mockUser1.user })
@@ -55,12 +56,11 @@ describe("submitCsvFileAction test", () => {
     await prisma.competition.create({
       data: competitionDefault,
     })
-  })
-  beforeEach(() => {
-    vi.resetAllMocks()
+
     vi.setSystemTime(new Date(competitionDefault.startDate.getTime() + 1))
   })
   afterEach(() => {
+    vi.resetAllMocks()
     vi.useRealTimers()
   })
 
@@ -133,6 +133,19 @@ describe("submitCsvFileAction test", () => {
   ])("returns error for unsupported MIME type: %s", async (mimeType) => {
     vi.mocked(getServerSession).mockResolvedValue(mockUser1)
 
+    const prisma = getPrisma()
+    const team = await prisma.competitionTeam.create({
+      data: {
+        name: "test",
+        competitionId: competitionDefault.id,
+      },
+    })
+    await prisma.teamMember.create({
+      data: {
+        teamId: team.id,
+        userId: mockUser1.user.id,
+      },
+    })
     const form = new FormData()
     const blob = new Blob([], { type: mimeType })
     const file = new File([blob], "mockData." + mimeType.split("/")[1], {

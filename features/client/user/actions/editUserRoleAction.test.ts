@@ -1,5 +1,3 @@
-import "@/lib/testcontainer"
-
 import { notFound } from "next/navigation"
 import { getPrisma } from "@/features/server/core/prisma"
 import {
@@ -9,15 +7,16 @@ import {
 import { getServerSession } from "next-auth"
 import { beforeAll, beforeEach, describe, expect, test, vi } from "vitest"
 
+import { cleanupDatabase } from "@/lib/testutils"
+
 import { editUserRoleAction } from "./editUserRoleAction"
 
 describe("editUserRoleAction test", () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await cleanupDatabase()
     const prisma = getPrisma()
     await prisma.user.create({ data: mockAdminUser1.user })
     await prisma.user.create({ data: mockUser1.user })
-  })
-  beforeEach(() => {
     vi.resetAllMocks()
   })
 

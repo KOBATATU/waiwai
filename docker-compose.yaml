@@ -11,5 +11,17 @@ services:
       POSTGRES_USER: "user"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "waiwai"
+  test-db:
+    image: postgres:14
+    container_name: test-waiwai-db
+    volumes:
+      - db-test:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "waiwai"
 volumes:
   db-store:
+  db-test:

@@ -1,18 +1,17 @@
-import "@/lib/testcontainer"
-
 import { getPrisma } from "@/features/server/core/prisma"
 import { mockUser1 } from "@/features/server/domain/user/__mock__/user.mock"
 import { getServerSession } from "next-auth"
 import { beforeAll, beforeEach, describe, expect, test, vi } from "vitest"
 
+import { cleanupDatabase } from "@/lib/testutils"
+
 import { updateUserAction } from "./updateUserAction"
 
 describe("updateUserAction test", () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await cleanupDatabase()
     const prisma = getPrisma()
     await prisma.user.create({ data: mockUser1.user })
-  })
-  beforeEach(() => {
     vi.resetAllMocks()
   })
 

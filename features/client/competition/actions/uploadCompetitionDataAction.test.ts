@@ -1,5 +1,3 @@
-import "@/lib/testcontainer"
-
 import { notFound } from "next/navigation"
 import { ExceptionEnum } from "@/features/server/core/exception"
 import { getPrisma } from "@/features/server/core/prisma"
@@ -20,6 +18,8 @@ import {
   vi,
 } from "vitest"
 
+import { cleanupDatabase } from "@/lib/testutils"
+
 import { uploadCompetitionDataAction } from "./uploadCompetitionDataAction"
 
 const competitionDefault = {
@@ -30,7 +30,8 @@ const competitionDefault = {
   open: true,
 }
 describe("submitCsvFileAction test", () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await cleanupDatabase()
     const prisma = getPrisma()
     await prisma.user.create({ data: mockAdminUser1.user })
     await prisma.user.create({ data: mockUser1.user })
@@ -38,8 +39,6 @@ describe("submitCsvFileAction test", () => {
     await prisma.competition.create({
       data: competitionDefault,
     })
-  })
-  beforeEach(() => {
     vi.resetAllMocks()
     vi.setSystemTime(new Date(competitionDefault.startDate.getTime() + 1))
   })

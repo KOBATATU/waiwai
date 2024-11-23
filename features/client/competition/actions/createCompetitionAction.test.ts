@@ -1,11 +1,8 @@
-import "@/lib/testcontainer"
-
 import { notFound } from "next/navigation"
 import { getPrisma } from "@/features/server/core/prisma"
 import {
   mockAdminUser1,
   mockUser1,
-  mockUser2,
 } from "@/features/server/domain/user/__mock__/user.mock"
 import { getServerSession } from "next-auth"
 import {
@@ -18,10 +15,15 @@ import {
   vi,
 } from "vitest"
 
+import { cleanupDatabase } from "@/lib/testutils"
+
 import { createCompetitionAction } from "./createCompetitionAction"
 
 describe("updateTeamSubmissionSelectedAction test", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    await cleanupDatabase()
+    const prisma = getPrisma()
+    await prisma.user.create({ data: mockAdminUser1.user })
     vi.resetAllMocks()
   })
   afterEach(() => {
