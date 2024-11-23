@@ -40,7 +40,7 @@ export const getHandler = async <T>({
     return await handler()
   } catch (e) {
     if (e instanceof NotFoundException) {
-      notFound()
+      return notFound()
     }
     throw e
   }
