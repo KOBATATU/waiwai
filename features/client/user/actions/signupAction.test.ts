@@ -1,12 +1,15 @@
-import "@/lib/testcontainer"
-
 import { ExceptionEnum } from "@/features/server/core/exception"
 import { getPrisma } from "@/features/server/core/prisma"
-import { describe, expect, test } from "vitest"
+import { beforeEach, describe, expect, test } from "vitest"
+
+import { cleanupDatabase } from "@/lib/testutils"
 
 import { signupAction } from "./signupAction"
 
 describe("signupAction test", () => {
+  beforeEach(async () => {
+    await cleanupDatabase()
+  })
   test("user regigster success", async () => {
     const form = new FormData()
     form.append("name", "test")

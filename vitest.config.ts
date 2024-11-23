@@ -5,8 +5,13 @@ import { defineConfig } from "vitest/config"
 export default defineConfig({
   plugins: [react()],
   test: {
+    isolate: true,
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
+
+    minWorkers: 2,
+
+    pool: "forks",
   },
 
   resolve: {

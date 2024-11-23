@@ -1,5 +1,3 @@
-import "@/lib/testcontainer"
-
 import { notFound } from "next/navigation"
 import { getPrisma } from "@/features/server/core/prisma"
 import { EvaluationFuncEnum } from "@/features/server/domain/competition/competition"
@@ -12,6 +10,8 @@ import {
 import { getServerSession } from "next-auth"
 import { beforeAll, beforeEach, describe, expect, test, vi } from "vitest"
 
+import { cleanupDatabase } from "@/lib/testutils"
+
 import { updateCompetitionAction } from "./updateCompetitionSettingAction"
 
 const competitionDefault = {
@@ -22,7 +22,8 @@ const competitionDefault = {
   open: true,
 }
 describe("updateCompetitionAction test", () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await cleanupDatabase()
     const prisma = getPrisma()
     await prisma.user.create({ data: mockAdminUser1.user })
     await prisma.user.create({ data: mockUser1.user })
@@ -30,8 +31,6 @@ describe("updateCompetitionAction test", () => {
     await prisma.competition.create({
       data: competitionDefault,
     })
-  })
-  beforeEach(() => {
     vi.resetAllMocks()
   })
 
