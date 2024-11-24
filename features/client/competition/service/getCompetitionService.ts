@@ -22,11 +22,11 @@ export const getCompetitionClientService = {
       },
     })
   },
-  getCompetitions: async () => {
+  getCompetitions: async (page: number) => {
     return await getHandler({
       auth: false,
       handler: async () => {
-        return await getCompetitionService.getCompetitions(1)
+        return await getCompetitionService.getCompetitions(page)
       },
     })
   },

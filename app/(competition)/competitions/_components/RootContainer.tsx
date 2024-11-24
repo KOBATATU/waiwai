@@ -1,10 +1,16 @@
 import { CompetitionList } from "@/features/client/competition/components/list/CompetitionList"
 import { getCompetitionClientService } from "@/features/client/competition/service/getCompetitionService"
 
-type RootContainerProps = {}
+import { QueryParameters } from "@/lib/utils"
 
-export const RootContainer = async ({}: RootContainerProps) => {
-  const competitions = await getCompetitionClientService.getCompetitions()
+type RootContainerProps = {
+  queryParameter: QueryParameters
+}
+
+export const RootContainer = async ({ queryParameter }: RootContainerProps) => {
+  const competitions = await getCompetitionClientService.getCompetitions(
+    queryParameter.page
+  )
 
   return (
     <div className="sm:container px-2 pb-8 pt-6 md:py-10">
