@@ -19,21 +19,18 @@ export const getTeamClientService = {
    * @param competitionId
    * @returns
    */
-  getTeamPublicScoresByCompetitionId: async (
-    competitionId: string,
-    competition: GetCompetitionServiceType["getCompetitionById"]
-  ) => {
+  getTeamPublicScoresByCompetitionId: async (competitionId: string) => {
     return await getHandler({
       auth: false,
       handler: async () => {
         const session = await getServerSession()
         const userId = session?.user.id ?? ""
-
+        const competition =
+          await getCompetitionService.getCompetitionById(competitionId)
         const useMax = getUseMax(
           competition.problem,
           competition.evaluationFunc
         )
-
         return await getTeamService.getTeamPublicScoresByCompetitionId(
           competitionId,
           userId,
@@ -48,21 +45,19 @@ export const getTeamClientService = {
    * @param competitionId
    * @returns
    */
-  getTeamPrivateScoresByCompetitionId: async (
-    competitionId: string,
-    competition: GetCompetitionServiceType["getCompetitionById"]
-  ) => {
+  getTeamPrivateScoresByCompetitionId: async (competitionId: string) => {
     return await getHandler({
       auth: false,
       handler: async () => {
         const session = await getServerSession()
         const userId = session?.user.id ?? ""
 
+        const competition =
+          await getCompetitionService.getCompetitionById(competitionId)
         const useMax = getUseMax(
           competition.problem,
           competition.evaluationFunc
         )
-
         const now = createDateWithTimezone(new Date())
         if (
           now.getTime() > competition.endDate.getTime() &&

@@ -1,12 +1,17 @@
+import { getQueryParameter, GetQueryParameter } from "@/lib/utils"
 import { SiteHeader } from "@/components/Header/Header"
 
 import { RootContainer } from "./_components/RootContainer"
 
-export default function IndexPage() {
+type IndexPageProps = GetQueryParameter
+
+export default function IndexPage({ searchParams }: IndexPageProps) {
+  const queryParameter = getQueryParameter({ searchParams })
+
   return (
     <div>
       <SiteHeader />
-      <RootContainer />
+      <RootContainer queryParameter={queryParameter} />
     </div>
   )
 }

@@ -148,7 +148,7 @@ const selectScoresPaginationRecords = async (
       : result
 
   return {
-    data: formattedResult,
+    data: formattedResult as ScoreRecord[],
   }
 }
 
