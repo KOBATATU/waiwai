@@ -83,13 +83,7 @@ export const isNowBeforeEndDate = (
   const now = createDateWithTimezone(new Date())
   const canSubmit = open && now.getTime() < endDate.getTime()
   if (!canSubmit && throwException) {
-    throw new BadException({
-      fieldsError: {
-        endDate: [ExceptionEnum.competitionEnd.message],
-      },
-      message: ExceptionEnum.competitionEnd.message,
-      code: ExceptionEnum.competitionEnd.code,
-    })
+    throw new BadException("competitionEnd", ["endDate"])
   }
   return canSubmit
 }
@@ -103,13 +97,7 @@ export const isNowAfterStartDate = (
 
   const _isNowAfterStartDate = open && now.getTime() > startDate.getTime()
   if (throwException && !_isNowAfterStartDate) {
-    throw new BadException({
-      fieldsError: {
-        endDate: [ExceptionEnum.competitionNotStart.message],
-      },
-      message: ExceptionEnum.competitionNotStart.message,
-      code: ExceptionEnum.competitionNotStart.code,
-    })
+    throw new BadException("competitionNotStart", ["endDate"])
   }
   return _isNowAfterStartDate
 }

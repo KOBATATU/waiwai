@@ -45,13 +45,7 @@ export const submitCsvFileAction = async (
       )
 
       if (competition.limitSubmissionNum < team._count.teamSubmissions) {
-        throw new BadException({
-          fieldsError: {
-            endDate: [ExceptionEnum.teamSubmitLimit.message],
-          },
-          message: ExceptionEnum.teamSubmitLimit.message,
-          code: ExceptionEnum.teamSubmitLimit.code,
-        })
+        throw new BadException("teamSubmitLimit", ["endDate"])
       }
 
       const { filename, objectPath } =

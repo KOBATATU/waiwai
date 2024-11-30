@@ -1,20 +1,18 @@
-interface ExceptionArgs {
-  fieldsError: Record<string, string[]>
-  message: string
-  code: string
-}
-
 export class BadException {
   timestamp: Date
   fieldsError: Record<string, string[]>
   message: string
   code: string
 
-  constructor({ fieldsError, message, code }: ExceptionArgs) {
+  constructor(exceptionEnum: keyof typeof ExceptionEnum, fields: string[]) {
+    const _exceptionEnum = ExceptionEnum[exceptionEnum]
     this.timestamp = new Date()
-    this.fieldsError = fieldsError
-    this.code = code
-    this.message = `${code}: ${message}`
+    this.fieldsError = {}
+    fields.forEach((field) => {
+      this.fieldsError[field] = [_exceptionEnum.message]
+    })
+    this.code = _exceptionEnum.code
+    this.message = `${_exceptionEnum.code}: ${_exceptionEnum.message}`
   }
 }
 
@@ -24,11 +22,15 @@ export class NotFoundException {
   message: string
   code: string
 
-  constructor({ fieldsError, message, code }: ExceptionArgs) {
+  constructor(exceptionEnum: keyof typeof ExceptionEnum, fields: string[]) {
+    const _exceptionEnum = ExceptionEnum[exceptionEnum]
     this.timestamp = new Date()
-    this.fieldsError = fieldsError
-    this.code = code
-    this.message = `${code}: ${message}`
+    this.fieldsError = {}
+    fields.forEach((field) => {
+      this.fieldsError[field] = [_exceptionEnum.message]
+    })
+    this.code = _exceptionEnum.code
+    this.message = `${_exceptionEnum.code}: ${_exceptionEnum.message}`
   }
 }
 

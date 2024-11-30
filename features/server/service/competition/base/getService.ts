@@ -25,13 +25,7 @@ export const getCompetitionService = {
   getCompetitionById: async (id: string) => {
     const competition = await getCompetitionRepository.getCompeitionById(id)
     if (!competition) {
-      throw new NotFoundException({
-        fieldsError: {
-          id: [ExceptionEnum.competitionNotFound.message],
-        },
-        message: ExceptionEnum.competitionNotFound.message,
-        code: ExceptionEnum.competitionNotFound.code,
-      })
+      throw new NotFoundException("competitionNotFound", ["id"])
     }
     return competition
   },
@@ -55,13 +49,7 @@ export const getCompetitionService = {
       await getCompetitionRepository.getCompeitionByIdAndAdmin(id)
 
     if (!competition) {
-      throw new NotFoundException({
-        fieldsError: {
-          id: [ExceptionEnum.competitionNotFound.message],
-        },
-        message: ExceptionEnum.competitionNotFound.message,
-        code: ExceptionEnum.competitionNotFound.code,
-      })
+      throw new NotFoundException("competitionNotFound", ["id"])
     }
     return competition
   },
@@ -74,13 +62,7 @@ export const getCompetitionService = {
     const competitionData =
       await getCompetitionRepository.getCompeitionDataById(id)
     if (!competitionData) {
-      throw new NotFoundException({
-        fieldsError: {
-          id: [ExceptionEnum.competitionDataNotFound.message],
-        },
-        message: ExceptionEnum.competitionDataNotFound.message,
-        code: ExceptionEnum.competitionDataNotFound.code,
-      })
+      throw new NotFoundException("competitionDataNotFound", ["id"])
     }
     return competitionData
   },
@@ -101,13 +83,7 @@ export const getCompetitionService = {
       )
 
     if (!competitionParticipate) {
-      throw new NotFoundException({
-        fieldsError: {
-          id: [ExceptionEnum.competitionParticipateNotFound.message],
-        },
-        message: ExceptionEnum.competitionParticipateNotFound.message,
-        code: ExceptionEnum.competitionParticipateNotFound.code,
-      })
+      throw new NotFoundException("competitionParticipateNotFound", ["id"])
     }
   },
 

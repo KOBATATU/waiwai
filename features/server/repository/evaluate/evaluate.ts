@@ -36,23 +36,11 @@ export const httpClient = async <T>(
     const fullUrl = hostUrl + path
     const response = await fetch(fullUrl, fetchOptions)
     if (!response.ok) {
-      throw new BadException({
-        fieldsError: {
-          error: [ExceptionEnum.evaluateApiFailed.message],
-        },
-        message: ExceptionEnum.evaluateApiFailed.message,
-        code: ExceptionEnum.evaluateApiFailed.code,
-      })
+      throw new BadException("evaluateApiFailed", ["error"])
     }
     return (await response.json()) as T
   } catch (error) {
-    throw new BadException({
-      fieldsError: {
-        error: [ExceptionEnum.evaluateApiFailed.message],
-      },
-      message: ExceptionEnum.evaluateApiFailed.message,
-      code: ExceptionEnum.evaluateApiFailed.code,
-    })
+    throw new BadException("evaluateApiFailed", ["error"])
   }
 }
 

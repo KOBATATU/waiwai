@@ -33,13 +33,7 @@ export const isStatusSuccess = (
 ) => {
   const valid = status !== EnumTeamSubmissionStatus.success
   if (status !== EnumTeamSubmissionStatus.success && throwException) {
-    throw new BadException({
-      fieldsError: {
-        endDate: [ExceptionEnum.teamSubmitMustSuccessStatus.message],
-      },
-      message: ExceptionEnum.teamSubmitMustSuccessStatus.message,
-      code: ExceptionEnum.teamSubmitMustSuccessStatus.code,
-    })
+    throw new BadException("teamSubmitMustSuccessStatus", ["endDate"])
   }
   return valid
 }

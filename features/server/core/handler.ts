@@ -29,11 +29,7 @@ export const getHandler = async <T>({
         !session.user ||
         (permissions && !permissions.includes(session.user.role))
       ) {
-        throw new NotFoundException({
-          message: ExceptionEnum.userAuthBad.message,
-          code: ExceptionEnum.userAuthBad.code,
-          fieldsError: {},
-        })
+        throw new NotFoundException("userAuthBad", ["role"])
       }
     }
 
@@ -66,11 +62,7 @@ export const actionHandler = async <T>({
 
   try {
     if (!user || !permissions.includes(user.role)) {
-      throw new NotFoundException({
-        message: ExceptionEnum.userAuthBad.message,
-        code: ExceptionEnum.userAuthBad.code,
-        fieldsError: {},
-      })
+      throw new NotFoundException("userAuthBad", ["role"])
     }
 
     if (submission.status === "error") {

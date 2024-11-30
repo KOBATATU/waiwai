@@ -23,13 +23,7 @@ export const getTeamService = {
     )
 
     if (!team) {
-      throw new NotFoundException({
-        fieldsError: {
-          id: [ExceptionEnum.competitionTeamNotFound.message],
-        },
-        message: ExceptionEnum.competitionTeamNotFound.message,
-        code: ExceptionEnum.competitionTeamNotFound.code,
-      })
+      throw new NotFoundException("competitionTeamNotFound", ["id"])
     }
 
     return team
@@ -95,13 +89,7 @@ export const getTeamService = {
       await getTeamRepository.getTeamSubmissionByIdAndTeamId(id, teamId)
 
     if (!teamSubmission) {
-      throw new NotFoundException({
-        fieldsError: {
-          id: [ExceptionEnum.competitionTeamSubmissionNotFound.message],
-        },
-        message: ExceptionEnum.competitionTeamSubmissionNotFound.message,
-        code: ExceptionEnum.competitionTeamSubmissionNotFound.code,
-      })
+      throw new NotFoundException("competitionTeamSubmissionNotFound", ["id"])
     }
     return teamSubmission
   },
@@ -114,13 +102,7 @@ export const getTeamService = {
     const count = await getTeamRepository.getTeamSubmissionCountByTeamId(teamId)
 
     if (count >= 2) {
-      throw new BadException({
-        fieldsError: {
-          id: [ExceptionEnum.teamSubmissionCountOver.message],
-        },
-        message: ExceptionEnum.teamSubmissionCountOver.message,
-        code: ExceptionEnum.teamSubmissionCountOver.code,
-      })
+      throw new BadException("teamSubmissionCountOver", ["id"])
     }
   },
 

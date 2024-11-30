@@ -41,13 +41,7 @@ export const createCompetitionParticipateAction = async (
         ))
 
       if (isCompetitionParticipated) {
-        throw new BadException({
-          fieldsError: {
-            id: [ExceptionEnum.competitionParticipateBad.message],
-          },
-          message: ExceptionEnum.competitionParticipateBad.message,
-          code: ExceptionEnum.competitionParticipateBad.code,
-        })
+        throw new BadException("competitionParticipateBad", ["id"])
       }
 
       await doTransaction(async () => {
