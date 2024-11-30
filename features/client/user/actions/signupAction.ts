@@ -29,13 +29,7 @@ export const signupAction = async (
       })
 
       if (user) {
-        throw new BadException({
-          fieldsError: {
-            email: [ExceptionEnum.userAlreadyRegisterd.message],
-          },
-          message: ExceptionEnum.userAlreadyRegisterd.message,
-          code: ExceptionEnum.userAlreadyRegisterd.code,
-        })
+        throw new BadException("userAlreadyRegisterd", ["email"])
       } else {
         const encodePassword = await bcrypt.hash(payload.password, 10)
         const user = await prisma.user.create({

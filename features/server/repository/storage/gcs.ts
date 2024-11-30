@@ -25,13 +25,7 @@ export const checkFileType = (
 ) => {
   const typesArray = allowedTypes.split(",").map((type) => type.trim())
   if (!typesArray.includes(file.type)) {
-    throw new BadException({
-      fieldsError: {
-        type: [ExceptionEnum.competitionDataUploadBad.message],
-      },
-      message: ExceptionEnum.competitionDataUploadBad.message,
-      code: ExceptionEnum.competitionDataUploadBad.code,
-    })
+    throw new BadException("competitionDataUploadBad", ["file"])
   }
 }
 
