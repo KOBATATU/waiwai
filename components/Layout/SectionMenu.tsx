@@ -29,6 +29,7 @@ export const SectionMenu = ({
   const [value, setValue] = useState(defaultValue)
 
   useEffect(() => {
+    if (!pathname) return
     const pathSegments = pathname.split("/")
     const name = pathSegments[pathSegments.length - 1]
     const matchedMenu = menus.find((menu) => menu.value === name)

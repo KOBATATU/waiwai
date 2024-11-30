@@ -1,9 +1,13 @@
-import { NextApiRequest, NextApiResponse } from "next"
+import { NextRequest } from "next/server"
 import { nextAuthOption } from "@/features/server/core/auth"
 import NextAuth from "next-auth"
 
-const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  return await NextAuth(req, res, nextAuthOption(req, res))
+interface RouteHandlerContext {
+  params: { nextauth: string[] }
+}
+
+const authHandler = async (req: NextRequest, params: RouteHandlerContext) => {
+  return await NextAuth(req, params, nextAuthOption(req))
 }
 
 export { authHandler as GET, authHandler as POST }

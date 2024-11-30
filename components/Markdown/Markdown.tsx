@@ -7,6 +7,8 @@ import remarkMath from "remark-math"
 
 import { cn } from "@/lib/utils"
 
+import "katex/dist/katex.min.css"
+
 import styles from "./styles.module.css"
 
 type MarkdownProps = { body: string; className?: string }

@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto"
 import { NextApiRequest, NextApiResponse } from "next"
 import { cookies } from "next/headers"
+import { NextRequest } from "next/server"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import * as bcrypt from "bcrypt"
 import { NextAuthOptions } from "next-auth"
@@ -93,10 +94,7 @@ export const authOption: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 }
 
-export const nextAuthOption = (
-  req: NextApiRequest,
-  res: NextApiResponse
-): NextAuthOptions => {
+export const nextAuthOption = (req: NextRequest): NextAuthOptions => {
   return {
     ...authOption,
     callbacks: {
