@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import { clsx, type ClassValue } from "clsx"
+import { formatInTimeZone } from "date-fns-tz"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -20,6 +21,10 @@ export const createDateWithTimezone = (date: Date) => {
   }
 
   return localDate
+}
+
+export const UTCToLocalString = (date: Date) => {
+  return `${date.toLocaleDateString()}:${date.toLocaleTimeString()}`
 }
 
 export const editDateWithTimezone = (localDate: Date) => {
