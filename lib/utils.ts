@@ -6,12 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const toLocalISOString = (date: Date) => {
-  date.setSeconds(0)
-  date.setMilliseconds(0)
-  return date.toISOString().slice(0, -1)
-}
-
+/** only server */
 export const createDateWithTimezone = (date: Date) => {
   const localDate = new Date(date)
 
@@ -22,7 +17,13 @@ export const createDateWithTimezone = (date: Date) => {
   return localDate
 }
 
-export const UTCToLocalString = (date: Date) => {
+export const formatUTCString = (date: Date) => {
+  date.setSeconds(0)
+  date.setMilliseconds(0)
+  return date.toISOString().slice(0, 16)
+}
+
+export const formatUTCToLocalString = (date: Date) => {
   const options = { timeZone: process.env.TZ, hour12: false }
   const serverFormattedDate = date.toLocaleString(
     process.env.TZ === "Asia/Tokyo" ? "ja-JP" : undefined,
@@ -30,20 +31,6 @@ export const UTCToLocalString = (date: Date) => {
   )
 
   return serverFormattedDate
-}
-
-export const editDateWithTimezone = (localDate: Date) => {
-  const isoString = localDate.toISOString()
-
-  const year = isoString.substring(0, 4) // yyyy
-  const month = isoString.substring(5, 7) // mm
-  const day = isoString.substring(8, 10) // dd
-  const hours = isoString.substring(11, 13) // hh
-  const minutes = isoString.substring(14, 16) // mm
-
-  const formattedDate = `${year}/${month}/${day}: ${hours}:${minutes}`
-
-  return formattedDate
 }
 
 export const handleDownload = (url: string, filename?: string) => {

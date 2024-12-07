@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { GetCompetitionServiceType } from "@/features/server/service/competition/base/getService"
 
-import { cn, editDateWithTimezone, toLocalISOString } from "@/lib/utils"
+import { cn, formatUTCString } from "@/lib/utils"
 import {
   Card,
   CardContent,
@@ -68,7 +68,7 @@ export const CompetitionList = ({
                 </CardContent>
               </Link>
               <CardFooter className="p-4 flex items-center justify-between border-t text-sm">
-                <p>end date: {editDateWithTimezone(competition.endDate)}</p>
+                <p>end date: {formatUTCString(competition.endDate)}</p>
               </CardFooter>
             </Card>
           )

@@ -13,7 +13,7 @@ import {
   getTextareaProps,
 } from "@conform-to/react"
 
-import { toLocalISOString } from "@/lib/utils"
+import { formatUTCString } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Input } from "@/components/ui/input"
@@ -117,7 +117,7 @@ export const EditSettings = ({ competition }: EditSettingsProps) => {
           <Input
             {...getInputProps(fields.startDate, { type: "datetime-local" })}
             key={fields.startDate.key}
-            defaultValue={toLocalISOString(competition.startDate)}
+            defaultValue={formatUTCString(competition.startDate)}
           />
         </AnyField>
         <AnyField
@@ -129,7 +129,7 @@ export const EditSettings = ({ competition }: EditSettingsProps) => {
           <Input
             {...getInputProps(fields.endDate, { type: "datetime-local" })}
             key={fields.endDate.key}
-            defaultValue={toLocalISOString(competition.endDate)}
+            defaultValue={formatUTCString(competition.endDate)}
           />
         </AnyField>
       </div>
