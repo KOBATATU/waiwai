@@ -18,6 +18,7 @@ export const deleteCompetitionDataAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "deleteCompetitionDataAction",
     formData: formData,
     schema: CompetitionDataSchema.pick({ id: true }),
     permissions: ["admin"],

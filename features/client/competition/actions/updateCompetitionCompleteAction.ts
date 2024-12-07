@@ -23,6 +23,7 @@ export const updateCompetitionCompleteAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "updateCompetitionCompleteAction",
     formData: formData,
     schema: CompetitionCompleteSchema,
     permissions: ["admin"],

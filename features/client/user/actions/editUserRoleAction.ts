@@ -17,6 +17,7 @@ export const editUserRoleAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "editUserRoleAction",
     permissions: ["admin"],
     formData: formData,
     schema: UserRoleSchema,

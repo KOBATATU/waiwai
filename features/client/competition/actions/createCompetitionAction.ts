@@ -17,6 +17,7 @@ export const createCompetitionAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "createCompetitionAction",
     formData: formData,
     schema: CompetitionTitleAndSubtitleSchema,
     permissions: ["admin"],

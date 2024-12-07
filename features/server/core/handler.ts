@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 import {
   BadException,
-  ExceptionEnum,
   NotFoundException,
 } from "@/features/server/core/exception"
 import { getServerSession } from "@/features/server/core/session"
@@ -10,20 +9,24 @@ import { parseWithZod } from "@conform-to/zod"
 import { Session } from "next-auth"
 import { z } from "zod"
 
+import logger from "@/lib/logger"
+
 type HandlerOptions<T> = {
+  name: string
   auth: boolean
   permissions?: UserRole[]
   handler: () => Promise<T>
 }
-
 export const getHandler = async <T>({
+  name,
   auth,
   permissions,
   handler,
 }: HandlerOptions<T>): Promise<T> => {
+  const start = Date.now()
+  const session = await getServerSession()
   try {
     if (auth) {
-      const session = await getServerSession()
       if (
         !session ||
         !session.user ||
@@ -33,13 +36,30 @@ export const getHandler = async <T>({
       }
     }
 
-    return await handler()
+    const result = await handler()
+    logger.info({
+      name,
+      user: session?.user.id,
+      takeTime: `${Date.now() - start}ms`,
+    })
+    return result
   } catch (e: unknown) {
     if (e instanceof NotFoundException) {
+      logger.info({
+        name,
+        user: session?.user.id,
+        data: {
+          ...e,
+        },
+      })
       return notFound()
     }
     if (e instanceof Error) {
-      console.error(e.stack)
+      logger.error({
+        name,
+        user: session?.user.id,
+        data: e.message,
+      })
     }
 
     throw e
@@ -47,17 +67,20 @@ export const getHandler = async <T>({
 }
 
 type ActionHandlerType<T> = {
+  name: string
   formData: FormData
   schema: z.ZodType<T>
   callback: (user: Session["user"], parsedData: T) => Promise<any>
   permissions?: UserRole[]
 }
 export const actionHandler = async <T>({
+  name,
   formData,
   schema,
   callback,
   permissions = ["user", "admin"],
 }: ActionHandlerType<T>) => {
+  const start = Date.now()
   const session = await getServerSession()
   const user = session?.user
   const submission = parseWithZod(formData, {
@@ -81,15 +104,34 @@ export const actionHandler = async <T>({
         value: await callback(user, submission.value),
       }
     }
+
+    logger.info({
+      name,
+      user: user.id,
+      takeTime: `${Date.now() - start}ms`,
+    })
     return {
       submission: submission.reply(),
       value: null,
     }
   } catch (e) {
     if (e instanceof NotFoundException) {
+      logger.info({
+        name,
+        user: session?.user.id,
+        data: {
+          ...e,
+        },
+      })
       return notFound()
     } else if (e instanceof BadException) {
-      console.log(e)
+      logger.info({
+        name,
+        user: session?.user.id,
+        data: {
+          ...e,
+        },
+      })
       return {
         submission: submission.reply({
           fieldErrors: e.fieldsError,
@@ -100,7 +142,11 @@ export const actionHandler = async <T>({
         },
       }
     } else if (e instanceof Error) {
-      console.error(e.stack)
+      logger.error({
+        name,
+        user: session?.user.id,
+        data: e.message,
+      })
     }
     throw e
   }

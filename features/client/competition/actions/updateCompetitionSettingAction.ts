@@ -10,8 +10,6 @@ import { editCompetitionService } from "@/features/server/service/competition/ba
 import { getCompetitionService } from "@/features/server/service/competition/base/getService"
 import { SubmissionResult } from "@conform-to/react"
 
-import { createDateWithTimezone } from "@/lib/utils"
-
 /**
  * update competition settings
  * @param prevState
@@ -23,6 +21,7 @@ export const updateCompetitionAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "updateCompetitionAction",
     formData: formData,
     schema: CompetitionCustomOptionalDefaultsSchema,
     permissions: ["admin"],

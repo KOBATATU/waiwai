@@ -9,6 +9,7 @@ export const getUserClientService = {
    */
   getUsersByAdmin: async (page: number) => {
     return await getHandler({
+      name: "getUsersByAdmin",
       auth: true,
       permissions: ["admin"],
       handler: async () => {

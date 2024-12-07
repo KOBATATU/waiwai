@@ -17,6 +17,7 @@ export const downloadCompetitionDataAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "downloadCompetitionDataAction",
     formData: formData,
     schema: CompetitionDataDownloadSchema,
     permissions: ["admin", "user"],

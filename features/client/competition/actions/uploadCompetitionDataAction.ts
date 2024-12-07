@@ -19,6 +19,7 @@ export const uploadCompetitionDataAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "uploadCompetitionDataAction",
     formData: formData,
     schema: CompetitionDataFileSchema,
     permissions: ["admin"],

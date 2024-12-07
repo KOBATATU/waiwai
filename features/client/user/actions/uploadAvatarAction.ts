@@ -18,6 +18,7 @@ export const uploadUserAvatarAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "uploadUserAvatarAction",
     permissions: ["user", "admin"],
     formData: formData,
     schema: UserAvatarSchema,

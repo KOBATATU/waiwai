@@ -21,6 +21,7 @@ export const getTeamClientService = {
    */
   getTeamPublicScoresByCompetitionId: async (competitionId: string) => {
     return await getHandler({
+      name: "getTeamPublicScoresByCompetitionId",
       auth: false,
       handler: async () => {
         const session = await getServerSession()
@@ -47,6 +48,7 @@ export const getTeamClientService = {
    */
   getTeamPrivateScoresByCompetitionId: async (competitionId: string) => {
     return await getHandler({
+      name: "getTeamPrivateScoresByCompetitionId",
       auth: false,
       handler: async () => {
         const session = await getServerSession()
@@ -83,6 +85,7 @@ export const getTeamClientService = {
    */
   getTeamByUserIdAndCompetitionId: async (competitionId: string) => {
     return await getHandler({
+      name: "getTeamByUserIdAndCompetitionId",
       auth: true,
       permissions: ["user", "admin"],
       handler: async () => {
@@ -102,6 +105,7 @@ export const getTeamClientService = {
    */
   getTeamSubmissionsByTeamId: async (competitionId: string, page: number) => {
     return await getHandler({
+      name: "getTeamSubmissionsByTeamId",
       auth: true,
       permissions: ["user", "admin"],
       handler: async () => {

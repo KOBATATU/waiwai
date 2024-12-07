@@ -19,6 +19,7 @@ export const updateCompetitioOverviewAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "updateCompetitioOverviewAction",
     formData: formData,
     schema: CompetitionOverviewSchema,
     permissions: ["admin"],
