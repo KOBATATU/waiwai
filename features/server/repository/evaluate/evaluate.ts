@@ -15,7 +15,9 @@ export const httpClient = async <T>(
 ): Promise<T> => {
   const { method = "GET", body, headers } = options
   const cookieStore = cookies()
-  const sessionCookie = cookieStore.get("next-auth.session-token")
+  const sessionCookie = process.env.NEXTAUTH_URL?.startsWith("https://")
+    ? cookieStore.get("__Secure-next-auth.session-token")
+    : cookieStore.get("next-auth.session-token")
   const sessionToken = sessionCookie ? sessionCookie.value : ""
   const fetchOptions: RequestInit = {
     method,
