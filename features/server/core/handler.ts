@@ -34,10 +34,14 @@ export const getHandler = async <T>({
     }
 
     return await handler()
-  } catch (e) {
+  } catch (e: unknown) {
     if (e instanceof NotFoundException) {
       return notFound()
     }
+    if (e instanceof Error) {
+      console.error(e.stack)
+    }
+
     throw e
   }
 }
@@ -85,6 +89,7 @@ export const actionHandler = async <T>({
     if (e instanceof NotFoundException) {
       return notFound()
     } else if (e instanceof BadException) {
+      console.log(e)
       return {
         submission: submission.reply({
           fieldErrors: e.fieldsError,
@@ -94,6 +99,8 @@ export const actionHandler = async <T>({
           code: e.code,
         },
       }
+    } else if (e instanceof Error) {
+      console.error(e.stack)
     }
     throw e
   }
@@ -130,8 +137,8 @@ export const notAuthActionHandler = async <T>({
       value: null,
     }
   } catch (e) {
-    // エラーハンドリング
     if (e instanceof BadException) {
+      console.log(e)
       return {
         submission: submission.reply({
           fieldErrors: e.fieldsError,
@@ -141,6 +148,8 @@ export const notAuthActionHandler = async <T>({
           code: e.code,
         },
       }
+    } else if (e instanceof Error) {
+      console.error(e.stack)
     }
     throw e
   }
