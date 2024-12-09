@@ -29,6 +29,7 @@ export const submitCsvFileAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "submitCsvFileAction",
     formData: formData,
     schema: TeamSubmitFileSchema,
     permissions: ["admin", "user"],

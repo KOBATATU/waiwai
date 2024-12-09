@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-table"
 import { CircleHelp } from "lucide-react"
 
+import { formatUTCToLocalString } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { ConformStateType, useConform } from "@/hooks/useConform"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -106,7 +107,7 @@ export const SubmissionTable = ({
       accessorKey: "uploadedAt",
       header: "uploadedAt",
       cell: ({ row }) => {
-        return <div>{row.original.createdAt.toLocaleString()}</div>
+        return <div>{formatUTCToLocalString(row.original.createdAt)}</div>
       },
     },
     {

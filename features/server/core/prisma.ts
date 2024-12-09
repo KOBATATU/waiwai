@@ -41,7 +41,9 @@ export const doTransaction = async <T extends object>(
   callback: () => Promise<T>
 ): Promise<T> => {
   return await prismaClient.$transaction(async (tx) => {
-    return await asyncLocalStorage.run(tx, callback)
+    return await asyncLocalStorage.run(tx, async () => {
+      return await callback()
+    })
   })
 }
 

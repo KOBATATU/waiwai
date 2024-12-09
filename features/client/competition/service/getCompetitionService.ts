@@ -5,6 +5,7 @@ import { getCompetitionService } from "@/features/server/service/competition/bas
 export const getCompetitionClientService = {
   getCompetitionsByAdmin: async (page: number) => {
     return await getHandler({
+      name: "getCompetitionsByAdmin",
       auth: true,
       permissions: ["admin"],
       handler: async () => {
@@ -15,6 +16,7 @@ export const getCompetitionClientService = {
 
   getCompetitionByAdmin: async (id: string) => {
     return await getHandler({
+      name: "getCompetitionByAdmin",
       auth: true,
       permissions: ["admin"],
       handler: async () => {
@@ -24,6 +26,7 @@ export const getCompetitionClientService = {
   },
   getCompetitions: async (page: number) => {
     return await getHandler({
+      name: "getCompetitions",
       auth: false,
       handler: async () => {
         return await getCompetitionService.getCompetitions(page)
@@ -32,6 +35,7 @@ export const getCompetitionClientService = {
   },
   getCompetitionById: async (id: string) => {
     return await getHandler({
+      name: "getCompetitionById",
       auth: false,
       handler: async () => {
         return await getCompetitionService.getCompetitionById(id)
@@ -40,6 +44,7 @@ export const getCompetitionClientService = {
   },
   getCompetitionParticipateByCompetitionId: async (id: string) => {
     return await getHandler({
+      name: "getCompetitionParticipateByCompetitionId",
       auth: false,
       handler: async () => {
         const user = await getServerSession()

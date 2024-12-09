@@ -17,6 +17,7 @@ export const updateTeamNameAction = async (
   formData: FormData
 ) => {
   return await actionHandler({
+    name: "updateTeamNameAction",
     formData: formData,
     schema: TeamNameSchema,
     permissions: ["admin", "user"],
