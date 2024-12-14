@@ -9,6 +9,11 @@ This OSS is a platform that allows organizations to host data science competitio
 
 waiwai means, in Japanese, let's have "clamorously" and have fun together.
 
+<video width="640" height="480" controls>
+  <source src="./docs/sample.mov" type="video/mp4">
+  お使いのブラウザは動画タグに対応していません。
+</video>
+
 ## Getting Started
 
 - For local startup, please refer to [local_develop](./docs/local_development)
