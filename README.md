@@ -1,18 +1,28 @@
+# 😄waiwai(わいわい)😄
+
 <br>
 
 <p align="center"> <img src="./img/waiwai.png" width="50%" alt="waiwai"> </p>
 
 <br>
+This OSS is a platform that allows organizations to host data science competitions similar to Kaggle. The purpose of this OSS is to enable organizations to conduct their own data science competitions by hosting it on the cloud.
 
-# 😄 waiwai
+waiwai means, in Japanese, let's have "clamorously" and have fun together.
 
-waiwai means, in Japanese, let's have "clamorously" and have fun together. "waiwai" is an open-source system for hosting data science competitions. This system is modeled after Kaggle, the most popular platform for data science competitions. However, when companies want to hold private competitions using their internal data and limit participation to their employees, data policy issues inevitably arise. While Kaggle makes it easy to host competitions, some companies find it difficult due to data policy concerns (such as the challenge of uploading company data to Kaggle). Therefore, by reflecting this system open-source, we aim to enable companies to upload this OSS on their own cloud infrastructure and host competitions.
+## Getting Started
 
-In other words, waiwai is about having fun with their employees in the company.
+- For local startup, please refer to [local_develop](./docs/local_development)
+- For hosting, please see [hosting](./docs/hosting).
 
-## local develop
+## Contributions
 
-```bash
-pnpm install
-pnpm run dev
-```
+PRs and issues are welcome.
+
+## License
+
+This project is under the MIT license.Use of this OSS is at your own risk.
+
+## Contact
+
+If you would like to try using the platform or want to have a proper discussion, please reach out via issues or on X (formerly Twitter) 🙇.
+I can also consult about competitions (I am a Kaggle expert, just so you know).
